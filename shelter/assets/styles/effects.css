@@ -1,0 +1,19 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.button {
+  transition: all 0.5s;
+}
+
+.navigation__link {
+  transition: all 0.5s;
+}
+
+.pagination__link {
+  transition: all 0.5s;
+}
+
+.pet__photo:after {
+  transition: opacity 0.5s;
+}

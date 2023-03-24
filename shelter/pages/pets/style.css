@@ -1,0 +1,10 @@
+@import url('../../assets/styles/normalize.css');
+@import url('../../assets/styles/layout.css');
+@import url('../../assets/styles/components.css');
+@import url('../../assets/styles/typography.css');
+@import url('../../assets/styles/colors.css');
+@import url('../../assets/styles/effects.css');
+
+.pets .pagination {
+  margin-top: 60px;
+}

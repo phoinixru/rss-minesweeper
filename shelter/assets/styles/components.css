@@ -1,0 +1,174 @@
+.logo {
+  display: block;
+}
+
+.logo__title {
+  margin: 0;
+}
+
+.logo__subtitle {
+  margin: 10px 0 0 4px;
+}
+
+.navigation {
+  display: flex;
+  list-style: none;
+}
+
+.navigation__item {
+  margin-left: 35px;
+}
+
+.navigation__link {
+  display: block;
+  font-size: 15px;
+  line-height: 160%;
+}
+
+.navigation__link--active {
+  pointer-events: none;
+}
+
+.button {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 13px 43px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 26px;
+  cursor: pointer;
+}
+
+.button__pagination {
+  padding: 0;
+  height: 52px;
+  width: 52px;
+  text-align: center;
+  line-height: 52px;
+}
+
+/* Pets component */
+.pets {
+  text-align: center;
+}
+
+.pets__cards {
+  display: flex;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px 0;
+}
+
+.pet__card {
+  width: 270px;
+  background: var(--color-light-s);
+  border-radius: 9px;
+}
+
+.pet__link {
+  display: block;
+  padding-bottom: 30px;
+}
+
+.pet__link:hover .button {
+  background-color: var(--color-primary-light);
+}
+
+.pet__link:hover .pet__photo::after {
+  opacity: 0.03;
+}
+
+.pet__photo {
+  position: relative;
+  border-radius: 9px 9px 0 0;
+  overflow: hidden;
+}
+
+.pet__photo::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  opacity: 0;
+}
+
+.pet__photo img {
+  display: block;
+}
+
+.pet__name {
+  display: block;
+  margin: 30px 0;
+  font: 400 20px/23px var(--ff-serif);
+  letter-spacing: 0.06em;
+}
+
+
+/* Slider modification of pets */
+.slider {
+  position: relative;
+}
+
+.slider__cards {
+  flex-wrap: nowrap;
+  gap: 90px;
+  flex-direction: row;
+  width: calc(270px * 3 + 180px);
+  overflow: hidden;
+}
+
+.slider__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider__nav svg {
+  vertical-align: 4px;
+}
+
+.slider__prev {
+  left: 0;
+}
+
+.slider__next {
+  right: 0;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+}
+
+.pagination ul {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-flow: row;
+  justify-content: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination__link {
+  display: block;
+  box-sizing: border-box;
+  width: 52px;
+  height: 52px;
+  line-height: 48px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 100%;
+}
+
+.pagination__link--disabled,
+.pagination__link--active {
+  pointer-events: none;
+}
