@@ -14,6 +14,10 @@ html {
   transition: all 0.5s;
 }
 
-.pet__photo:after {
-  transition: opacity 0.5s;
+.pet__card {
+  transition: all 0.5s;
+}
+
+.footer__content a {
+  transition: color 0.5s;
 }

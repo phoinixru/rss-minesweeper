@@ -115,6 +115,10 @@ p {
   color: var(--color-primary);
 }
 
+.footer__content a:hover {
+  color: var(--color-primary-light);
+}
+
 /* Pagination */
 .pagination__link {
   color: var(--color-dark-3xl);
