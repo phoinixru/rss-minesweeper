@@ -4,6 +4,10 @@
   padding-bottom: 0;
 }
 
+.header-logo {
+  pointer-events: none;
+}
+
 .logo__title {
   color: var(--color-primary);
 }

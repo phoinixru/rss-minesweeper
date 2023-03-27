@@ -77,6 +77,11 @@ p {
   background: var(--color-primary-light);
 }
 
+.header-logo:hover .logo__title {
+  color: var(--color-dark-3xl);
+}
+
+
 /* Header navigation */
 .navigation__link {
   color: var(--color-dark-l);

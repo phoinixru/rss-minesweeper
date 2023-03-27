@@ -6,6 +6,7 @@ html {
   transition: all 0.5s;
 }
 
+.logo__title,
 .navigation__link {
   transition: all 0.5s;
 }
