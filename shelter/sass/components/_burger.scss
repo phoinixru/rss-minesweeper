@@ -1,0 +1,38 @@
+.burger-button {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 3rem;
+  height: 2.2rem;
+  z-index: 1;
+  @include transition();
+
+  i,
+  &:before,
+  &:after {
+    content: '';
+    height: 2px;
+    background: var(--color-dark-4xl);
+
+    .page-main & {
+      background: var(--color-primary);
+
+    }
+  }
+
+  &:before {
+    transform-origin: left top;
+  }
+
+  &:after {
+    transform-origin: right bottom;
+  }
+
+  @include mq($from: tablet) {
+    display: none;
+  }
+}
+
+.burger-button:focus {
+  transform: rotate(90deg);
+}

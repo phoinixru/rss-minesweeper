@@ -1,0 +1,53 @@
+/* Pets component */
+.pets {
+  text-align: center;
+}
+
+.pets__cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem 4rem;
+}
+
+.pet__card {
+  width: 270px;
+  background: var(--color-light-s);
+  border-radius: 9px;
+
+  @include transition();
+
+  &:hover {
+    background-color: var(--color-light-xl);
+    box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
+  }
+}
+
+.pet__link {
+  display: flex;
+  padding-bottom: 3rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem 0;
+
+  &:hover .button {
+    background-color: var(--color-primary-light);
+  }
+}
+
+
+.pet__photo {
+  position: relative;
+  border-radius: 9px 9px 0 0;
+  overflow: hidden;
+
+  img {
+    display: block;
+  }
+}
+
+
+.pet__name {
+  @extend %h4;
+  display: block;
+}

@@ -1,0 +1,16 @@
+/* Page title */
+.page__title {
+  @extend %h3;
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 4.2rem;
+  color: var(--color-dark-l);
+
+  @include mq($from: tablet) {
+    margin-bottom: 3rem;
+  }
+
+  @include mq($from: desktop) {
+    margin-bottom: 6rem;
+  }
+}

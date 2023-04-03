@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  font-size: 10px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-light-l);
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-dark-3xl);
+}
+
+p {
+  color: var(--color-dark-xl);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Section backgrounds */
+.bg-alternate {
+  background-color: var(--color-light-xl);
+}

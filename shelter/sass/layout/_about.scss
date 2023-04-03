@@ -1,0 +1,57 @@
+/* Section: about */
+.about__content {
+  --bg-image-height-mobile: #{responsive-size(353, 408, mobile)};
+  --padding-bottom-mobile: #{responsive-size(353 + 42, 408 + 80, mobile)};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1.5rem;
+  text-align: justify;
+
+  background: url("../../assets/backgrounds/about-pets.png") 50% 100% no-repeat;
+  padding-bottom: var(--padding-bottom-mobile);
+  background-size: auto var(--bg-image-height-mobile);
+
+  @include mq($from: 470px) {
+    width: 43rem;
+    padding: 0 0 48.8rem;
+    background-size: auto;
+    margin: auto;
+    text-align: left;
+  }
+
+
+  @include mq($from: 900px) {
+    min-height: 40.8rem;
+    padding: 0 0 0 42rem;
+    width: 85rem;
+    margin: auto;
+    background-position: 0 0;
+    background-size: auto;
+  }
+}
+
+.about__title {
+  margin: 0;
+
+  @include mq($from: 470px) {
+    text-align: left;
+    @include font(3.5rem, 4.5rem);
+    letter-spacing: 0.06em;
+  }
+}
+
+.about {
+  p {
+    margin: 2.5rem 0 0;
+
+    &+p {
+      margin-top: 2.2rem;
+
+      @include mq($from: 470px) {
+        margin-top: 2.5rem;
+      }
+    }
+  }
+}
