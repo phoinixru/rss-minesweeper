@@ -56,7 +56,7 @@
   &:active,
   &--active {
     color: var(--color-dark-l);
-    pointer-events: none;
+    // pointer-events: none;
   }
 
   &--active:after {

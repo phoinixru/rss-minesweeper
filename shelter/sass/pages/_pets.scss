@@ -7,7 +7,7 @@
       display: block;
     }
 
-    @include mq($from: 628) {
+    @include mq($from: 628px) {
       &:nth-child(-n+6) {
         display: block;
       }

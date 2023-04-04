@@ -698,7 +698,6 @@ ul {
 }
 .navigation__link:active, .navigation__link--active {
   color: var(--color-dark-l);
-  pointer-events: none;
 }
 .navigation__link--active:after {
   visibility: visible;
