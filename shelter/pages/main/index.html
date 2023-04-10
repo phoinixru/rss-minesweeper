@@ -8,7 +8,7 @@
   <title>Cozy House</title>
   <link rel="stylesheet" href="../../assets/styles/main.css">
   <link rel="icon" href="../../assets/icons/favicon.svg">
-  <script src="script.js"></script>
+  <script src="../../assets/js/checklist.js"></script>
 </head>
 
 <body class="page-main">
@@ -20,8 +20,8 @@
           <p class="logo__subtitle">Shelter for pets in Boston</p>
         </hgroup>
       </a>
-      <a class="burger-button" href="#"><i></i></a>
-      <nav class="header-navigation">
+      <a class="burger-button" id="burger-button" href="#"><i></i></a>
+      <nav class="header-navigation burger-navigation">
         <ul class="navigation">
           <li class="navigation__item">
             <a class="navigation__link navigation__link--active" href="#!">About the shelter</a>
@@ -83,35 +83,8 @@
           Our friends who are&nbsp;looking for a house
         </h3>
         <div class="pets slider">
-          <ul class="pets__cards slider__cards">
-            <li class="pet__card slider__card">
-              <a class="pet__link" href="#!">
-                <div class="pet__photo">
-                  <img src="../../assets/images/pets-katrine.jpg" alt="Katrine's photo" width="270" height="270">
-                </div>
-                <strong class="pet__name">Katrine</strong>
-                <span class="button button-secondary">Learn more</span>
-              </a>
-            </li>
-            <li class="pet__card slider__card">
-              <a class="pet__link" href="#!">
-                <div class="pet__photo">
-                  <img src="../../assets/images/pets-jennifer.jpg" alt="Jennifer's photo" width="270" height="270">
-                </div>
-                <strong class="pet__name">Jennifer</strong>
-                <span class="button button-secondary">Learn more</span>
-              </a>
-            </li>
-            <li class="pet__card slider__card">
-              <a class="pet__link" href="#!">
-                <div class="pet__photo">
-                  <img src="../../assets/images/pets-woody.jpg" alt="Woody's photo" width="270" height="270">
-                </div>
-                <strong class="pet__name">Woody</strong>
-                <span class="button button-secondary">Learn more</span>
-              </a>
-            </li>
-          </ul>
+          <div class="slider__slides"></div>
+          
           <div class="slider__pagination">
             <a href="#!" class="pagination__link slider__nav slider__prev">
               <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,6 +193,7 @@
       </div>
     </div>
   </footer>
+  <script src="../../assets/js/index.js" type="module"></script>
 </body>
 
 </html>

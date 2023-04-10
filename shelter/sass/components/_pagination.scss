@@ -16,7 +16,8 @@
   }
 }
 
-.pagination__link {
+.pagination__link,
+.pagination__page {
   display: block;
   box-sizing: border-box;
   width: 5.2rem;
@@ -25,14 +26,15 @@
   border-width: 2px;
   border-style: solid;
   border-radius: 100%;
+  user-select: none;
 }
 
 .pagination__link {
+  cursor: pointer;
   @include transition();
 }
 
-.pagination__link--disabled,
-.pagination__link--active {
+.pagination__link--disabled {
   pointer-events: none;
 }
 
@@ -47,15 +49,17 @@
     border-color: var(--color-primary-light);
   }
 
-  &:active,
-  &--active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-dark-3xl);
-  }
-
-  &--disabled {
+  &--disabled,
+  &--disabled:hover {
+    background: transparent;
     color: var(--color-dark-s);
     border-color: var(--color-dark-s);
   }
+}
+
+.pagination__link:active,
+.pagination__page {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-dark-3xl);
 }

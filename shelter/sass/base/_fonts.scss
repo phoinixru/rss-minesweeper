@@ -11,6 +11,26 @@
 
 @font-face {
   font-family: 'Georgia';
+  src: local('Georgia Bold'), local('Georgia-Bold'),
+    url('../fonts/subset-Georgia-Bold.woff2') format('woff2'),
+    url('../fonts/subset-Georgia-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: local('Georgia Bold Italic'), local('Georgia-BoldItalic'),
+    url('../fonts/subset-Georgia-BoldItalic.woff2') format('woff2'),
+    url('../fonts/subset-Georgia-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
   src: local('Georgia'),
     url('../fonts/subset-Georgia.woff2') format('woff2'),
     url('../fonts/subset-Georgia.woff') format('woff');

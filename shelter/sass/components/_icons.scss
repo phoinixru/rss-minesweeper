@@ -3,7 +3,7 @@ $help-icons: ('pet-food', 'transportation', 'toys', 'bowls-and-cups',
   'shampoos', 'vitamins', 'medicines', 'collars-leashes',
   'sleeping-area');
 
-$site-icons: ('credit-card', 'mail', 'phone', 'pin');
+$site-icons: ('credit-card', 'mail', 'phone', 'pin', 'cross');
 
 @each $icon in $help-icons {
   .icon-#{$icon} {
@@ -15,6 +15,11 @@ $site-icons: ('credit-card', 'mail', 'phone', 'pin');
   .icon-#{$icon} {
     background-image: url('../icons/#{$icon}.svg');
   }
+}
+
+.icon {
+  display: inline-block;
+  background-size: contain;
 }
 
 
@@ -33,4 +38,9 @@ $site-icons: ('credit-card', 'mail', 'phone', 'pin');
 
 .icon-pin {
   width: 22px;
+}
+
+.icon-cross {
+  width: 12px;
+  height: 12px;
 }

@@ -11,7 +11,7 @@
 }
 
 .pet__card {
-  width: 270px;
+  width: 27rem;
   background: var(--color-light-s);
   border-radius: 9px;
 
@@ -20,6 +20,23 @@
   &:hover {
     background-color: var(--color-light-xl);
     box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
+  }
+}
+
+.pet__card--empty,
+.pet__card--empty:hover {
+  height: 43.5rem;
+  background: #DDD linear-gradient(90deg, #DDD 0%, #EEE 50%, #DDD 100%) no-repeat;
+  animation: 2s infinite loading;
+}
+
+@keyframes loading {
+  from {
+    background-position: -270px;
+  }
+
+  to {
+    background-position: 270px;
   }
 }
 

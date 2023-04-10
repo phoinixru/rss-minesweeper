@@ -6,6 +6,32 @@
   align-items: center;
 }
 
+.slider__slides {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.slider__slide {
+  min-width: 100%;
+  position: relative;
+  left: -100%;
+
+  .show_next &,
+  .show_prev & {
+    transition: transform 1s;
+  }
+
+  .show_next &:nth-child(n+2) {
+    transform: translateX(-100%);
+  }
+
+  .show_prev &:nth-child(-n+2) {
+    transform: translateX(100%);
+  }
+}
+
 .slider__cards {
   display: flex;
   flex-wrap: nowrap;
