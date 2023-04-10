@@ -235,17 +235,28 @@ const Pets = {
 
   pickCards(numberOfCards = this.TOTAL_CARDS) {
     const cards = [];
-    const pick = [6, 2, 4, 4, 2, 6];
+    const picks = [6, 2, 4, 4, 2, 6];
     let exclude = [], i = 0;
 
     while (cards.length < numberOfCards) {
-      const count = pick[i++ % pick.length];
-      exclude = pickCards(exclude, count);
-      cards.push(...exclude);
+      const toPick = picks[i++ % picks.length];
 
-      if (cards.length % 24 === 0) {
-        exclude = [];
+      const picked = [];
+      for (let j = 0; j < toPick; j++) {
+        const prevDesktopCard = cards[cards.length - this.ON_DESKTOP + j];
+        const prevTabletCard = cards[cards.length - this.ON_TABLET + j];
+        const [card] = pickCards([...exclude, ...picked, prevDesktopCard, prevTabletCard], 1);
+        
+        if (card) {
+          picked.push(card);
+        } else {
+          picked.pop();
+          j -= 2;
+        }
       }
+
+      cards.push(...picked);
+      exclude = (cards.length % 24 === 0) ? [] : picked;
     }
 
     this.cards = cards;
