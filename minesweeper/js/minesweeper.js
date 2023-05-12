@@ -184,6 +184,7 @@ export default class Minesweeper {
       cell.flag();
     }
 
+    this.checkGameOver();
     this.renderField();
   }
 
@@ -197,5 +198,32 @@ export default class Minesweeper {
     this.started = false;
     this.prepareField();
     this.renderField();
+  }
+
+  checkGameOver() {
+    const { cells, bombs } = this;
+    const emptyCells = cells.length - bombs.length;
+
+    const isGameLost = cells.find((cell) => cell.isOpen && cell.hasBomb);
+    const isGameWon = cells.filter((cell) => cell.isOpen).length === emptyCells;
+    const isGameOver = isGameLost || isGameWon;
+
+    assign(this, { isGameLost, isGameWon, isGameOver });
+
+    if (isGameLost) {
+      this.gameLost();
+    }
+
+    if (isGameWon) {
+      this.gameWon();
+    }
+  }
+
+  gameLost() {
+    console.log('Game Lost');
+  }
+
+  gameWon() {
+    console.log('Game won');
   }
 }
