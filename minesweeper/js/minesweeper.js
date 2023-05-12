@@ -166,13 +166,17 @@ export default class Minesweeper {
   }
 
   clickCell({ x, y, button }) {
-    if (!button && !this.started) {
+    if (!this.started) {
+      if (button !== 0) {
+        return;
+      }
+
       this.start({ x, y });
     }
 
     const cell = this.field[y][x];
 
-    if (button === 0 && !cell.isOpen) {
+    if (button === 0) {
       cell.open();
     }
 

@@ -390,10 +390,6 @@ template {
   background: var(--bg-cell-cover);
 }
 
-.cell--bomb:before {
-  content: "💣";
-}
-
 .cell--open[data-bombs]:before {
   content: attr(data-bombs);
 }
@@ -425,8 +421,15 @@ template {
   display: none;
 }
 
-.cell--flagged:before {
+.cell--flagged:after {
   content: "🚩";
+}
+
+.cell--bomb:before {
+  content: "💣";
+}
+.cell--bomb.cell--open {
+  background: red;
 }
 
 .wrapper {

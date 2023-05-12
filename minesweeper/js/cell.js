@@ -32,12 +32,20 @@ export default class Cell {
   }
 
   setBombsAround(bombs) {
+    if (this.hasBomb) {
+      return;
+    }
+
     this.bombsAround = this.neighbors
       .filter((cell) => bombs.includes(cell)).length;
   }
 
   open() {
     console.log('Opening', this);
+    if (this.isFlagged) {
+      return;
+    }
+
     this.isOpen = true;
   }
 

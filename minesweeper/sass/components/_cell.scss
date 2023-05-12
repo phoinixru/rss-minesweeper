@@ -32,12 +32,6 @@
   }
 }
 
-.cell--bomb {
-  &:before {
-    content: '💣';
-  }
-}
-
 $colors: (1: one,
   2: two,
   3: three,
@@ -65,7 +59,16 @@ $colors: (1: one,
 }
 
 .cell--flagged {
-  &:before {
+  &:after {
     content: '🚩';
+  }
+}
+
+.cell--bomb {
+  &:before {
+    content: '💣';
+  }
+  &.cell--open {
+    background: red;
   }
 }
