@@ -397,6 +397,30 @@ template {
 .cell--open[data-bombs]:before {
   content: attr(data-bombs);
 }
+.cell--open[data-bombs="1"] {
+  color: var(--color-one);
+}
+.cell--open[data-bombs="2"] {
+  color: var(--color-two);
+}
+.cell--open[data-bombs="3"] {
+  color: var(--color-three);
+}
+.cell--open[data-bombs="4"] {
+  color: var(--color-four);
+}
+.cell--open[data-bombs="5"] {
+  color: var(--color-five);
+}
+.cell--open[data-bombs="6"] {
+  color: var(--color-six);
+}
+.cell--open[data-bombs="7"] {
+  color: var(--color-seven);
+}
+.cell--open[data-bombs="8"] {
+  color: var(--color-eight);
+}
 .cell--open:after {
   display: none;
 }
