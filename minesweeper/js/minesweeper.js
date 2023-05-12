@@ -17,7 +17,7 @@ const DEFAULT_COLS = 10;
 const DEFAULT_BOMBS = 15;
 
 const HANDLE_EMPTY_CELLS = true;
-const HANDLE_NUMBERED_CELLS = false;
+const HANDLE_NUMBERED_CELLS = true;
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -194,16 +194,16 @@ export default class Minesweeper {
 
   openCells({ x, y }) {
     const cell = this.field[y][x];
-    if (cell.isOpen) {
-      return;
-    }
+    const {
+      id, isOpen, neighbors, bombsAround,
+    } = cell;
 
     const {
       handleEmptyCells,
       handleNumberedCells,
     } = this.config;
 
-    const cellsToOpen = new Set([cell.id]);
+    const cellsToOpen = new Set([id]);
     const addToOpen = ({ id, neighbors }) => {
       cellsToOpen.add(id);
       neighbors.forEach((neighborId) => {
@@ -219,6 +219,25 @@ export default class Minesweeper {
       addToOpen(cell);
     }
 
+    if (handleNumberedCells && isOpen) {
+      console.log('numbered');
+
+      let flagged = 0;
+      const toAdd = [];
+
+      neighbors.forEach((cellId) => {
+        const { isFlagged, isOpen } = this.cells[cellId];
+        flagged += isFlagged ? 1 : 0;
+        if (!isOpen) {
+          toAdd.push(cellId);
+        }
+      });
+
+      if (bombsAround && flagged === bombsAround) {
+        toAdd.forEach((id) => cellsToOpen.add(id));
+      }
+    }
+
     cellsToOpen.forEach((id) => {
       this.cells[id].open();
     });
@@ -228,28 +247,6 @@ export default class Minesweeper {
     const cell = this.field[y][x];
 
     cell.flag();
-  }
-
-  handleEmptyCells(openedCell) {
-    const { bombsAround, neighbors } = openedCell;
-
-    if (bombsAround !== 0) {
-      return;
-    }
-
-    const cellsToOpen = neighbors
-      .map((id) => this.cells[id])
-      .filter((cell) => !cell.isOpen && !cell.isFlagged);
-
-    cellsToOpen.forEach((cell) => {
-      const { x, y } = cell;
-
-      cell.open();
-
-      if (!cell.bombsAround) {
-        this.clickCell({ x, y, button: 0 });
-      }
-    });
   }
 
   start(firstCell) {
@@ -268,8 +265,8 @@ export default class Minesweeper {
     const { cells, bombs } = this;
     const emptyCells = cells.length - bombs.length;
 
-    const isGameLost = cells.find((cell) => cell.isOpen && cell.hasBomb);
-    const isGameWon = cells.filter((cell) => cell.isOpen).length === emptyCells;
+    const isGameLost = cells.find(({ isOpen, hasBomb }) => isOpen && hasBomb);
+    const isGameWon = cells.filter(({ isOpen }) => isOpen).length === emptyCells;
     const isGameOver = isGameLost || isGameWon;
 
     assign(this, { isGameLost, isGameWon, isGameOver });

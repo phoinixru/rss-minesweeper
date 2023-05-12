@@ -51,6 +51,9 @@ export default class Cell {
 
   flag() {
     console.log('Flagging', this);
+    if (this.isOpen) {
+      return;
+    }
     this.isFlagged = !this.isFlagged;
   }
 
