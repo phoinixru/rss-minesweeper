@@ -1,5 +1,6 @@
 :root {
   --bg-page: #008080;
+  --bg-minesweeper: #fdffff;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -312,5 +313,44 @@ template {
 }
 
 .page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: var(--bg-page);
+  user-select: none;
+}
+
+.minesweeper {
+  min-height: 100px;
+  background: var(--bg-minesweeper);
+}
+
+.field {
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.field__row {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell {
+  display: flex;
+  width: 1.5em;
+  height: 1.5em;
+  border-width: 3px;
+  border-style: outset;
+  border-color: #EEE;
+  cursor: pointer;
+}
+
+.cell--bomb {
+  background: red;
+}
+
+.wrapper {
+  display: flex;
 }/*# sourceMappingURL=main.css.map */

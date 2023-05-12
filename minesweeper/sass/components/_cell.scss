@@ -1,0 +1,16 @@
+.cell {
+  display: flex;
+
+  width: 1.5em;
+  height: 1.5em;
+
+  border-width: 3px;
+  border-style: outset;
+  border-color: #EEE;
+
+  cursor: pointer;
+}
+
+.cell--bomb {
+  background: red;
+}
