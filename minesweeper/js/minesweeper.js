@@ -12,9 +12,9 @@ const CssClasses = {
   CELL_OPEN: 'cell--open',
 };
 
-const DEFAULT_ROWS = 10;
-const DEFAULT_COLS = 10;
-const DEFAULT_BOMBS = 15;
+const DEFAULT_ROWS = 15;
+const DEFAULT_COLS = 30;
+const DEFAULT_BOMBS = 99;
 
 const HANDLE_EMPTY_CELLS = true;
 
@@ -92,7 +92,7 @@ export default class Minesweeper {
 
     for (let i = 0; i < rows * cols; i += 1) {
       const y = Math.floor(i / cols);
-      const x = i % rows;
+      const x = i % cols;
       const cell = new Cell({
         y, x, rows, cols,
       });
