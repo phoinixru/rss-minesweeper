@@ -16,13 +16,17 @@ const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
 const DEFAULT_BOMBS = 15;
 
+const HANDLE_EMPTY_CELLS = true;
+
 const shuffle = () => Math.random() - 0.5;
 
 export default class Minesweeper {
   constructor({ parentContainer }) {
     this.parentContainer = parentContainer;
     this.container = elt('div', { className: CssClasses.COMPONENT });
-    this.config = {};
+    this.config = {
+      handleEmptyCells: HANDLE_EMPTY_CELLS,
+    };
     this.bombs = null;
 
     parentContainer.append(this.container);
@@ -178,6 +182,11 @@ export default class Minesweeper {
 
     if (button === 0) {
       cell.open();
+
+      const { handleEmptyCells } = this.config;
+      if (handleEmptyCells) {
+        this.handleEmptyCells(cell);
+      }
     }
 
     if (button === 2) {
@@ -186,6 +195,24 @@ export default class Minesweeper {
 
     this.checkGameOver();
     this.renderField();
+  }
+
+  handleEmptyCells(openedCell) {
+    const { bombsAround, neighbors } = openedCell;
+
+    if (bombsAround !== 0) {
+      return;
+    }
+
+    const cellsToOpen = neighbors
+      .map((id) => this.cells[id])
+      .filter((cell) => !cell.isOpen);
+
+    cellsToOpen.forEach((cell) => {
+      const { x, y } = cell;
+
+      this.clickCell({ x, y, button: 0 });
+    });
   }
 
   start(firstCell) {
