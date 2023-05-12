@@ -53,4 +53,8 @@ export default class Cell {
     console.log('Flagging', this);
     this.isFlagged = !this.isFlagged;
   }
+
+  isEmpty() {
+    return this.bombsAround === 0;
+  }
 }

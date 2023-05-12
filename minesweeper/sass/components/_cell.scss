@@ -9,8 +9,6 @@
   border: 1px solid var(--color-cell-border);
   margin: 0 -1px -1px 0;
 
-  cursor: pointer;
-
   &:before,
   &:after {
     position: absolute;
@@ -29,6 +27,7 @@
     border-color: #EEE;
     box-sizing: border-box;
     background: var(--bg-cell-cover);
+    cursor: pointer;
   }
 }
 

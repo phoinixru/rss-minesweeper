@@ -12,11 +12,12 @@ const CssClasses = {
   CELL_OPEN: 'cell--open',
 };
 
-const DEFAULT_ROWS = 15;
-const DEFAULT_COLS = 30;
-const DEFAULT_BOMBS = 99;
+const DEFAULT_ROWS = 10;
+const DEFAULT_COLS = 10;
+const DEFAULT_BOMBS = 15;
 
 const HANDLE_EMPTY_CELLS = true;
+const HANDLE_NUMBERED_CELLS = false;
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -26,6 +27,7 @@ export default class Minesweeper {
     this.container = elt('div', { className: CssClasses.COMPONENT });
     this.config = {
       handleEmptyCells: HANDLE_EMPTY_CELLS,
+      handleNumberedCells: HANDLE_NUMBERED_CELLS,
     };
     this.bombs = null;
 
@@ -36,11 +38,11 @@ export default class Minesweeper {
   }
 
   addEventListeners() {
-    // const prevent = (event) => event.preventDefault();
+    const prevent = (event) => event.preventDefault();
     const clickHandler = (event) => this.handleClicks(event);
 
-    this.container.addEventListener('click', clickHandler);
-    this.container.addEventListener('contextmenu', clickHandler);
+    this.container.addEventListener('mouseup', clickHandler);
+    this.container.addEventListener('contextmenu', prevent);
   }
 
   handleClicks(event) {
@@ -169,32 +171,63 @@ export default class Minesweeper {
     );
   }
 
-  clickCell({ x, y, button }) {
+  clickCell({ button, ...clickedCell }) {
     if (!this.started) {
       if (button !== 0) {
         return;
       }
 
-      this.start({ x, y });
+      this.start(clickedCell);
     }
 
-    const cell = this.field[y][x];
-
     if (button === 0) {
-      cell.open();
-
-      const { handleEmptyCells } = this.config;
-      if (handleEmptyCells) {
-        this.handleEmptyCells(cell);
-      }
+      this.openCells(clickedCell);
     }
 
     if (button === 2) {
-      cell.flag();
+      this.flagCell(clickedCell);
     }
 
     this.checkGameOver();
     this.renderField();
+  }
+
+  openCells({ x, y }) {
+    const cell = this.field[y][x];
+    if (cell.isOpen) {
+      return;
+    }
+
+    const {
+      handleEmptyCells,
+      handleNumberedCells,
+    } = this.config;
+
+    const cellsToOpen = new Set([cell.id]);
+    const addToOpen = ({ id, neighbors }) => {
+      cellsToOpen.add(id);
+      neighbors.forEach((neighborId) => {
+        const neighborCell = this.cells[neighborId];
+        if (neighborCell.isEmpty() && !cellsToOpen.has(neighborId)) {
+          addToOpen(neighborCell);
+        }
+        cellsToOpen.add(neighborId);
+      });
+    };
+
+    if (handleEmptyCells && cell.isEmpty()) {
+      addToOpen(cell);
+    }
+
+    cellsToOpen.forEach((id) => {
+      this.cells[id].open();
+    });
+  }
+
+  flagCell({ x, y }) {
+    const cell = this.field[y][x];
+
+    cell.flag();
   }
 
   handleEmptyCells(openedCell) {
@@ -206,7 +239,7 @@ export default class Minesweeper {
 
     const cellsToOpen = neighbors
       .map((id) => this.cells[id])
-      .filter((cell) => !cell.isOpen);
+      .filter((cell) => !cell.isOpen && !cell.isFlagged);
 
     cellsToOpen.forEach((cell) => {
       const { x, y } = cell;
