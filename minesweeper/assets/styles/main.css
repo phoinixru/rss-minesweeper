@@ -1,6 +1,19 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 :root {
   --bg-page: #008080;
   --bg-minesweeper: #fdffff;
+  --bg-cell: #cccccc;
+  --bg-cell-cover: #eeeeee;
+  --color-cell-border: #666666;
+  --color-one: #0d00ff;
+  --color-two: #018001;
+  --color-three: #ff0000;
+  --color-four: #030081;
+  --color-five: #800000;
+  --color-six: #018081;
+  --color-seven: #000000;
+  --color-eight: #808080;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -312,6 +325,10 @@ template {
   display: none;
 }
 
+:root {
+  --ff-field: "Silkscreen", cursive;
+}
+
 .page {
   min-height: 100vh;
   display: flex;
@@ -326,10 +343,18 @@ template {
   background: var(--bg-minesweeper);
 }
 
+.controls {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+}
+
 .field {
-  border: 2px solid #000;
+  border: 1px solid #000;
+  padding: 0 1px 1px 0;
   display: flex;
   flex-direction: column;
+  font-family: var(--ff-field);
 }
 
 .field__row {
@@ -338,17 +363,46 @@ template {
 }
 
 .cell {
+  position: relative;
   display: flex;
   width: 1.5em;
   height: 1.5em;
+  background: var(--bg-cell);
+  border: 1px solid var(--color-cell-border);
+  margin: 0 -1px -1px 0;
+  cursor: pointer;
+}
+.cell:before, .cell:after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell:after {
+  content: "";
+  display: block;
   border-width: 3px;
   border-style: outset;
   border-color: #EEE;
-  cursor: pointer;
+  box-sizing: border-box;
+  background: var(--bg-cell-cover);
 }
 
-.cell--bomb {
-  background: red;
+.cell--bomb:before {
+  content: "💣";
+}
+
+.cell--open[data-bombs]:before {
+  content: attr(data-bombs);
+}
+.cell--open:after {
+  display: none;
+}
+
+.cell--flagged:before {
+  content: "🚩";
 }
 
 .wrapper {

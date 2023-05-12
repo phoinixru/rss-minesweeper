@@ -1,4 +1,5 @@
 import { elt, assign } from './utils.js';
+import Cell from './cell.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -13,7 +14,7 @@ const CssClasses = {
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
-const DEFAULT_BOMBS = 10;
+const DEFAULT_BOMBS = 15;
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -41,9 +42,7 @@ export default class Minesweeper {
   handleClicks(event) {
     event.preventDefault();
 
-    const {
-      target,
-    } = event;
+    const { target } = event;
 
     if (target.matches(`.${CssClasses.CELL}`)) {
       const { x, y } = target.dataset;
@@ -63,7 +62,7 @@ export default class Minesweeper {
 
     if (exclude) {
       const { x, y } = exclude;
-      excluded = y * rows + x;
+      excluded = y * rows + x * 1;
     }
 
     const cells = rows * cols;
@@ -90,13 +89,19 @@ export default class Minesweeper {
     for (let i = 0; i < rows * cols; i += 1) {
       const y = Math.floor(i / cols);
       const x = i % rows;
-
-      this.field[y][x] = { y, x };
+      const cell = new Cell({
+        y, x, rows, cols,
+      });
 
       if (bombs.length) {
-        this.field[y][x].hasBomb = bombs.includes(i);
+        cell.plantBomb(bombs.includes(i));
+        cell.setBombsAround(bombs);
       }
+
+      this.field[y][x] = cell;
     }
+
+    this.cells = this.field.flat();
   }
 
   render() {
@@ -106,8 +111,14 @@ export default class Minesweeper {
 
   renderUI() {
     this.fieldContainer = elt('div', { className: CssClasses.FIELD });
+    this.controlsContainer = elt('div', { className: CssClasses.CONTROLS });
+
+    const btnReset = elt('button', {}, 'Reset');
+    btnReset.addEventListener('click', () => this.reset());
+    this.controlsContainer.append(btnReset);
 
     this.container.append(
+      this.controlsContainer,
       this.fieldContainer,
     );
   }
@@ -117,8 +128,8 @@ export default class Minesweeper {
 
     const renderCell = (cell) => {
       const {
-        flagged = false,
-        open = false,
+        isFlagged = false,
+        isOpen = false,
         bombsAround = 0,
         hasBomb = false,
         x, y,
@@ -127,14 +138,16 @@ export default class Minesweeper {
       const elCell = elt('span', { className: CssClasses.CELL });
       assign(elCell.dataset, { y, x });
 
-      if (!open) {
+      if (isOpen) {
         elCell.classList.add(CssClasses.CELL_OPEN);
+
+        if (bombsAround) {
+          elCell.dataset.bombs = bombsAround;
+        }
       }
 
       elCell.classList.toggle(CssClasses.CELL_BOMB, hasBomb);
-      elCell.classList.toggle(CssClasses.CELL_FLAGGED, flagged);
-
-      elCell.innerHTML = bombsAround || '';
+      elCell.classList.toggle(CssClasses.CELL_FLAGGED, isFlagged);
 
       return elCell;
     };
@@ -153,12 +166,32 @@ export default class Minesweeper {
   }
 
   clickCell({ x, y, button }) {
-    console.log(x, y, button);
-
-    if (!this.bombs) {
-      const bombs = this.plantBombs({ exclude: { x, y } });
-      this.prepareField(bombs);
-      this.renderField();
+    if (!button && !this.started) {
+      this.start({ x, y });
     }
+
+    const cell = this.field[y][x];
+
+    if (button === 0 && !cell.isOpen) {
+      cell.open();
+    }
+
+    if (button === 2) {
+      cell.flag();
+    }
+
+    this.renderField();
+  }
+
+  start(firstCell) {
+    const bombs = this.plantBombs({ exclude: firstCell });
+    this.prepareField(bombs);
+    this.started = true;
+  }
+
+  reset() {
+    this.started = false;
+    this.prepareField();
+    this.renderField();
   }
 }
