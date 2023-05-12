@@ -66,7 +66,7 @@ export default class Minesweeper {
 
     if (exclude) {
       const { x, y } = exclude;
-      excluded = y * rows + x * 1;
+      excluded = y * cols + x * 1;
     }
 
     const cells = rows * cols;
@@ -211,7 +211,11 @@ export default class Minesweeper {
     cellsToOpen.forEach((cell) => {
       const { x, y } = cell;
 
-      this.clickCell({ x, y, button: 0 });
+      cell.open();
+
+      if (!cell.bombsAround) {
+        this.clickCell({ x, y, button: 0 });
+      }
     });
   }
 
