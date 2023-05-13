@@ -3,6 +3,9 @@ import Cell from './cell.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
+  GAME_OVER: 'minesweeper--over',
+  GAME_LOST: 'minesweeper--lost',
+  GAME_WON: 'minesweeper--won',
   CONTROLS: 'controls',
   FIELD: 'field',
   FIELD_ROW: 'field__row',
@@ -10,6 +13,7 @@ const CssClasses = {
   CELL_BOMB: 'cell--bomb',
   CELL_FLAGGED: 'cell--flagged',
   CELL_OPEN: 'cell--open',
+  BUTTON: 'button',
 };
 
 const DEFAULT_ROWS = 10;
@@ -119,7 +123,7 @@ export default class Minesweeper {
     this.fieldContainer = elt('div', { className: CssClasses.FIELD });
     this.controlsContainer = elt('div', { className: CssClasses.CONTROLS });
 
-    const btnReset = elt('button', {}, 'Reset');
+    const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
     btnReset.addEventListener('click', () => this.reset());
     this.controlsContainer.append(btnReset);
 
@@ -130,7 +134,7 @@ export default class Minesweeper {
   }
 
   renderField() {
-    const { field } = this;
+    const { field, isOver } = this;
 
     const renderCell = (cell) => {
       const {
@@ -152,7 +156,10 @@ export default class Minesweeper {
         }
       }
 
-      elCell.classList.toggle(CssClasses.CELL_BOMB, hasBomb);
+      if (isOver) {
+        elCell.classList.toggle(CssClasses.CELL_BOMB, hasBomb);
+      }
+
       elCell.classList.toggle(CssClasses.CELL_FLAGGED, isFlagged);
 
       return elCell;
@@ -172,6 +179,11 @@ export default class Minesweeper {
   }
 
   clickCell({ button, ...clickedCell }) {
+    const { isOver } = this;
+    if (isOver) {
+      return;
+    }
+
     if (!this.started) {
       if (button !== 0) {
         return;
@@ -220,8 +232,6 @@ export default class Minesweeper {
     }
 
     if (handleNumberedCells && isOpen) {
-      console.log('numbered');
-
       let flagged = 0;
       const toAdd = [];
 
@@ -257,6 +267,11 @@ export default class Minesweeper {
 
   reset() {
     this.started = false;
+    this.isOver = false;
+    this.isWon = false;
+    this.isLost = false;
+
+    this.setGameState();
     this.prepareField();
     this.renderField();
   }
@@ -265,26 +280,35 @@ export default class Minesweeper {
     const { cells, bombs } = this;
     const emptyCells = cells.length - bombs.length;
 
-    const isGameLost = cells.find(({ isOpen, hasBomb }) => isOpen && hasBomb);
-    const isGameWon = cells.filter(({ isOpen }) => isOpen).length === emptyCells;
-    const isGameOver = isGameLost || isGameWon;
+    const isLost = !!cells.find(({ isOpen, hasBomb }) => isOpen && hasBomb);
+    const isWon = cells.filter(({ isOpen }) => isOpen).length === emptyCells;
+    const isOver = isLost || isWon;
 
-    assign(this, { isGameLost, isGameWon, isGameOver });
+    assign(this, { isLost, isWon, isOver });
 
-    if (isGameLost) {
+    if (isLost) {
       this.gameLost();
     }
 
-    if (isGameWon) {
+    if (isWon) {
       this.gameWon();
     }
   }
 
   gameLost() {
-    console.log('Game Lost');
+    this.setGameState();
   }
 
   gameWon() {
-    console.log('Game won');
+    this.setGameState();
+  }
+
+  setGameState() {
+    const { classList } = this.container;
+    const { isLost, isWon, isOver } = this;
+
+    classList.toggle(CssClasses.GAME_OVER, isOver);
+    classList.toggle(CssClasses.GAME_LOST, isLost);
+    classList.toggle(CssClasses.GAME_WON, isWon);
   }
 }

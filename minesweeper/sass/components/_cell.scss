@@ -59,7 +59,9 @@ $colors: (1: one,
 
 .cell--flagged {
   &:after {
-    content: '🚩';
+    content: '';
+    background-image: url('../icons/flag.png');
+    background-repeat: no-repeat;
   }
 }
 
@@ -67,7 +69,19 @@ $colors: (1: one,
   &:before {
     content: '💣';
   }
+
   &.cell--open {
     background: red;
+  }
+}
+
+
+.minesweeper--over {
+  .cell--bomb:after {
+    display: none;
+  }
+
+  .cell--flagged:after {
+    display: block;
   }
 }
