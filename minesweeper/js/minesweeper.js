@@ -14,7 +14,7 @@ const CssClasses = {
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
-const DEFAULT_MINES = 10;
+const DEFAULT_MINES = 15;
 
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_OPEN_CELLS = true;
@@ -34,6 +34,9 @@ export default class Minesweeper {
     this.config = {
       handleEmptyCells: HANDLE_EMPTY_CELLS,
       handleOpenCells: HANDLE_OPEN_CELLS,
+      rows: DEFAULT_ROWS,
+      cols: DEFAULT_COLS,
+      mines: DEFAULT_MINES,
     };
     this.mines = null;
     this.isOver = false;
@@ -65,20 +68,17 @@ export default class Minesweeper {
     }
   }
 
-  plantMines(excluded = -1) {
-    const {
-      rows = DEFAULT_ROWS,
-      cols = DEFAULT_COLS,
-      mines = DEFAULT_MINES,
-    } = this.config;
+  plantMines(clickedCellId) {
+    const { rows, cols, mines } = this.config;
+    const excluded = +clickedCellId;
 
-    const cellsCount = rows * cols;
-    const allCells = Array(cellsCount)
+    const totalCells = rows * cols;
+    const allCells = Array(totalCells)
       .fill(0)
       .map((e, i) => e + i);
 
     const cellsToPlant = allCells
-      .filter((e) => e !== excluded)
+      .filter((id) => id !== excluded)
       .sort(shuffle)
       .slice(0, mines);
 
@@ -96,24 +96,18 @@ export default class Minesweeper {
   }
 
   prepareField() {
-    const {
-      rows = DEFAULT_ROWS,
-      cols = DEFAULT_COLS,
-    } = this.config;
+    const { rows, cols } = this.config;
+    const totalCells = rows * cols;
 
-    this.field = Array(rows).fill(0).map(() => Array(cols));
-
-    for (let i = 0; i < rows * cols; i += 1) {
-      const y = Math.floor(i / cols);
-      const x = i % cols;
-      const cell = new Cell({
-        y, x, id: i, rows, cols, game: this,
+    this.cells = Array(totalCells)
+      .fill(0)
+      .map((e, i) => {
+        const y = Math.floor(i / cols);
+        const x = i % cols;
+        return new Cell({
+          y, x, id: i, rows, cols, game: this,
+        });
       });
-
-      this.field[y][x] = cell;
-    }
-
-    this.cells = this.field.flat();
   }
 
   render() {
@@ -136,7 +130,12 @@ export default class Minesweeper {
   }
 
   renderField() {
-    const { field } = this;
+    const { cells, config } = this;
+    const { cols, rows } = config;
+
+    const fieldRows = Array(rows)
+      .fill(cols)
+      .map((num, i) => cells.slice(i * num, (i + 1) * num));
 
     const renderCell = (cell) => cell.render();
     const renderRow = (row) => elt(
@@ -147,11 +146,11 @@ export default class Minesweeper {
 
     this.fieldContainer.innerHTML = '';
     this.fieldContainer.append(
-      ...field.map(renderRow),
+      ...fieldRows.map(renderRow),
     );
   }
 
-  clickCell({ button, ...clickedCell }) {
+  clickCell({ button, id }) {
     const { isOver } = this;
     if (isOver) {
       return;
@@ -162,21 +161,21 @@ export default class Minesweeper {
         return;
       }
 
-      this.start(clickedCell);
+      this.start(id);
     }
 
     if (button === BUTTON.PRIMARY) {
-      this.openCells(clickedCell);
+      this.openCell(id);
     }
 
     if ([BUTTON.SECONDARY, BUTTON.TOUCH].includes(button)) {
-      this.flagCell(clickedCell);
+      this.flagCell(id);
     }
 
     this.checkGameOver();
   }
 
-  openCells({ id }) {
+  openCell(id) {
     const cell = this.cells[id];
     const {
       isOpen, adjacent, minesAround,
@@ -225,14 +224,12 @@ export default class Minesweeper {
     });
   }
 
-  flagCell({ id }) {
-    const cell = this.field[id];
-
-    cell.flag();
+  flagCell(id) {
+    this.cells[id].flag();
   }
 
-  start(firstCell) {
-    this.plantMines(firstCell.id);
+  start(clickedCellId) {
+    this.plantMines(clickedCellId);
     this.started = true;
   }
 
