@@ -20,6 +20,7 @@ class Cell {
     this.isMined = false;
     this.isOpen = false;
     this.isFlagged = false;
+    this.isEmpty = true;
     this.id = y * cols + x;
 
     Object.assign(this, { x, y, game });
@@ -32,6 +33,7 @@ class Cell {
 
   plantMine() {
     this.isMined = true;
+    this.isEmpty = false;
   }
 
   setAdjacent({ rows, cols }) {
@@ -53,15 +55,13 @@ class Cell {
     const isMined = (cellId) => mines.includes(cellId);
 
     this.minesAround = this.adjacent.filter(isMined).length;
+    this.isEmpty = !this.minesAround;
   }
 
   open() {
     console.log('Opening');
-    if (this.isFlagged) {
-      return;
-    }
-
     this.isOpen = true;
+    this.isFlagged = false;
     this.render();
   }
 
@@ -72,10 +72,6 @@ class Cell {
     }
     this.isFlagged = !this.isFlagged;
     this.render();
-  }
-
-  isEmpty() {
-    return this.minesAround === 0;
   }
 
   render() {
