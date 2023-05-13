@@ -27,6 +27,9 @@ const BUTTON = {
   TOUCH: -1,
 };
 
+const is = (e) => e;
+const isNot = (e) => !e;
+
 export default class Minesweeper {
   constructor({ parentContainer }) {
     this.parentContainer = parentContainer;
@@ -175,53 +178,87 @@ export default class Minesweeper {
     this.checkGameOver();
   }
 
-  openCell(id) {
-    const cell = this.cells[id];
+  openCell(cellId) {
+    const cell = this.cells[cellId];
     const {
-      isOpen, adjacent, minesAround,
+      isOpen, isFlagged, isEmpty, id,
     } = cell;
+
+    if (isFlagged) {
+      return;
+    }
 
     const {
       handleEmptyCells,
       handleOpenCells,
     } = this.config;
 
-    const cellsToOpen = new Set([id]);
-    const addToOpen = ({ id, adjacent }) => {
-      cellsToOpen.add(id);
-      adjacent.forEach((adjacentId) => {
-        const adjacentCell = this.cells[adjacentId];
-        if (adjacentCell.isEmpty && !cellsToOpen.has(adjacentId)) {
-          addToOpen(adjacentCell);
-        }
-        cellsToOpen.add(adjacentId);
-      });
-    };
+    const cellsToOpen = [id];
+    let emptyCells = new Set();
 
-    if (handleEmptyCells && cell.isEmpty) {
-      addToOpen(cell);
-    }
+    if (handleOpenCells && isOpen && !isEmpty) {
+      const isNotOpenCell = this.filter('isOpen', isNot);
+      const isNotFlaggedCell = this.filter('isFlagged', isNot);
+      const isEmptyCell = this.filter('isEmpty');
 
-    if (handleOpenCells && isOpen) {
-      let flagged = 0;
-      const toAdd = [];
+      const { minesAround, adjacent } = cell;
+      const adjacentFlagged = adjacent.filter(this.filter('isFlagged')).length;
 
-      adjacent.forEach((cellId) => {
-        const { isFlagged, isOpen } = this.cells[cellId];
-        flagged += isFlagged ? 1 : 0;
-        if (!isOpen) {
-          toAdd.push(cellId);
-        }
-      });
-
-      if (minesAround && flagged === minesAround) {
-        toAdd.forEach((id) => cellsToOpen.add(id));
+      if (minesAround !== adjacentFlagged) {
+        return;
       }
+
+      const notFlagged = adjacent.filter(isNotFlaggedCell);
+      const notOpen = notFlagged.filter(isNotOpenCell);
+      const adjacentEmpty = notOpen.filter(isEmptyCell);
+
+      cellsToOpen.push(...notOpen);
+      emptyCells = new Set(adjacentEmpty);
     }
 
-    cellsToOpen.forEach((id) => {
-      this.cells[id].open();
+    if (handleEmptyCells) {
+      if (cell.isEmpty) {
+        emptyCells.add(id);
+      }
+
+      const selectedCells = this.selectCellsToOpen([...emptyCells]);
+      cellsToOpen.push(...selectedCells);
+    }
+
+    cellsToOpen.forEach((openId) => {
+      this.cells[openId].open();
     });
+  }
+
+  selectCellsToOpen(ids) {
+    const toCheck = [...ids];
+    let toOpen = [...ids];
+    let i = 0;
+    let checkId = toCheck[i];
+
+    const isNotYetChecked = (cellId) => !toCheck.includes(cellId);
+    const isEmpty = this.filter('isEmpty');
+    const isNotOpen = this.filter('isOpen', isNot);
+
+    while (checkId !== undefined) {
+      const { adjacent } = this.cells[checkId];
+      const notOpen = adjacent.filter(isNotOpen);
+      const notChecked = notOpen.filter(isEmpty).filter(isNotYetChecked);
+
+      toOpen.push(...notOpen);
+      toCheck.push(...notChecked);
+
+      checkId = toCheck[i += 1];
+    }
+
+    toOpen = [...new Set(toOpen)];
+    console.log(toOpen);
+
+    return toOpen;
+  }
+
+  filter(flag, func = is) {
+    return (id) => func(this.cells[id][flag]);
   }
 
   flagCell(id) {
