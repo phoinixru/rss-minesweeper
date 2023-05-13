@@ -346,7 +346,7 @@ template {
 
 .controls {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0.5em;
 }
 
@@ -456,6 +456,17 @@ template {
 .button {
   font-family: var(--ff-field);
   cursor: pointer;
+}
+
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #333;
+  border-radius: 3px;
+  padding: 0 10px;
+  background: pink;
+  font-family: var(--ff-field);
 }
 
 .wrapper {

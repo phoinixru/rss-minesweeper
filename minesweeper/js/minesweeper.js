@@ -1,5 +1,6 @@
-import { elt, assign } from './utils.js';
+import { elt, assign, values } from './utils.js';
 import { Cell, CellClasses } from './cell.js';
+import Counter from './counter.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -12,8 +13,8 @@ const CssClasses = {
   BUTTON: 'button',
 };
 
-const DEFAULT_ROWS = 10;
-const DEFAULT_COLS = 10;
+const DEFAULT_ROWS = 25;
+const DEFAULT_COLS = 25;
 const DEFAULT_MINES = 15;
 
 const HANDLE_EMPTY_CELLS = true;
@@ -43,6 +44,12 @@ export default class Minesweeper {
     };
     this.mines = null;
     this.isOver = false;
+
+    this.counters = {
+      moves: new Counter({ modifierClass: 'moves' }),
+      time: new Counter({ modifierClass: 'time' }),
+      flags: new Counter({ modifierClass: 'flags' }),
+    };
 
     parentContainer.append(this.container);
 
@@ -122,9 +129,18 @@ export default class Minesweeper {
     this.fieldContainer = elt('div', { className: CssClasses.FIELD });
     this.controlsContainer = elt('div', { className: CssClasses.CONTROLS });
 
+    // const timeCounter = this.counters.time.render();
+    const movesCounter = this.counters.moves.render();
+    const flagsCounter = this.counters.flags.render();
     const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
     btnReset.addEventListener('click', () => this.reset());
-    this.controlsContainer.append(btnReset);
+
+    this.controlsContainer.append(
+      movesCounter,
+      // timeCounter,
+      btnReset,
+      flagsCounter,
+    );
 
     this.container.append(
       this.controlsContainer,
@@ -193,11 +209,11 @@ export default class Minesweeper {
       handleOpenCells,
     } = this.config;
 
-    const cellsToOpen = [id];
+    let cellsToOpen = [id];
     let emptyCells = new Set();
+    const isNotOpenCell = this.filter('isOpen', isNot);
 
     if (handleOpenCells && isOpen && !isEmpty) {
-      const isNotOpenCell = this.filter('isOpen', isNot);
       const isNotFlaggedCell = this.filter('isFlagged', isNot);
       const isEmptyCell = this.filter('isEmpty');
 
@@ -225,9 +241,14 @@ export default class Minesweeper {
       cellsToOpen.push(...selectedCells);
     }
 
+    cellsToOpen = cellsToOpen.filter(isNotOpenCell);
     cellsToOpen.forEach((openId) => {
       this.cells[openId].open();
     });
+
+    if (cellsToOpen.length) {
+      this.counters.moves.value += 1;
+    }
   }
 
   selectCellsToOpen(ids) {
@@ -252,7 +273,6 @@ export default class Minesweeper {
     }
 
     toOpen = [...new Set(toOpen)];
-    console.log(toOpen);
 
     return toOpen;
   }
@@ -263,11 +283,22 @@ export default class Minesweeper {
 
   flagCell(id) {
     this.cells[id].flag();
+    this.updateFlagsCounter();
+  }
+
+  updateFlagsCounter() {
+    const { mines } = this.config;
+    const flaggedCells = this.cells.filter(({ isFlagged }) => isFlagged).length;
+    const flagsLeft = mines - flaggedCells;
+
+    this.counters.flags.update(flagsLeft);
   }
 
   start(clickedCellId) {
     this.plantMines(clickedCellId);
     this.started = true;
+
+    this.counters.time.update(Date.now());
   }
 
   reset() {
@@ -278,9 +309,15 @@ export default class Minesweeper {
       isLost: false,
     });
 
+    this.resetCounters();
     this.setGameState();
     this.prepareField();
     this.renderField();
+  }
+
+  resetCounters() {
+    values(this.counters)
+      .forEach((counter) => counter.reset());
   }
 
   checkGameOver() {
