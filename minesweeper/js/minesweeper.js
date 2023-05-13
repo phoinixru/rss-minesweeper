@@ -10,15 +10,12 @@ const CssClasses = {
   FIELD: 'field',
   FIELD_ROW: 'field__row',
   CELL: 'cell',
-  CELL_BOMB: 'cell--bomb',
-  CELL_FLAGGED: 'cell--flagged',
-  CELL_OPEN: 'cell--open',
   BUTTON: 'button',
 };
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
-const DEFAULT_BOMBS = 15;
+const DEFAULT_MINES = 15;
 
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_NUMBERED_CELLS = true;
@@ -33,7 +30,7 @@ export default class Minesweeper {
       handleEmptyCells: HANDLE_EMPTY_CELLS,
       handleNumberedCells: HANDLE_NUMBERED_CELLS,
     };
-    this.bombs = null;
+    this.mines = null;
     this.isOver = false;
 
     parentContainer.append(this.container);
@@ -63,11 +60,11 @@ export default class Minesweeper {
     }
   }
 
-  plantBombs({ exclude = null } = {}) {
+  plantMines({ exclude = null } = {}) {
     const {
       rows = DEFAULT_ROWS,
       cols = DEFAULT_COLS,
-      bombs = DEFAULT_BOMBS,
+      mines = DEFAULT_MINES,
     } = this.config;
     let excluded = -1;
 
@@ -84,19 +81,19 @@ export default class Minesweeper {
     const cellsToPlant = allCells
       .filter((e) => e !== excluded)
       .sort(shuffle)
-      .slice(0, bombs);
+      .slice(0, mines);
 
     allCells.forEach((id) => {
       const cell = this.cells[id];
 
       if (cellsToPlant.includes(id)) {
-        cell.plantBomb();
+        cell.plantMine();
       } else {
-        cell.setBombsAround(cellsToPlant);
+        cell.setMinesAround(cellsToPlant);
       }
     });
 
-    this.bombs = cellsToPlant;
+    this.mines = cellsToPlant;
   }
 
   prepareField() {
@@ -143,7 +140,8 @@ export default class Minesweeper {
     const { field } = this;
 
     const renderCell = (cell) => cell.render();
-    const renderRow = (row) => elt('div',
+    const renderRow = (row) => elt(
+      'div',
       { className: CssClasses.FIELD_ROW },
       ...row.map(renderCell),
     );
@@ -182,7 +180,7 @@ export default class Minesweeper {
   openCells({ x, y }) {
     const cell = this.field[y][x];
     const {
-      id, isOpen, adjacent, bombsAround,
+      id, isOpen, adjacent, minesAround,
     } = cell;
 
     const {
@@ -218,7 +216,7 @@ export default class Minesweeper {
         }
       });
 
-      if (bombsAround && flagged === bombsAround) {
+      if (minesAround && flagged === minesAround) {
         toAdd.forEach((id) => cellsToOpen.add(id));
       }
     }
@@ -235,7 +233,7 @@ export default class Minesweeper {
   }
 
   start(firstCell) {
-    this.plantBombs({ exclude: firstCell });
+    this.plantMines({ exclude: firstCell });
     this.started = true;
   }
 
@@ -251,10 +249,10 @@ export default class Minesweeper {
   }
 
   checkGameOver() {
-    const { cells, bombs } = this;
-    const emptyCells = cells.length - bombs.length;
+    const { cells, mines } = this;
+    const emptyCells = cells.length - mines.length;
 
-    const isLost = !!cells.find(({ isOpen, hasBomb }) => isOpen && hasBomb);
+    const isLost = !!cells.find(({ isOpen, isMined }) => isOpen && isMined);
     const isWon = cells.filter(({ isOpen }) => isOpen).length === emptyCells;
     const isOver = isLost || isWon;
 
@@ -271,12 +269,12 @@ export default class Minesweeper {
 
   gameLost() {
     this.setGameState();
-    this.revealBombs();
+    this.revealMines();
   }
 
-  revealBombs() {
+  revealMines() {
     this.cells
-      .filter((cell) => cell.hasBomb)
+      .filter((cell) => cell.isMined)
       .forEach((cell) => cell.render());
   }
 

@@ -401,31 +401,31 @@ template {
   cursor: pointer;
 }
 
-.cell--open[data-bombs]:before {
-  content: attr(data-bombs);
+.cell--open[data-mines]:before {
+  content: attr(data-mines);
 }
-.cell--open[data-bombs="1"] {
+.cell--open[data-mines="1"] {
   color: var(--color-one);
 }
-.cell--open[data-bombs="2"] {
+.cell--open[data-mines="2"] {
   color: var(--color-two);
 }
-.cell--open[data-bombs="3"] {
+.cell--open[data-mines="3"] {
   color: var(--color-three);
 }
-.cell--open[data-bombs="4"] {
+.cell--open[data-mines="4"] {
   color: var(--color-four);
 }
-.cell--open[data-bombs="5"] {
+.cell--open[data-mines="5"] {
   color: var(--color-five);
 }
-.cell--open[data-bombs="6"] {
+.cell--open[data-mines="6"] {
   color: var(--color-six);
 }
-.cell--open[data-bombs="7"] {
+.cell--open[data-mines="7"] {
   color: var(--color-seven);
 }
-.cell--open[data-bombs="8"] {
+.cell--open[data-mines="8"] {
   color: var(--color-eight);
 }
 .cell--open:after {
@@ -438,14 +438,14 @@ template {
   background-repeat: no-repeat;
 }
 
-.cell--bomb:before {
+.cell--mined:before {
   content: "💣";
 }
-.cell--bomb.cell--open {
+.cell--mined.cell--open {
   background: red;
 }
 
-.minesweeper--over .cell--bomb:after {
+.minesweeper--over .cell--mined:after {
   display: none;
 }
 .minesweeper--over .cell--flagged:after {

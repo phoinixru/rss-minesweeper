@@ -2,7 +2,7 @@ import { elt, assign } from './utils.js';
 
 const CssClasses = {
   CELL: 'cell',
-  CELL_BOMB: 'cell--bomb',
+  CELL_MINED: 'cell--mined',
   CELL_FLAGGED: 'cell--flagged',
   CELL_OPEN: 'cell--open',
 };
@@ -17,7 +17,7 @@ export default class Cell {
   constructor({
     x, y, rows, cols, game,
   }) {
-    this.hasBomb = false;
+    this.isMined = false;
     this.isOpen = false;
     this.isFlagged = false;
     this.id = y * cols + x;
@@ -30,8 +30,8 @@ export default class Cell {
     this.setAdjacent({ rows, cols });
   }
 
-  plantBomb() {
-    this.hasBomb = true;
+  plantMine() {
+    this.isMined = true;
   }
 
   setAdjacent({ rows, cols }) {
@@ -45,14 +45,14 @@ export default class Cell {
     this.adjacent = adjacent;
   }
 
-  setBombsAround(bombs) {
-    if (this.hasBomb) {
+  setMinesAround(mines) {
+    if (this.isMined) {
       return;
     }
 
-    const hasBomb = (cell) => bombs.includes(cell);
+    const isMined = (cellId) => mines.includes(cellId);
 
-    this.bombsAround = this.adjacent.filter(hasBomb).length;
+    this.minesAround = this.adjacent.filter(isMined).length;
   }
 
   open() {
@@ -75,15 +75,15 @@ export default class Cell {
   }
 
   isEmpty() {
-    return this.bombsAround === 0;
+    return this.minesAround === 0;
   }
 
   render() {
     const {
       isFlagged,
       isOpen,
-      bombsAround,
-      hasBomb,
+      isMined,
+      minesAround,
       game,
       element,
     } = this;
@@ -93,12 +93,12 @@ export default class Cell {
     if (isOpen) {
       classList.add(CssClasses.CELL_OPEN);
 
-      if (bombsAround) {
-        element.dataset.bombs = bombsAround;
+      if (minesAround) {
+        element.dataset.mines = minesAround;
       }
     }
 
-    classList.toggle(CssClasses.CELL_BOMB, isOver && hasBomb);
+    classList.toggle(CssClasses.CELL_MINED, isOver && isMined);
     classList.toggle(CssClasses.CELL_FLAGGED, isFlagged);
 
     return element;

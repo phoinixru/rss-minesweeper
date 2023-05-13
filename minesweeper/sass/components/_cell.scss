@@ -41,13 +41,13 @@ $colors: (1: one,
   8: eight);
 
 .cell--open {
-  &[data-bombs]:before {
-    content: attr(data-bombs);
+  &[data-mines]:before {
+    content: attr(data-mines);
   }
 
   @each $number,
   $name in $colors {
-    &[data-bombs="#{$number}"] {
+    &[data-mines="#{$number}"] {
       color: var(--color-#{$name});
     }
   }
@@ -65,7 +65,7 @@ $colors: (1: one,
   }
 }
 
-.cell--bomb {
+.cell--mined {
   &:before {
     content: '💣';
   }
@@ -77,7 +77,7 @@ $colors: (1: one,
 
 
 .minesweeper--over {
-  .cell--bomb:after {
+  .cell--mined:after {
     display: none;
   }
 
