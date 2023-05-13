@@ -21,6 +21,12 @@ const HANDLE_NUMBERED_CELLS = true;
 
 const shuffle = () => Math.random() - 0.5;
 
+const BUTTON = {
+  PRIMARY: 0,
+  SECONDARY: 2,
+  TOUCH: -1,
+};
+
 export default class Minesweeper {
   constructor({ parentContainer }) {
     this.parentContainer = parentContainer;
@@ -39,11 +45,11 @@ export default class Minesweeper {
   }
 
   addEventListeners() {
-    const prevent = (event) => event.preventDefault();
+    // const prevent = (event) => event.preventDefault();
     const clickHandler = (event) => this.handleClicks(event);
 
-    this.container.addEventListener('mouseup', clickHandler);
-    this.container.addEventListener('contextmenu', prevent);
+    this.container.addEventListener('click', clickHandler);
+    this.container.addEventListener('contextmenu', clickHandler);
   }
 
   handleClicks(event) {
@@ -158,18 +164,18 @@ export default class Minesweeper {
     }
 
     if (!this.started) {
-      if (button !== 0) {
+      if (button !== BUTTON.PRIMARY) {
         return;
       }
 
       this.start(clickedCell);
     }
 
-    if (button === 0) {
+    if (button === BUTTON.PRIMARY) {
       this.openCells(clickedCell);
     }
 
-    if (button === 2) {
+    if ([BUTTON.SECONDARY, BUTTON.TOUCH].includes(button)) {
       this.flagCell(clickedCell);
     }
 
