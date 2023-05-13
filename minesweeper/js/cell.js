@@ -15,18 +15,21 @@ const ADJACENT_OFFSETS = [
 
 class Cell {
   constructor({
-    x, y, rows, cols, game,
+    x, y, id, rows, cols, game,
   }) {
-    this.isMined = false;
-    this.isOpen = false;
-    this.isFlagged = false;
-    this.isEmpty = true;
-    this.id = y * cols + x;
-
-    Object.assign(this, { x, y, game });
+    Object.assign(this, {
+      x,
+      y,
+      id,
+      game,
+      isMined: false,
+      isOpen: false,
+      isFlagged: false,
+      isEmpty: true,
+    });
 
     this.element = elt('span', { className: CssClasses.CELL });
-    assign(this.element.dataset, { y, x });
+    assign(this.element.dataset, { id });
 
     this.setAdjacent({ rows, cols });
   }
