@@ -13,7 +13,7 @@ const ADJACENT_OFFSETS = [
   [1, -1], [1, 0], [1, 1],
 ];
 
-export default class Cell {
+class Cell {
   constructor({
     x, y, rows, cols, game,
   }) {
@@ -104,3 +104,5 @@ export default class Cell {
     return element;
   }
 }
+
+export { Cell, CssClasses as CellClasses };

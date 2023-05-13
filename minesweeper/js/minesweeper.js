@@ -1,5 +1,5 @@
 import { elt, assign } from './utils.js';
-import Cell from './cell.js';
+import { Cell, CellClasses } from './cell.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -9,7 +9,6 @@ const CssClasses = {
   CONTROLS: 'controls',
   FIELD: 'field',
   FIELD_ROW: 'field__row',
-  CELL: 'cell',
   BUTTON: 'button',
 };
 
@@ -52,7 +51,7 @@ export default class Minesweeper {
 
     const { target } = event;
 
-    if (target.matches(`.${CssClasses.CELL}`)) {
+    if (target.matches(`.${CellClasses.CELL}`)) {
       const { x, y } = target.dataset;
       const { button } = event;
 
