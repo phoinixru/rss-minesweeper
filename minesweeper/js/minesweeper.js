@@ -14,7 +14,7 @@ const CssClasses = {
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
-const DEFAULT_MINES = 15;
+const DEFAULT_MINES = 10;
 
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_NUMBERED_CELLS = true;
