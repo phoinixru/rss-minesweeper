@@ -77,7 +77,9 @@
   .cell--flagged:after {
     display: block;
   }
+}
 
+.minesweeper--lost {
   .cell--flagged:not(.cell--mined):after {
     background-image: url('../icons/nomine.svg');
   }
