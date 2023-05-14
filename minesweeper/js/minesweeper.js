@@ -9,12 +9,12 @@ const CssClasses = {
   GAME_WON: 'minesweeper--won',
   CONTROLS: 'controls',
   FIELD: 'field',
-  FIELD_ROW: 'field__row',
+  FIELD_POINTED: 'field--pointed',
   BUTTON: 'button',
 };
 
-const DEFAULT_ROWS = 25;
-const DEFAULT_COLS = 25;
+const DEFAULT_ROWS = 10;
+const DEFAULT_COLS = 10;
 const DEFAULT_MINES = 15;
 
 const HANDLE_EMPTY_CELLS = true;
@@ -60,22 +60,33 @@ export default class Minesweeper {
   addEventListeners() {
     // const prevent = (event) => event.preventDefault();
     const clickHandler = (event) => this.handleClicks(event);
+    const pointerHandler = (event) => this.handlePointer(event);
 
     this.container.addEventListener('click', clickHandler);
     this.container.addEventListener('contextmenu', clickHandler);
+
+    document.addEventListener('pointerdown', pointerHandler);
+    document.addEventListener('pointerup', pointerHandler);
+  }
+
+  handlePointer(event) {
+    const { type, button } = event;
+    const isPointerDown = type === 'pointerdown' && button === BUTTON.PRIMARY;
+
+    this.container.classList.toggle(CssClasses.FIELD_POINTED, isPointerDown);
   }
 
   handleClicks(event) {
     event.preventDefault();
 
-    const { target } = event;
+    const { target, button } = event;
 
-    if (target.matches(`.${CellClasses.CELL}`)) {
-      const { id } = target.dataset;
-      const { button } = event;
-
-      this.clickCell({ id, button });
+    if (!target.matches(`.${CellClasses.CELL}`)) {
+      return;
     }
+    const { id } = target.dataset;
+
+    this.clickCell({ id, button });
   }
 
   plantMines(clickedCellId) {
@@ -149,23 +160,13 @@ export default class Minesweeper {
   }
 
   renderField() {
-    const { cells, config } = this;
-    const { cols, rows } = config;
-
-    const fieldRows = Array(rows)
-      .fill(cols)
-      .map((num, i) => cells.slice(i * num, (i + 1) * num));
-
+    const { cells, config: { cols }, fieldContainer } = this;
     const renderCell = (cell) => cell.render();
-    const renderRow = (row) => elt(
-      'div',
-      { className: CssClasses.FIELD_ROW },
-      ...row.map(renderCell),
-    );
 
-    this.fieldContainer.innerHTML = '';
-    this.fieldContainer.append(
-      ...fieldRows.map(renderRow),
+    fieldContainer.innerHTML = '';
+    fieldContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    fieldContainer.append(
+      ...cells.map(renderCell),
     );
   }
 
