@@ -450,6 +450,9 @@ template {
 .minesweeper--over .cell--flagged:after {
   display: block;
 }
+.minesweeper--over .cell--flagged:not(.cell--mined):after {
+  background-image: url("../icons/nomine.svg");
+}
 
 .field--pointed .cell:hover:after {
   background-image: url("../icons/pressed.svg");

@@ -77,6 +77,10 @@
   .cell--flagged:after {
     display: block;
   }
+
+  .cell--flagged:not(.cell--mined):after {
+    background-image: url('../icons/nomine.svg');
+  }
 }
 
 .field--pointed {
