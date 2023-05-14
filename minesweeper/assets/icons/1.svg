@@ -1,0 +1,8 @@
+<svg width="13" height="13" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    path {
+      fill: #000080;
+    }
+  </style>
+  <path d="M7 2h1v8H7zM6 3h1v1H6zM5 4h1v1H5zM5 10h5v1H5z" />
+</svg>

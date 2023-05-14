@@ -1,11 +1,10 @@
-@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 :root {
   --bg-page: #008080;
   --bg-minesweeper: #fdffff;
-  --bg-cell: #cccccc;
+  --bg-cell: #ffffff;
   --bg-cell-cover: #eeeeee;
-  --color-cell-border: #666666;
+  --color-cell-border: #000000;
   --color-cell-cover-border: #dddddd;
   --color-one: #0d00ff;
   --color-two: #018001;
@@ -352,16 +351,12 @@ template {
 
 .field {
   position: relative;
-  border: 1px solid #000;
-  padding: 0 1px 1px 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 1px;
+  padding: 1px;
+  font-size: 13px;
+  background: var(--color-cell-border);
   font-family: var(--ff-field);
-}
-
-.field__row {
-  display: flex;
-  flex-direction: row;
 }
 
 .minesweeper--over .field:after {
@@ -377,11 +372,9 @@ template {
 .cell {
   position: relative;
   display: flex;
-  width: 1.5em;
-  height: 1.5em;
+  width: 2em;
+  height: 2em;
   background: var(--bg-cell);
-  border: 1px solid var(--color-cell-border);
-  margin: 0 -1px -1px 0;
   cursor: pointer;
 }
 .cell:before, .cell:after {
@@ -391,43 +384,45 @@ template {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 .cell:after {
   content: "";
   display: block;
-  border-width: 2px;
-  border-style: outset;
-  border-color: var(--color-cell-cover-border);
-  box-sizing: border-box;
-  background: var(--bg-cell-cover);
+  background-image: url("../icons/cover.svg");
 }
 
-.cell--open[data-mines]:before {
-  content: attr(data-mines);
+.cell--open[data-mines] {
+  content: "";
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .cell--open[data-mines="1"] {
-  color: var(--color-one);
+  background-image: url("../icons/1.svg");
 }
 .cell--open[data-mines="2"] {
-  color: var(--color-two);
+  background-image: url("../icons/2.svg");
 }
 .cell--open[data-mines="3"] {
-  color: var(--color-three);
+  background-image: url("../icons/3.svg");
 }
 .cell--open[data-mines="4"] {
-  color: var(--color-four);
+  background-image: url("../icons/4.svg");
 }
 .cell--open[data-mines="5"] {
-  color: var(--color-five);
+  background-image: url("../icons/5.svg");
 }
 .cell--open[data-mines="6"] {
-  color: var(--color-six);
+  background-image: url("../icons/6.svg");
 }
 .cell--open[data-mines="7"] {
-  color: var(--color-seven);
+  background-image: url("../icons/7.svg");
 }
 .cell--open[data-mines="8"] {
-  color: var(--color-eight);
+  background-image: url("../icons/8.svg");
 }
 .cell--open:after {
   display: none;
@@ -435,12 +430,15 @@ template {
 
 .cell--flagged:after {
   content: "";
-  background-image: url("../icons/flag.png");
+  border: 0;
+  background-image: url("../icons/flag.svg");
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .cell--mined:before {
-  content: "💣";
+  content: "";
+  background-image: url("../icons/mine.svg");
 }
 .cell--mined.cell--open {
   background: red;
@@ -451,6 +449,10 @@ template {
 }
 .minesweeper--over .cell--flagged:after {
   display: block;
+}
+
+.field--pointed .cell:hover:after {
+  background-image: url("../icons/pressed.svg");
 }
 
 .button {

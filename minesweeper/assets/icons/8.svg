@@ -1,0 +1,9 @@
+<svg width="13" height="13" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    path {
+      fill: gray
+    }
+  </style>
+  <path
+    d="M5 1h3v1H5zM4 2h1v1H4zM8 2h1v1H8zM3 3h1v2H3zM9 3h1v2H9zM4 5h1v1H4zM8 5h1v1H8zM5 6h3v1H5zM4 7h1v1H4zM3 8h1v2H3zM8 7h1v1H8zM9 8h1v2H9zM8 10h1v1H8zM5 11h3v1H5zM4 10h1v1H4z" />
+</svg>

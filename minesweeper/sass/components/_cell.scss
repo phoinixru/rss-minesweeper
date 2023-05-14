@@ -2,12 +2,10 @@
   position: relative;
   display: flex;
 
-  width: 1.5em;
-  height: 1.5em;
+  width: 2em;
+  height: 2em;
 
   background: var(--bg-cell);
-  border: 1px solid var(--color-cell-border);
-  margin: 0 -1px -1px 0;
   cursor: pointer;
 
   &:before,
@@ -18,37 +16,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
   }
 
   &:after {
     content: '';
     display: block;
-    border-width: 2px;
-    border-style: outset;
-    border-color: var(--color-cell-cover-border);
-    box-sizing: border-box;
-    background: var(--bg-cell-cover);
+    background-image: url('../icons/cover.svg');
   }
 }
 
-$colors: (1: one,
-  2: two,
-  3: three,
-  4: four,
-  5: five,
-  6: six,
-  7: seven,
-  8: eight);
-
 .cell--open {
-  &[data-mines]:before {
-    content: attr(data-mines);
+  &[data-mines] {
+    content: '';
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
-  @each $number,
-  $name in $colors {
-    &[data-mines="#{$number}"] {
-      color: var(--color-#{$name});
+  @for $i from 1 through 8 {
+    &[data-mines="#{$i}"] {
+      background-image: url('../icons/#{$i}.svg');
     }
   }
 
@@ -60,14 +50,17 @@ $colors: (1: one,
 .cell--flagged {
   &:after {
     content: '';
-    background-image: url('../icons/flag.png');
+    border: 0;
+    background-image: url('../icons/flag.svg');
     background-repeat: no-repeat;
+    background-size: cover;
   }
 }
 
 .cell--mined {
   &:before {
-    content: '💣';
+    content: '';
+    background-image: url('../icons/mine.svg');
   }
 
   &.cell--open {
@@ -83,5 +76,11 @@ $colors: (1: one,
 
   .cell--flagged:after {
     display: block;
+  }
+}
+
+.field--pointed {
+  .cell:hover:after {
+    background-image: url('../icons/pressed.svg');
   }
 }
