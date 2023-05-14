@@ -1,6 +1,6 @@
 import { elt, assign, values } from './utils.js';
 import { Cell, CellClasses } from './cell.js';
-import Counter from './counter.js';
+import Counter from './cntr.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
