@@ -489,7 +489,20 @@ template {
 .results {
   width: 100%;
   font-family: Tahoma;
-  font-size: 0.8em;
+  font-size: 0.7em;
+}
+.results th {
+  font-family: var(--ff-field);
+  font-size: 0.9em;
+}
+.results th:first-child {
+  text-align: left;
+}
+.results td {
+  text-align: center;
+}
+.results td:first-child {
+  text-align: left;
 }
 
 .wrapper {

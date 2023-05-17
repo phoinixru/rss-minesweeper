@@ -21,8 +21,10 @@ const FIELDS = {
 const RECORDS_TO_KEEP = 10;
 
 const NO_RESULTS = 'Nothing to display. Play some games and return later...';
-const timeFormat = new Intl.DateTimeFormat('ru-RU');
-const formatTime = (ts) => timeFormat.format(new Date(ts));
+const timeFormat = new Intl.DateTimeFormat('ru-RU', {
+  day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+});
+const formatTime = (ts) => timeFormat.format(new Date(ts)).replace(',', '');
 
 export default class Results {
   constructor({ container }) {
@@ -45,7 +47,9 @@ export default class Results {
     };
 
     results.unshift(result);
-    this.storage.set('results', results.slice(0, RECORDS_TO_KEEP));
+    this.results = results.slice(0, RECORDS_TO_KEEP);
+    this.storage.set('results', this.results);
+    this.render();
   }
 
   render() {

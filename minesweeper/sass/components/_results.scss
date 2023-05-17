@@ -1,5 +1,22 @@
 .results {
   width: 100%;
   font-family: Tahoma;
-  font-size: .8em;
+  font-size: 0.7em;
+
+  th {
+    font-family: var(--ff-field);
+    font-size: 0.9em;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+
+  td {
+    text-align: center;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
 }
