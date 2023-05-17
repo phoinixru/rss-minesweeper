@@ -6,6 +6,7 @@ import Counter from './cntr.js';
 import Storage from './storage.js';
 import Results from './results.js';
 import Panes from './panes.js';
+import Config from './config.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -20,15 +21,8 @@ const CssClasses = {
 
 const TITLE = {
   results: 'Last results',
-  settings: 'Settings',
+  config: 'Preferences',
 };
-
-const DEFAULT_ROWS = 10;
-const DEFAULT_COLS = 10;
-const DEFAULT_MINES = 15;
-
-const HANDLE_EMPTY_CELLS = true;
-const HANDLE_OPEN_CELLS = true;
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -47,13 +41,6 @@ export default class Minesweeper {
     this.container = elt('div', { className: CssClasses.COMPONENT });
     parentContainer.append(this.container);
 
-    this.config = {
-      handleEmptyCells: HANDLE_EMPTY_CELLS,
-      handleOpenCells: HANDLE_OPEN_CELLS,
-      rows: DEFAULT_ROWS,
-      cols: DEFAULT_COLS,
-      mines: DEFAULT_MINES,
-    };
     this.mines = null;
     this.isOver = false;
 
@@ -61,6 +48,10 @@ export default class Minesweeper {
     this.panes = panes;
 
     this.gameContainer = panes.add({ id: 'game', hidden: false });
+
+    const configContainer = panes.add({ id: 'config', title: TITLE.config });
+    this.config = new Config({ container: configContainer });
+    this.config.render();
 
     const resultsContainer = panes.add({ id: 'results', title: TITLE.results });
     this.results = new Results({ container: resultsContainer });
@@ -88,8 +79,8 @@ export default class Minesweeper {
     const clickHandler = (event) => this.handleClicks(event);
     const pointerHandler = (event) => this.handlePointer(event);
 
-    this.container.addEventListener('click', clickHandler);
-    this.container.addEventListener('contextmenu', clickHandler);
+    this.gameContainer.addEventListener('click', clickHandler);
+    this.gameContainer.addEventListener('contextmenu', clickHandler);
 
     document.addEventListener('pointerdown', pointerHandler);
     document.addEventListener('pointerup', pointerHandler);

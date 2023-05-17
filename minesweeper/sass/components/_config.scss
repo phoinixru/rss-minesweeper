@@ -1,0 +1,48 @@
+.config {
+  padding: 0.5em;
+}
+
+.config__field {
+  border: 0;
+  padding: 0;
+  margin-bottom: 1em;
+
+  legend:after {
+    content: ':';
+  }
+}
+
+.config__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.config__list-item {
+  position: relative;
+  border-style: solid;
+  border-color: #000;
+  border-width: 1px 1px 1px 0;
+
+  &:first-child {
+    border-left-width: 1px;
+  }
+
+  input {
+    position: absolute;
+    visibility: hidden;
+  }
+}
+
+.config__list-label {
+  display: block;
+  cursor: pointer;
+  padding: 2px 10px;
+
+  input:checked+& {
+    color: #ffffff;
+    background: navy;
+  }
+}

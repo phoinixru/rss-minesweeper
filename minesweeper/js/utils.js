@@ -16,9 +16,9 @@ function elt(type, props, ...children) {
 }
 
 const {
-  keys, values, assign, entries,
+  keys, values, assign, entries, fromEntries,
 } = Object;
 
 export {
-  qs, qsa, elt, keys, values, assign, entries,
+  qs, qsa, elt, keys, values, assign, entries, fromEntries,
 };
