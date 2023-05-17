@@ -475,6 +475,23 @@ template {
   font-family: var(--ff-field);
 }
 
+.pane {
+  margin-bottom: 10px;
+}
+.pane:last-child {
+  margin-bottom: 0;
+}
+
+.pane__header {
+  text-align: center;
+}
+
+.results {
+  width: 100%;
+  font-family: Tahoma;
+  font-size: 0.8em;
+}
+
 .wrapper {
   display: flex;
 }/*# sourceMappingURL=main.css.map */

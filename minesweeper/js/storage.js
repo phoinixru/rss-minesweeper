@@ -13,6 +13,7 @@ export default class Storage {
   }
 
   set(prop, value) {
+    this.load();
     this.#data[prop] = value;
     this.save();
   }

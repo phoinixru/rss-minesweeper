@@ -1,0 +1,11 @@
+.pane {
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pane__header {
+  text-align: center;
+}

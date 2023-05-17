@@ -5,6 +5,7 @@ import { Cell, CellClasses } from './cell.js';
 import Counter from './cntr.js';
 import Storage from './storage.js';
 import Results from './results.js';
+import Panes from './panes.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -15,6 +16,11 @@ const CssClasses = {
   FIELD: 'field',
   FIELD_POINTED: 'field--pointed',
   BUTTON: 'button',
+};
+
+const TITLE = {
+  results: 'Last results',
+  settings: 'Settings',
 };
 
 const DEFAULT_ROWS = 10;
@@ -39,6 +45,8 @@ export default class Minesweeper {
   constructor({ parentContainer }) {
     this.parentContainer = parentContainer;
     this.container = elt('div', { className: CssClasses.COMPONENT });
+    parentContainer.append(this.container);
+
     this.config = {
       handleEmptyCells: HANDLE_EMPTY_CELLS,
       handleOpenCells: HANDLE_OPEN_CELLS,
@@ -49,27 +57,29 @@ export default class Minesweeper {
     this.mines = null;
     this.isOver = false;
 
+    const panes = new Panes({ container: this.container });
+    this.panes = panes;
+
+    this.gameContainer = panes.add({ id: 'game', hidden: false });
+
+    const resultsContainer = panes.add({ id: 'results', title: TITLE.results });
+    this.results = new Results({ container: resultsContainer });
+    this.results.render();
+
     this.counters = {
       moves: new Counter({ modifierClass: 'moves' }),
       time: new Counter({
         modifierClass: 'time',
-        auto: {
-          source: Date.now,
-          interval: 1000,
-        },
+        auto: { source: Date.now, interval: 1000 },
         format: (value) => Math.floor(value / 1000),
       }),
       flags: new Counter({ modifierClass: 'flags' }),
     };
 
     this.storage = new Storage();
-    this.results = new Results();
-
-    parentContainer.append(this.container);
 
     this.prepareField();
     this.addEventListeners();
-
     this.loadState();
   }
 
@@ -173,7 +183,7 @@ export default class Minesweeper {
       flagsCounter,
     );
 
-    this.container.append(
+    this.gameContainer.append(
       this.controlsContainer,
       this.fieldContainer,
     );
