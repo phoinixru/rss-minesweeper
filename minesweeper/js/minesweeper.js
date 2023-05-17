@@ -300,6 +300,7 @@ export default class Minesweeper {
     this.started = true;
 
     this.counters.time.update(Date.now());
+    this.counters.flags.update(this.mines.length);
   }
 
   reset() {
