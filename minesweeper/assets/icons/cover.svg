@@ -1,9 +1,0 @@
-<svg width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <rect x="0" y="0" width="13" height="13" fill="white" />
-    <rect x="1" y="1" width="12" height="12" fill="black" />
-    <rect x="1" y="1" width="11" height="11" fill="#808080" />
-    <rect y="12" width="1" height="1" fill="#808080" />
-    <rect x="12" width="1" height="1" fill="#808080" />
-  </g>
-</svg>

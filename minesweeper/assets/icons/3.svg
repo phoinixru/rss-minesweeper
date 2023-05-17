@@ -1,8 +1,0 @@
-<svg width="13" height="13" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    path {
-      fill: green
-    }
-  </style>
-  <path d="M5 2h4v1H5zM9 3h1v3H9zM4 3h1v2H4zM6 6h3v1H6zM4 8h1v2H4zM9 7h1v3H9zM5 10h4v1H5z" />
-</svg>

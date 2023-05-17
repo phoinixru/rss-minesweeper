@@ -1,9 +1,0 @@
-<svg width="13" height="13" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    path {
-      fill: maroon
-    }
-  </style>
-  <path d="M6 2h1v9H6zM5 3h1v1H5zM4 4h1v1H4zM3 5h1v1H3z" />
-  <path d="M2 6h8v1H2z" />
-</svg>

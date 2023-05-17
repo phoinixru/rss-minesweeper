@@ -401,7 +401,7 @@ body {
 .cell:after {
   content: "";
   display: block;
-  background-image: url("../icons/cover.svg");
+  background-image: url("../icons/palmos.svg#cover");
 }
 
 .cell--open[data-mines] {
@@ -411,28 +411,28 @@ body {
   background-size: cover;
 }
 .cell--open[data-mines="1"] {
-  background-image: url("../icons/1.svg");
+  background-image: url("../icons/palmos.svg#n1");
 }
 .cell--open[data-mines="2"] {
-  background-image: url("../icons/2.svg");
+  background-image: url("../icons/palmos.svg#n2");
 }
 .cell--open[data-mines="3"] {
-  background-image: url("../icons/3.svg");
+  background-image: url("../icons/palmos.svg#n3");
 }
 .cell--open[data-mines="4"] {
-  background-image: url("../icons/4.svg");
+  background-image: url("../icons/palmos.svg#n4");
 }
 .cell--open[data-mines="5"] {
-  background-image: url("../icons/5.svg");
+  background-image: url("../icons/palmos.svg#n5");
 }
 .cell--open[data-mines="6"] {
-  background-image: url("../icons/6.svg");
+  background-image: url("../icons/palmos.svg#n6");
 }
 .cell--open[data-mines="7"] {
-  background-image: url("../icons/7.svg");
+  background-image: url("../icons/palmos.svg#n7");
 }
 .cell--open[data-mines="8"] {
-  background-image: url("../icons/8.svg");
+  background-image: url("../icons/palmos.svg#n8");
 }
 .cell--open:after {
   display: none;
@@ -441,14 +441,14 @@ body {
 .cell--flagged:after {
   content: "";
   border: 0;
-  background-image: url("../icons/flag.svg");
+  background-image: url("../icons/palmos.svg#flag");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .cell--mined:before {
   content: "";
-  background-image: url("../icons/mine.svg");
+  background-image: url("../icons/palmos.svg#mine");
 }
 .cell--mined.cell--open {
   background: red;
@@ -462,11 +462,11 @@ body {
 }
 
 .minesweeper--lost .cell--flagged:not(.cell--mined):after {
-  background-image: url("../icons/nomine.svg");
+  background-image: url("../icons/palmos.svg#nomine");
 }
 
 .field--pointed .cell:hover:after {
-  background-image: url("../icons/pressed.svg");
+  background-image: url("../icons/palmos.svg#pressed");
 }
 
 .button {
