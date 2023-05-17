@@ -4,6 +4,7 @@ import {
 import { Cell, CellClasses } from './cell.js';
 import Counter from './cntr.js';
 import Storage from './storage.js';
+import Results from './results.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -62,6 +63,7 @@ export default class Minesweeper {
     };
 
     this.storage = new Storage();
+    this.results = new Results();
 
     parentContainer.append(this.container);
 
@@ -370,6 +372,7 @@ export default class Minesweeper {
   gameOver() {
     this.setGameState();
     this.counters.time.stop();
+    this.results.save(this);
   }
 
   gameLost() {
