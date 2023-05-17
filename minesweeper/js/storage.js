@@ -25,7 +25,7 @@ export default class Storage {
   load() {
     let storedData;
     try {
-      storedData = parse(localStorage.getItem(this.#name));
+      storedData = parse(localStorage.getItem(this.#name) || '{}');
     } catch (e) {
       storedData = {};
     }
