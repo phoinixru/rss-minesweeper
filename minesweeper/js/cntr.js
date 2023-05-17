@@ -23,8 +23,19 @@ export default class Counter {
     }
   }
 
-  update(newValue) {
-    this.value = newValue;
+  update(value) {
+    const int = parseInt(value, 10);
+    const sign = String(value).at(0);
+    const method = {
+      '-': 'decrease',
+      '+': 'increase',
+    }[sign];
+
+    if (method) {
+      this[method](Math.abs(int));
+    } else {
+      this.value = int;
+    }
   }
 
   set value(newValue) {
@@ -41,6 +52,14 @@ export default class Counter {
     return this.#value;
   }
 
+  increase(increment = 1) {
+    this.value += increment;
+  }
+
+  decrease(decrement = 1) {
+    this.value -= decrement;
+  }
+
   reset() {
     this.value = this.#defaultValue;
   }
@@ -52,5 +71,9 @@ export default class Counter {
     this.element.innerHTML = displayString;
 
     return this.element;
+  }
+
+  toJSON() {
+    return this.value;
   }
 }
