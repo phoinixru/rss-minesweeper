@@ -15,8 +15,10 @@ function elt(type, props, ...children) {
   return dom;
 }
 
-const { key, values, assign } = Object;
+const {
+  keys, values, assign, entries,
+} = Object;
 
 export {
-  qs, qsa, elt, key, values, assign,
+  qs, qsa, elt, keys, values, assign, entries,
 };

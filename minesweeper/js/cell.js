@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { elt, assign } from './utils.js';
 
 const CssClasses = {
@@ -12,6 +13,12 @@ const ADJACENT_OFFSETS = [
   [0, -1], [0, 1],
   [1, -1], [1, 0], [1, 1],
 ];
+
+const STATE = {
+  MINED: 1,
+  OPEN: 2,
+  FLAGGED: 4,
+};
 
 class Cell {
   constructor({
@@ -101,6 +108,26 @@ class Cell {
     classList.toggle(CssClasses.CELL_FLAGGED, isFlagged);
 
     return element;
+  }
+
+  get state() {
+    const { isMined, isFlagged, isOpen } = this;
+
+    return (isMined && STATE.MINED)
+      + (isFlagged && STATE.FLAGGED)
+      + (isOpen && STATE.OPEN);
+  }
+
+  set state(state) {
+    this.isMined = state & STATE.MINED;
+    this.isFlagged = state & STATE.FLAGGED;
+    this.isOpen = state & STATE.OPEN;
+
+    this.render();
+  }
+
+  toJSON() {
+    return this.state;
   }
 }
 

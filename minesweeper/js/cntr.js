@@ -7,20 +7,51 @@ const CssClasses = {
 const DIGITS = 3;
 
 export default class Counter {
+  #restored = 0;
+
   #start = 0;
 
   #value = 0;
 
   #defaultValue;
 
-  constructor({ start = 0, defaultValue = 0, modifierClass = '' }) {
-    this.#start = start;
+  #format;
+
+  #auto;
+
+  #interval;
+
+  constructor({
+    defaultValue = 0, modifierClass = '',
+    format = null, auto = null,
+  }) {
     this.#defaultValue = defaultValue;
+    this.#format = format;
+    this.#auto = auto;
 
     this.element = elt('div', { className: CssClasses.COMPONENT });
     if (modifierClass) {
       this.element.classList.add(`${CssClasses.COMPONENT}--${modifierClass}`);
     }
+  }
+
+  start() {
+    const { source, interval } = this.#auto;
+    const update = () => { this.value = source(); };
+
+    this.#defaultValue = source();
+    this.#start = source();
+    this.#interval = setInterval(update, interval);
+
+    update();
+  }
+
+  stop() {
+    clearInterval(this.#interval);
+  }
+
+  restore(value) {
+    this.#restored = value;
   }
 
   update(value) {
@@ -61,11 +92,14 @@ export default class Counter {
   }
 
   reset() {
-    this.value = this.#defaultValue;
+    this.stop();
+
+    this.#start = this.#defaultValue;
+    this.value = this.#start;
   }
 
   render() {
-    const displayValue = this.value - this.#start;
+    const displayValue = this.formatted();
     const displayString = String(displayValue).padStart(DIGITS, '0');
 
     this.element.innerHTML = displayString;
@@ -73,7 +107,21 @@ export default class Counter {
     return this.element;
   }
 
+  formatted() {
+    let value = this.#value - this.#start;
+    if (this.#format) {
+      value = this.#format(value);
+    }
+    value += this.#restored;
+
+    return value;
+  }
+
+  valueOf() {
+    return this.formatted();
+  }
+
   toJSON() {
-    return this.value;
+    return this.formatted();
   }
 }

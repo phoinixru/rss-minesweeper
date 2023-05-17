@@ -1,6 +1,9 @@
-import { elt, assign, values } from './utils.js';
+import {
+  elt, assign, values, entries, keys,
+} from './utils.js';
 import { Cell, CellClasses } from './cell.js';
 import Counter from './cntr.js';
+import Storage from './storage.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -47,14 +50,25 @@ export default class Minesweeper {
 
     this.counters = {
       moves: new Counter({ modifierClass: 'moves' }),
-      time: new Counter({ modifierClass: 'time' }),
+      time: new Counter({
+        modifierClass: 'time',
+        auto: {
+          source: Date.now,
+          interval: 1000,
+        },
+        format: (value) => Math.floor(value / 1000),
+      }),
       flags: new Counter({ modifierClass: 'flags' }),
     };
+
+    this.storage = new Storage();
 
     parentContainer.append(this.container);
 
     this.prepareField();
     this.addEventListeners();
+
+    this.loadState();
   }
 
   addEventListeners() {
@@ -67,6 +81,9 @@ export default class Minesweeper {
 
     document.addEventListener('pointerdown', pointerHandler);
     document.addEventListener('pointerup', pointerHandler);
+
+    const saveState = (event) => this.saveState(event);
+    window.addEventListener('beforeunload', saveState);
   }
 
   handlePointer(event) {
@@ -89,31 +106,32 @@ export default class Minesweeper {
     this.clickCell({ id, button });
   }
 
-  plantMines(clickedCellId) {
-    const { rows, cols, mines } = this.config;
+  generateMines(clickedCellId) {
+    const { cells, config } = this;
+    const { mines } = config;
     const excluded = +clickedCellId;
 
-    const totalCells = rows * cols;
-    const allCells = Array(totalCells)
-      .fill(0)
-      .map((e, i) => e + i);
-
-    const cellsToPlant = allCells
+    const cellsToPlant = keys(cells)
+      .map((idx) => +idx)
       .filter((id) => id !== excluded)
       .sort(shuffle)
       .slice(0, mines);
 
-    allCells.forEach((id) => {
-      const cell = this.cells[id];
+    this.mines = cellsToPlant;
 
-      if (cellsToPlant.includes(id)) {
+    return cellsToPlant;
+  }
+
+  plantMines() {
+    const { mines, cells } = this;
+
+    cells.forEach((cell, id) => {
+      if (mines.includes(id)) {
         cell.plantMine();
       } else {
-        cell.setMinesAround(cellsToPlant);
+        cell.setMinesAround(mines);
       }
     });
-
-    this.mines = cellsToPlant;
   }
 
   prepareField() {
@@ -140,15 +158,15 @@ export default class Minesweeper {
     this.fieldContainer = elt('div', { className: CssClasses.FIELD });
     this.controlsContainer = elt('div', { className: CssClasses.CONTROLS });
 
-    // const timeCounter = this.counters.time.render();
-    const movesCounter = this.counters.moves.render();
+    const timeCounter = this.counters.time.render();
+    // const movesCounter = this.counters.moves.render();
     const flagsCounter = this.counters.flags.render();
     const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
     btnReset.addEventListener('click', () => this.reset());
 
     this.controlsContainer.append(
-      movesCounter,
-      // timeCounter,
+      // movesCounter,
+      timeCounter,
       btnReset,
       flagsCounter,
     );
@@ -181,7 +199,7 @@ export default class Minesweeper {
         return;
       }
 
-      this.start(id);
+      this.makeFirstMove(id);
     }
 
     if (button === BUTTON.PRIMARY) {
@@ -248,7 +266,7 @@ export default class Minesweeper {
     });
 
     if (cellsToOpen.length) {
-      this.counters.moves.value += 1;
+      this.updateCounter('moves', '+1');
     }
   }
 
@@ -292,15 +310,19 @@ export default class Minesweeper {
     const flaggedCells = this.cells.filter(({ isFlagged }) => isFlagged).length;
     const flagsLeft = mines - flaggedCells;
 
-    this.counters.flags.update(flagsLeft);
+    this.updateCounter('flags', flagsLeft);
   }
 
-  start(clickedCellId) {
-    this.plantMines(clickedCellId);
-    this.started = true;
+  makeFirstMove(clickedCellId) {
+    this.generateMines(clickedCellId);
+    this.plantMines();
+    this.start();
+  }
 
-    this.counters.time.update(Date.now());
-    this.counters.flags.update(this.mines.length);
+  start() {
+    this.started = true;
+    this.counters.time.start();
+    this.updateFlagsCounter();
   }
 
   reset() {
@@ -332,6 +354,10 @@ export default class Minesweeper {
 
     assign(this, { isLost, isWon, isOver });
 
+    if (isOver) {
+      this.gameOver();
+    }
+
     if (isLost) {
       this.gameLost();
     }
@@ -341,8 +367,12 @@ export default class Minesweeper {
     }
   }
 
-  gameLost() {
+  gameOver() {
     this.setGameState();
+    this.counters.time.stop();
+  }
+
+  gameLost() {
     this.revealMines();
   }
 
@@ -353,7 +383,12 @@ export default class Minesweeper {
   }
 
   gameWon() {
-    this.setGameState();
+    let { moves, time } = this.counters;
+    time = +time;
+    moves = +moves;
+    const plural = (value, measure) => `${value} ${measure}${value > 1 ? 's' : ''}`;
+
+    alert(`Hooray! You found all mines in ${plural(time, 'second')} and ${plural(moves, 'move')}!`);
   }
 
   setGameState() {
@@ -363,5 +398,53 @@ export default class Minesweeper {
     classList.toggle(CssClasses.GAME_OVER, isOver);
     classList.toggle(CssClasses.GAME_LOST, isLost);
     classList.toggle(CssClasses.GAME_WON, isWon);
+  }
+
+  saveState() {
+    let state = null;
+    if (this.started && !this.isOver) {
+      const { mines, cells, counters: { time, moves } } = this;
+
+      state = {
+        cells,
+        mines,
+        counters: { time, moves },
+      };
+    }
+
+    this.storage.set('state', state);
+  }
+
+  loadState() {
+    const savedState = this.storage.get('state');
+
+    if (savedState === null) {
+      return;
+    }
+
+    const { mines, cells, counters } = savedState;
+
+    this.mines = mines;
+    this.plantMines();
+
+    entries(counters).forEach(([name, value]) => {
+      this.restoreCounter(name, value);
+    });
+
+    cells.forEach((state, id) => {
+      this.cells[id].state = state;
+    });
+
+    this.start();
+  }
+
+  restoreCounter(name, value) {
+    const counter = this.counters[name];
+    counter.restore(value);
+  }
+
+  updateCounter(name, value) {
+    const counter = this.counters[name];
+    counter.update(value);
   }
 }
