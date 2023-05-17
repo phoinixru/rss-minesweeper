@@ -14,6 +14,10 @@
   --color-six: #018081;
   --color-seven: #000000;
   --color-eight: #808080;
+  --bg-pane: #ffffff;
+  --bg-pane-header: #000080;
+  --color-pane-header: #ffffff;
+  --border-pane: #000080;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -325,8 +329,15 @@ template {
   display: none;
 }
 
+body {
+  font-family: var(--ff-sans-serif);
+  font-smooth: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 :root {
   --ff-field: "Silkscreen", cursive;
+  --ff-sans-serif: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .page {
@@ -340,7 +351,6 @@ template {
 
 .minesweeper {
   min-height: 100px;
-  background: var(--bg-minesweeper);
 }
 
 .controls {
@@ -476,14 +486,23 @@ template {
 }
 
 .pane {
-  margin-bottom: 10px;
+  background-color: var(--bg-pane);
+  border: 2px solid var(--border-pane);
+  border-radius: 5px;
 }
 .pane:last-child {
   margin-bottom: 0;
 }
+.pane--hidden {
+  display: none;
+}
 
 .pane__header {
   text-align: center;
+  background-color: var(--bg-pane-header);
+  color: var(--color-pane-header);
+  font-family: var(--ff-sans-serif);
+  padding: 0.2em 0;
 }
 
 .results {

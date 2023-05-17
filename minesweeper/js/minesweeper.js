@@ -20,6 +20,7 @@ const CssClasses = {
 };
 
 const TITLE = {
+  game: 'Minesweeper',
   results: 'Last results',
   config: 'Preferences',
 };
@@ -47,7 +48,7 @@ export default class Minesweeper {
     const panes = new Panes({ container: this.container });
     this.panes = panes;
 
-    this.gameContainer = panes.add({ id: 'game', hidden: false });
+    this.gameContainer = panes.add({ id: 'game', title: TITLE.game, hidden: false });
 
     const configContainer = panes.add({ id: 'config', title: TITLE.config });
     this.config = new Config({ container: configContainer });

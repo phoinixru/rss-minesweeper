@@ -1,3 +1,12 @@
+body {
+  font-family: var(--ff-sans-serif);
+  font-smooth: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
 :root {
   --ff-field: 'Silkscreen', cursive;
+  --ff-sans-serif: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
 }

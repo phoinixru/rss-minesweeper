@@ -1,11 +1,21 @@
 .pane {
-  margin-bottom: 10px;
+  background-color: var(--bg-pane);
+  border: 2px solid var(--border-pane);
+  border-radius: 5px;
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  &--hidden {
+    display: none;
   }
 }
 
 .pane__header {
   text-align: center;
+  background-color: var(--bg-pane-header);
+  color: var(--color-pane-header);
+  font-family: var(--ff-sans-serif);
+  padding: 0.2em 0
 }
