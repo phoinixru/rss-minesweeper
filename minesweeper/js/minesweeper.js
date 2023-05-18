@@ -265,6 +265,13 @@ export default class Minesweeper {
     }
 
     cellsToOpen = cellsToOpen.filter(isNotOpenCell);
+
+    const isMined = this.filter('isMined');
+    const bombCell = cellsToOpen.filter(isMined).slice(0, 1);
+    if (bombCell.length) {
+      cellsToOpen = bombCell;
+    }
+
     cellsToOpen.forEach((openId) => {
       this.cells[openId].open();
     });
@@ -350,10 +357,10 @@ export default class Minesweeper {
 
   checkGameOver() {
     const { cells, mines } = this;
-    const emptyCells = cells.length - mines.length;
+    const notMined = cells.length - mines.length;
 
     const isLost = !!cells.find(({ isOpen, isMined }) => isOpen && isMined);
-    const isWon = cells.filter(({ isOpen }) => isOpen).length === emptyCells;
+    const isWon = cells.filter(({ isOpen, isMined }) => isOpen && !isMined).length === notMined;
     const isOver = isLost || isWon;
 
     assign(this, { isLost, isWon, isOver });
