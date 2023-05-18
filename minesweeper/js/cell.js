@@ -69,14 +69,12 @@ class Cell {
   }
 
   open() {
-    console.log('Opening');
     this.isOpen = true;
     this.isFlagged = false;
     this.render();
   }
 
   flag() {
-    console.log('Flagging');
     if (this.isOpen) {
       return;
     }

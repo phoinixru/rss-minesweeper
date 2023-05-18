@@ -8,6 +8,7 @@ const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
 const DEFAULT_MINES = 10;
 const DEFAULT_THEME = 'light';
+const DEFAULT_SOUND = true;
 
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_OPEN_CELLS = true;
@@ -19,6 +20,7 @@ const DEFAULTS = {
   cols: DEFAULT_COLS,
   mines: DEFAULT_MINES,
   theme: DEFAULT_THEME,
+  sound: DEFAULT_SOUND,
 };
 
 const CONFIG = {
@@ -51,6 +53,11 @@ const CONFIG = {
     ],
     fields: ['theme'],
   },
+  sound: {
+    type: 'checkbox',
+    label: 'Sound',
+    fields: ['sound'],
+  },
 };
 
 const CssClasses = {
@@ -59,6 +66,8 @@ const CssClasses = {
   LIST: 'config__list',
   LIST_ITEM: 'config__list-item',
   LIST_LABEL: 'config__list-label',
+  CHECKBOX: 'config__checkbox',
+  CHECKBOX_LABEL: 'config__checkbox-label',
   BUTTONS: 'buttons',
   BUTTON: 'button',
 };
@@ -82,16 +91,17 @@ export default class Config {
 
   updateConfig(event) {
     const { target } = event;
-    const { name, value } = target;
+    const { name, value, checked } = target;
     const config = CONFIG[name];
 
     if (!config) {
       return;
     }
 
-    const { fields } = config;
+    const { fields, type } = config;
     fields.forEach((field) => {
-      this[field] = +value || value;
+      const newValue = type === 'checkbox' ? checked : (+value || value);
+      this[field] = newValue;
     });
   }
 
@@ -133,18 +143,37 @@ export default class Config {
       return list;
     };
 
+    const checkbox = ({ name, currentValue, label }) => {
+      const id = name;
+      const checked = currentValue ? 'checked' : '';
+
+      return elt('div', {
+        className: CssClasses.CHECKBOX,
+        innerHTML:
+          `<input type="checkbox" name="${name}" id="${id}" ${checked}>`
+          + `<label for="${id}" class="${CssClasses.CHECKBOX_LABEL}">${label}</label>`,
+      });
+    };
+
     entries(CONFIG).forEach(([id, pref]) => {
       const {
         type, label, options, fields,
       } = pref;
       const currentValue = fields.reduce((acc, f) => this[f] || acc, false);
 
-      const fieldset = elt('fieldset', { className: CssClasses.FIELD }, elt('legend', null, label));
+      const fieldset = elt('fieldset', { className: CssClasses.FIELD });
 
       if (type === 'radio') {
-        fieldset.append(radios({
-          name: id, options, currentValue,
-        }));
+        fieldset.append(
+          elt('legend', null, label),
+          radios({ name: id, options, currentValue }),
+        );
+      }
+
+      if (type === 'checkbox') {
+        fieldset.append(
+          checkbox({ name: id, currentValue, label }),
+        );
       }
 
       element.append(fieldset);
