@@ -9,6 +9,8 @@ const BUTTONS = {
   save: 'Save',
   cancel: 'Cancel',
   ok: 'Ok',
+  nice: 'Nice!',
+  again: 'I\'ll try',
 };
 
 export default class Button {
@@ -21,7 +23,7 @@ export default class Button {
     return btn;
   }
 
-  static container() {
-    return elt('div', { className: CssClasses.BUTTONS });
+  static container(...buttons) {
+    return elt('div', { className: CssClasses.BUTTONS }, ...buttons);
   }
 }

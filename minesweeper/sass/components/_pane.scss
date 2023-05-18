@@ -32,11 +32,19 @@
 
 .pane--modal {
   position: absolute;
-  top: 1.8em;
+  // top: 1.8em;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   min-width: 100%;
   z-index: 10;
+}
+
+.pane--win,
+.pane--loose {
+  min-width: 75%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .pane__header {
@@ -46,4 +54,9 @@
   background-color: var(--bg-pane-header);
   color: var(--color-pane-header);
   font-family: var(--ff-sans-serif);
+}
+
+.message {
+  text-align: center;
+  padding: 0.5em;
 }

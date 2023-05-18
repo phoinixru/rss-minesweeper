@@ -33,6 +33,8 @@ export default class Results {
     this.container = container;
     this.storage = new Storage();
     this.results = this.storage.get('results') || [];
+
+    this.render();
   }
 
   save(game) {

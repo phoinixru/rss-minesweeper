@@ -9,6 +9,7 @@ import Panes from './panes.js';
 import Config from './config.js';
 import Sounds from './sounds.js';
 import { action } from './events.js';
+import Button from './button.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -22,18 +23,24 @@ const CssClasses = {
   FIELD: 'field',
   FIELD_POINTED: 'field--pointed',
   BUTTON: 'button',
+  MESSAGE: 'message',
 };
 
 const TITLE = {
   game: 'Minesweeper',
   results: 'Last results',
   config: 'Preferences',
+  win: 'Congratulations!',
+  loose: 'Try again',
 };
 
 const MENU = {
   config: 'Settings',
   results: 'Results',
 };
+
+const MESSAGE_WIN = 'Hooray! You found all mines in %time% and %moves%!';
+const MESSAGE_LOOSE = 'Game over. Try again...';
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -60,13 +67,15 @@ export default class Minesweeper {
 
     this.gameContainer = panes.add({ id: 'game', title: TITLE.game, hidden: false });
 
-    const configContainer = panes.add({ id: 'config', title: TITLE.config, modal: true });
+    const modal = true;
+    const configContainer = panes.add({ id: 'config', title: TITLE.config, modal });
     this.config = new Config({ container: configContainer });
-    this.config.render();
 
-    const resultsContainer = panes.add({ id: 'results', title: TITLE.results, modal: true });
+    const resultsContainer = panes.add({ id: 'results', title: TITLE.results, modal });
     this.results = new Results({ container: resultsContainer });
-    this.results.render();
+
+    this.winModal = panes.add({ id: 'win', title: TITLE.win, modal });
+    this.looseModal = panes.add({ id: 'loose', title: TITLE.loose, modal });
 
     this.counters = {
       moves: new Counter({ modifierClass: 'moves' }),
@@ -416,6 +425,16 @@ export default class Minesweeper {
 
   gameLost() {
     this.revealMines();
+
+    if (this.looseModal.innerHTML === '') {
+      const message = elt('div', { className: CssClasses.MESSAGE }, MESSAGE_LOOSE);
+      const btnAgain = Button.button({ id: 'again', pane: 'game' });
+      const buttons = Button.container(btnAgain);
+      this.looseModal.append(message, buttons);
+    }
+
+    this.panes.show('loose');
+
     action('loose');
   }
 
@@ -429,11 +448,24 @@ export default class Minesweeper {
     let { moves, time } = this.counters;
     time = +time;
     moves = +moves;
-    const plural = (value, measure) => `${value} ${measure}${value > 1 ? 's' : ''}`;
+    const plural = (value, measure) => `${value} ${measure}${value !== 1 ? 's' : ''}`;
+
+    this.winModal.innerHTML = '';
+
+    const text = MESSAGE_WIN
+      .replace('%time%', plural(time, 'second'))
+      .replace('%moves%', plural(moves, 'move'));
+
+    const message = elt('div', { className: CssClasses.MESSAGE }, text);
+
+    const btnOk = Button.button({ id: 'nice', pane: 'game' });
+    const buttons = Button.container(btnOk);
+
+    this.winModal.append(message, buttons);
+
+    this.panes.show('win');
 
     action('win');
-
-    alert(`Hooray! You found all mines in ${plural(time, 'second')} and ${plural(moves, 'move')}!`);
   }
 
   setGameState() {

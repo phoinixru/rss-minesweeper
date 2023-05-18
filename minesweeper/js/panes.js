@@ -34,7 +34,8 @@ export default class Panes {
 
     event.preventDefault();
 
-    this.show(target);
+    const targetId = target.dataset.pane;
+    this.show(targetId);
   }
 
   add({
@@ -45,7 +46,7 @@ export default class Panes {
     const container = elt('div', { className: CssClasses.CONTENT });
 
     pane.append(header, container);
-    pane.classList.add(`${CssClasses.COMPONENT}--${id}`);
+    pane.classList.add(`${CssClasses.PANE}--${id}`);
     pane.classList.toggle(CssClasses.HIDDEN, hidden);
     pane.classList.toggle(CssClasses.MODAL, modal);
 
@@ -57,8 +58,7 @@ export default class Panes {
     return container;
   }
 
-  show(btn) {
-    const targetId = btn.dataset.pane;
+  show(targetId) {
     const target = this.#panes.find(({ id }) => id === targetId);
     if (!target) {
       return;
@@ -74,7 +74,10 @@ export default class Panes {
       return;
     }
 
-    const currentPane = btn.closest(`.${CssClasses.PANE}`);
-    currentPane.classList.toggle(CssClasses.HIDDEN, true);
+    const current = this.#panes
+      .find(({ id, pane }) => id !== targetId && !pane.matches(`.${CssClasses.HIDDEN}`));
+    if (current) {
+      current.pane.classList.toggle(CssClasses.HIDDEN, true);
+    }
   }
 }

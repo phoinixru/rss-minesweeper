@@ -105,6 +105,8 @@ export default class Config {
 
     this.loadStored();
     this.addEventListeners();
+
+    this.render();
   }
 
   addEventListeners() {
