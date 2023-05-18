@@ -7,6 +7,8 @@ import Storage from './storage.js';
 import Results from './results.js';
 import Panes from './panes.js';
 import Config from './config.js';
+import Sounds from './sounds.js';
+import { action } from './events.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -77,6 +79,8 @@ export default class Minesweeper {
     };
 
     this.storage = new Storage();
+
+    this.sounds = new Sounds({ config: this.config });
 
     this.prepareField();
     this.addEventListeners();
@@ -299,6 +303,7 @@ export default class Minesweeper {
 
     if (cellsToOpen.length) {
       this.updateCounter('moves', '+1');
+      action('open');
     }
   }
 
@@ -333,7 +338,12 @@ export default class Minesweeper {
   }
 
   flagCell(id) {
-    this.cells[id].flag();
+    const flagged = this.cells[id].flag();
+
+    if (flagged !== undefined) {
+      const actionId = flagged ? 'flag-on' : 'flag-off';
+      action(actionId);
+    }
   }
 
   updateFlagsCounter() {
@@ -406,6 +416,7 @@ export default class Minesweeper {
 
   gameLost() {
     this.revealMines();
+    action('loose');
   }
 
   revealMines() {
@@ -419,6 +430,8 @@ export default class Minesweeper {
     time = +time;
     moves = +moves;
     const plural = (value, measure) => `${value} ${measure}${value > 1 ? 's' : ''}`;
+
+    action('win');
 
     alert(`Hooray! You found all mines in ${plural(time, 'second')} and ${plural(moves, 'move')}!`);
   }

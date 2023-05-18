@@ -3,12 +3,18 @@ import {
 } from './utils.js';
 import Storage from './storage.js';
 import Button from './button.js';
+import { dispatch, EVENTS } from './events.js';
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
 const DEFAULT_MINES = 10;
 const DEFAULT_THEME = 'light';
+
 const DEFAULT_SOUND = true;
+const DEFAULT_SOUND_VOLUME = 100;
+
+const DEFAULT_MUSIC = false;
+const DEFAULT_MUSIC_VOLUME = 10;
 
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_OPEN_CELLS = true;
@@ -21,6 +27,9 @@ const DEFAULTS = {
   mines: DEFAULT_MINES,
   theme: DEFAULT_THEME,
   sound: DEFAULT_SOUND,
+  soundVolume: DEFAULT_SOUND_VOLUME,
+  music: DEFAULT_MUSIC,
+  musicVolume: DEFAULT_MUSIC_VOLUME,
 };
 
 const CONFIG = {
@@ -58,6 +67,23 @@ const CONFIG = {
     label: 'Sound',
     fields: ['sound'],
   },
+  soundVolume: {
+    type: 'range',
+    min: 0,
+    max: 100,
+    fields: ['soundVolume'],
+  },
+  music: {
+    type: 'checkbox',
+    label: 'Music',
+    fields: ['music'],
+  },
+  musicVolume: {
+    type: 'range',
+    min: 0,
+    max: 100,
+    fields: ['musicVolume'],
+  },
 };
 
 const CssClasses = {
@@ -93,6 +119,7 @@ export default class Config {
     const { target } = event;
     const { name, value, checked } = target;
     const config = CONFIG[name];
+    console.log(name, value);
 
     if (!config) {
       return;
@@ -102,6 +129,8 @@ export default class Config {
     fields.forEach((field) => {
       const newValue = type === 'checkbox' ? checked : (+value || value);
       this[field] = newValue;
+
+      dispatch(EVENTS.config, { detail: { field, value: newValue } });
     });
   }
 
@@ -155,6 +184,12 @@ export default class Config {
       });
     };
 
+    const range = ({
+      name, min, max, currentValue,
+    }) => elt('input', {
+      type: 'range', min, max, value: currentValue, name,
+    });
+
     entries(CONFIG).forEach(([id, pref]) => {
       const {
         type, label, options, fields,
@@ -173,6 +208,15 @@ export default class Config {
       if (type === 'checkbox') {
         fieldset.append(
           checkbox({ name: id, currentValue, label }),
+        );
+      }
+
+      if (type === 'range') {
+        const { min, max } = pref;
+        fieldset.append(
+          range({
+            name: id, currentValue, label, min, max,
+          }),
         );
       }
 

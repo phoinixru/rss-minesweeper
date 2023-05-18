@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 :root {
-  --bg-page: #008080;
+  --bg-page: #f0f2f0;
+  --bg-page-gradient: linear-gradient(to right, #f0f2f0, #000c40);
   --bg-minesweeper: #fdffff;
   --bg-cell: #ffffff;
   --bg-cell-cover: #eeeeee;
@@ -350,6 +351,7 @@ body {
   justify-content: center;
   align-items: center;
   background: var(--bg-page);
+  background: var(--bg-page-gradient);
   user-select: none;
 }
 

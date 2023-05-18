@@ -76,10 +76,13 @@ class Cell {
 
   flag() {
     if (this.isOpen) {
-      return;
+      return undefined;
     }
+
     this.isFlagged = !this.isFlagged;
     this.render();
+
+    return this.isFlagged;
   }
 
   render() {
