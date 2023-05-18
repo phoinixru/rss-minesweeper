@@ -232,6 +232,7 @@ export default class Minesweeper {
       this.flagCell(id);
     }
 
+    this.updateFlagsCounter();
     this.checkGameOver();
   }
 
@@ -331,7 +332,6 @@ export default class Minesweeper {
 
   flagCell(id) {
     this.cells[id].flag();
-    this.updateFlagsCounter();
   }
 
   updateFlagsCounter() {

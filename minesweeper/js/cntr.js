@@ -56,11 +56,12 @@ export default class Counter {
 
   update(value) {
     const int = parseInt(value, 10);
-    const sign = String(value).at(0);
-    const method = {
-      '-': 'decrease',
-      '+': 'increase',
-    }[sign];
+    let method;
+
+    if (typeof value === 'string') {
+      const sign = String(value).at(0);
+      method = { '-': 'decrease', '+': 'increase' }[sign];
+    }
 
     if (method) {
       this[method](Math.abs(int));
