@@ -1,8 +1,11 @@
 import { elt } from './utils.js';
 
 const CssClasses = {
-  COMPONENT: 'pane',
+  COMPONENT: 'panes',
+  HAS_MODAL: 'panes--modal',
+  PANE: 'pane',
   HIDDEN: 'pane--hidden',
+  MODAL: 'pane--modal',
   HEADER: 'pane__header',
   CONTENT: 'pane__content',
 };
@@ -13,7 +16,8 @@ export default class Panes {
   #panes = [];
 
   constructor({ container }) {
-    this.#container = container;
+    this.#container = elt('div', { className: CssClasses.COMPONENT });
+    container.append(this.#container);
 
     this.addEventListeners();
   }
@@ -30,19 +34,20 @@ export default class Panes {
 
     event.preventDefault();
 
-    const paneId = target.dataset.pane;
-
-    this.show(paneId);
+    this.show(target);
   }
 
-  add({ id, title = '', hidden = true }) {
-    const pane = elt('div', { className: CssClasses.COMPONENT });
+  add({
+    id, title = '', hidden = true, modal = false,
+  }) {
+    const pane = elt('div', { className: CssClasses.PANE });
     const header = elt('div', { className: CssClasses.HEADER }, title);
     const container = elt('div', { className: CssClasses.CONTENT });
 
     pane.append(header, container);
     pane.classList.add(`${CssClasses.COMPONENT}--${id}`);
     pane.classList.toggle(CssClasses.HIDDEN, hidden);
+    pane.classList.toggle(CssClasses.MODAL, modal);
 
     this.#panes.push({
       id, title, container, pane,
@@ -52,9 +57,24 @@ export default class Panes {
     return container;
   }
 
-  show(showId) {
-    this.#panes.forEach(({ id, pane }) => {
-      pane.classList.toggle(CssClasses.HIDDEN, id !== showId);
-    });
+  show(btn) {
+    const targetId = btn.dataset.pane;
+    const target = this.#panes.find(({ id }) => id === targetId);
+    if (!target) {
+      return;
+    }
+
+    const targetPane = target.pane;
+    targetPane.classList.toggle(CssClasses.HIDDEN, false);
+    const isTargetModal = targetPane.matches(`.${CssClasses.MODAL}`);
+
+    this.#container.classList.toggle(CssClasses.HAS_MODAL, isTargetModal);
+
+    if (isTargetModal) {
+      return;
+    }
+
+    const currentPane = btn.closest(`.${CssClasses.PANE}`);
+    currentPane.classList.toggle(CssClasses.HIDDEN, true);
   }
 }

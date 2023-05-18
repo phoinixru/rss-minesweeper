@@ -13,6 +13,7 @@ const CssClasses = {
   GAME_OVER: 'minesweeper--over',
   GAME_LOST: 'minesweeper--lost',
   GAME_WON: 'minesweeper--won',
+  THEME: 'minesweeper--theme',
   MENU: 'menu',
   MENU_ITEM: 'menu__item',
   CONTROLS: 'controls',
@@ -57,11 +58,11 @@ export default class Minesweeper {
 
     this.gameContainer = panes.add({ id: 'game', title: TITLE.game, hidden: false });
 
-    const configContainer = panes.add({ id: 'config', title: TITLE.config });
+    const configContainer = panes.add({ id: 'config', title: TITLE.config, modal: true });
     this.config = new Config({ container: configContainer });
     this.config.render();
 
-    const resultsContainer = panes.add({ id: 'results', title: TITLE.results });
+    const resultsContainer = panes.add({ id: 'results', title: TITLE.results, modal: true });
     this.results = new Results({ container: resultsContainer });
     this.results.render();
 
@@ -80,6 +81,7 @@ export default class Minesweeper {
     this.prepareField();
     this.addEventListeners();
     this.loadState();
+    this.setTheme();
   }
 
   addEventListeners() {
@@ -476,5 +478,18 @@ export default class Minesweeper {
   updateCounter(name, value) {
     const counter = this.counters[name];
     counter.update(value);
+  }
+
+  setTheme() {
+    const { theme } = this.config;
+    const { classList } = this.container;
+
+    classList.forEach((className) => {
+      if (className.match(CssClasses.THEME)) {
+        classList.remove(className);
+      }
+    });
+
+    classList.add(`${CssClasses.THEME}--${theme}`);
   }
 }

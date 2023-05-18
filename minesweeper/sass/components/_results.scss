@@ -6,6 +6,7 @@
   width: 100%;
   font-family: Tahoma;
   font-size: 0.7em;
+  white-space: nowrap;
 
   th {
     font-family: var(--ff-field);
@@ -25,4 +26,10 @@
       text-align: left;
     }
   }
+}
+
+.results__empty {
+  max-width: 250px;
+  padding: 1em;
+  text-align: center;
 }

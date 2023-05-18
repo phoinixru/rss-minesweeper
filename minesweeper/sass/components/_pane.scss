@@ -1,4 +1,21 @@
+.panes {
+  position: relative;
+}
+
+.panes--modal {
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+}
+
 .pane {
+  box-sizing: border-box;
   background-color: var(--bg-pane);
   border: 2px solid var(--border-pane);
   border-radius: 5px;
@@ -7,15 +24,26 @@
     margin-bottom: 0;
   }
 
-  &--hidden {
-    display: none;
-  }
+}
+
+.pane--hidden {
+  display: none;
+}
+
+.pane--modal {
+  position: absolute;
+  top: 1.8em;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 100%;
+  z-index: 10;
 }
 
 .pane__header {
+  height: 1.8em;
+  line-height: 1.8em;
   text-align: center;
   background-color: var(--bg-pane-header);
   color: var(--color-pane-header);
   font-family: var(--ff-sans-serif);
-  padding: 0.2em 0
 }

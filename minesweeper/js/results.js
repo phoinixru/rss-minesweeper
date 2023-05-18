@@ -58,9 +58,14 @@ export default class Results {
     const { results } = this;
     this.container.innerHTML = '';
 
+    const buttons = Button.container();
+    const btnOk = Button.button({ id: 'ok', pane: 'game' });
+    buttons.append(btnOk);
+
     if (!results.length) {
       this.container.append(
         elt('div', { className: CssClasses.EMPTY }, NO_RESULTS),
+        buttons,
       );
 
       return;
@@ -100,10 +105,6 @@ export default class Results {
     const tbody = elt('tbody', null, ...results.map(row));
     table.append(thead, tbody);
 
-    const buttons = Button.container();
-    const btnOk = Button.button({ id: 'ok', pane: 'game' });
-
-    buttons.append(btnOk);
     container.append(table);
 
     this.container.append(
