@@ -14,6 +14,25 @@ export default class Panes {
 
   constructor({ container }) {
     this.#container = container;
+
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    document.addEventListener('click', (event) => this.handleClicks(event));
+  }
+
+  handleClicks(event) {
+    const { target } = event;
+    if (!target.matches('[data-pane]')) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const paneId = target.dataset.pane;
+
+    this.show(paneId);
   }
 
   add({ id, title = '', hidden = true }) {
@@ -25,9 +44,17 @@ export default class Panes {
     pane.classList.add(`${CssClasses.COMPONENT}--${id}`);
     pane.classList.toggle(CssClasses.HIDDEN, hidden);
 
-    this.#panes.push({ id, title, container });
+    this.#panes.push({
+      id, title, container, pane,
+    });
     this.#container.append(pane);
 
     return container;
+  }
+
+  show(showId) {
+    this.#panes.forEach(({ id, pane }) => {
+      pane.classList.toggle(CssClasses.HIDDEN, id !== showId);
+    });
   }
 }

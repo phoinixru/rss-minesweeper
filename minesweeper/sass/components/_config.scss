@@ -1,11 +1,13 @@
 .config {
   padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .config__field {
   border: 0;
   padding: 0;
-  margin-bottom: 1em;
 
   legend:after {
     content: ':';

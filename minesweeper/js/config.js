@@ -2,6 +2,7 @@ import {
   elt, assign, entries, keys, fromEntries,
 } from './utils.js';
 import Storage from './storage.js';
+import Button from './button.js';
 
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
@@ -58,6 +59,8 @@ const CssClasses = {
   LIST: 'config__list',
   LIST_ITEM: 'config__list-item',
   LIST_LABEL: 'config__list-label',
+  BUTTONS: 'buttons',
+  BUTTON: 'button',
 };
 
 export default class Config {
@@ -147,6 +150,15 @@ export default class Config {
       element.append(fieldset);
     });
 
-    this.container.append(element);
+    const buttons = Button.container();
+    const btnSave = Button.button({ id: 'save', pane: 'game' });
+    const btnCancel = Button.button({ id: 'cancel', pane: 'game' });
+
+    buttons.append(btnSave, btnCancel);
+
+    this.container.append(
+      element,
+      buttons,
+    );
   }
 }

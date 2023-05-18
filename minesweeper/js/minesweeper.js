@@ -13,6 +13,8 @@ const CssClasses = {
   GAME_OVER: 'minesweeper--over',
   GAME_LOST: 'minesweeper--lost',
   GAME_WON: 'minesweeper--won',
+  MENU: 'menu',
+  MENU_ITEM: 'menu__item',
   CONTROLS: 'controls',
   FIELD: 'field',
   FIELD_POINTED: 'field--pointed',
@@ -23,6 +25,11 @@ const TITLE = {
   game: 'Minesweeper',
   results: 'Last results',
   config: 'Preferences',
+};
+
+const MENU = {
+  config: 'Settings',
+  results: 'Results',
 };
 
 const shuffle = () => Math.random() - 0.5;
@@ -160,7 +167,17 @@ export default class Minesweeper {
 
   renderUI() {
     this.fieldContainer = elt('div', { className: CssClasses.FIELD });
-    this.controlsContainer = elt('div', { className: CssClasses.CONTROLS });
+
+    const menuContainer = elt('nav', { className: CssClasses.MENU });
+    const link = ([pane, label]) => {
+      const item = elt('a', { href: '#', className: CssClasses.MENU_ITEM }, label);
+      item.dataset.pane = pane;
+      return item;
+    };
+    const menuLinks = entries(MENU).map(link);
+    menuContainer.append(...menuLinks);
+
+    const controlsContainer = elt('div', { className: CssClasses.CONTROLS });
 
     const timeCounter = this.counters.time.render();
     // const movesCounter = this.counters.moves.render();
@@ -168,7 +185,7 @@ export default class Minesweeper {
     const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
     btnReset.addEventListener('click', () => this.reset());
 
-    this.controlsContainer.append(
+    controlsContainer.append(
       // movesCounter,
       timeCounter,
       btnReset,
@@ -176,7 +193,8 @@ export default class Minesweeper {
     );
 
     this.gameContainer.append(
-      this.controlsContainer,
+      menuContainer,
+      controlsContainer,
       this.fieldContainer,
     );
   }

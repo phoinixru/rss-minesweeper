@@ -1,8 +1,10 @@
 import { elt, keys, values } from './utils.js';
 import Storage from './storage.js';
+import Button from './button.js';
 
 const CssClasses = {
   COMPONENT: 'results',
+  TABLE: 'results__table',
   HEADER: 'results__header',
   BODY: 'results__body',
   EMPTY: 'results__empty',
@@ -64,11 +66,13 @@ export default class Results {
       return;
     }
 
+    const container = elt('div', { className: CssClasses.COMPONENT });
+
     const tr = (cells) => elt('tr', {}, ...cells);
     const th = (node) => elt('th', {}, node);
     const td = (id, node) => elt('td', { className: `${CssClasses.CELL} ${CssClasses.CELL}-${id}` }, node);
 
-    const table = elt('table', { className: CssClasses.COMPONENT });
+    const table = elt('table', { className: CssClasses.TABLE });
 
     const ths = values(FIELDS).map(th);
     const thead = elt('thead', null, tr(ths));
@@ -94,9 +98,17 @@ export default class Results {
     };
 
     const tbody = elt('tbody', null, ...results.map(row));
-
     table.append(thead, tbody);
 
-    this.container.append(table);
+    const buttons = Button.container();
+    const btnOk = Button.button({ id: 'ok', pane: 'game' });
+
+    buttons.append(btnOk);
+    container.append(table);
+
+    this.container.append(
+      container,
+      buttons,
+    );
   }
 }

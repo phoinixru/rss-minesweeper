@@ -1,3 +1,10 @@
+.buttons {
+  display: flex;
+  padding: .5em;
+  gap: 0.5em;
+  justify-content: center;
+}
+
 .button {
   font-family: var(--ff-field);
   cursor: pointer;

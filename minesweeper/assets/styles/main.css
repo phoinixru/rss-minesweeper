@@ -18,6 +18,10 @@
   --bg-pane-header: #000080;
   --color-pane-header: #ffffff;
   --border-pane: #000080;
+  --bg-menu: #eeeeee;
+  --color-menu-item: #333;
+  --bg-menu-item-hover: #dddddd;
+  --color-menu-item-hover: #000;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -469,6 +473,13 @@ body {
   background-image: url("../icons/palmos.svg#pressed");
 }
 
+.buttons {
+  display: flex;
+  padding: 0.5em;
+  gap: 0.5em;
+  justify-content: center;
+}
+
 .button {
   font-family: var(--ff-field);
   cursor: pointer;
@@ -506,32 +517,40 @@ body {
 }
 
 .results {
+  padding: 0.5em 0.5em 0;
+}
+
+.results__table {
   width: 100%;
   font-family: Tahoma;
   font-size: 0.7em;
 }
-.results th {
+.results__table th {
   font-family: var(--ff-field);
   font-size: 0.9em;
+  padding: 0 0.3em;
 }
-.results th:first-child {
+.results__table th:first-child {
   text-align: left;
 }
-.results td {
+.results__table td {
   text-align: center;
+  padding: 0.2em 0.3em 0;
 }
-.results td:first-child {
+.results__table td:first-child {
   text-align: left;
 }
 
 .config {
   padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .config__field {
   border: 0;
   padding: 0;
-  margin-bottom: 1em;
 }
 .config__field legend:after {
   content: ":";
@@ -567,6 +586,21 @@ body {
 input:checked + .config__list-label {
   color: #ffffff;
   background: navy;
+}
+
+.menu {
+  display: flex;
+  background: var(--bg-menu);
+}
+
+.menu__item {
+  padding: 0.2em 0.5em;
+  text-decoration: none;
+  color: var(--color-menu-item);
+}
+.menu__item:hover {
+  background-color: var(--bg-menu-item-hover);
+  color: var(--color-menu-item-hover);
 }
 
 .wrapper {
