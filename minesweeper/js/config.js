@@ -19,6 +19,16 @@ const DEFAULT_MUSIC_VOLUME = 10;
 const HANDLE_EMPTY_CELLS = true;
 const HANDLE_OPEN_CELLS = true;
 
+const FIELD_SIZES = [
+  [10, 'Small'],
+  [15, 'Medium'],
+  [25, 'Large'],
+];
+const THEMES = entries({
+  default: 'Light',
+  doom: 'Dark',
+});
+
 const DEFAULTS = {
   handleEmptyCells: HANDLE_EMPTY_CELLS,
   handleOpenCells: HANDLE_OPEN_CELLS,
@@ -36,53 +46,41 @@ const CONFIG = {
   board: {
     type: 'radio',
     label: 'Board size',
-    options: [
-      [10, 'Small'],
-      [15, 'Medium'],
-      [25, 'Large'],
-    ],
+    options: FIELD_SIZES,
     fields: ['rows', 'cols'],
   },
   difficulty: {
-    type: 'radio',
-    label: 'Difficulty',
-    options: [
-      [10, 'Easy'],
-      [50, 'Medium'],
-      [99, 'Hard'],
-    ],
+    type: 'range',
+    label: 'Mines',
+    min: 10,
+    max: 99,
     fields: ['mines'],
   },
   theme: {
     type: 'radio',
     label: 'Theme',
-    options: [
-      ['light', 'Light'],
-      ['dark', 'Dark'],
-    ],
+    options: THEMES,
     fields: ['theme'],
   },
   sound: {
     type: 'checkbox',
     label: 'Sound',
     fields: ['sound'],
-  },
-  soundVolume: {
-    type: 'range',
-    min: 0,
-    max: 100,
-    fields: ['soundVolume'],
+    slider: {
+      min: 0,
+      max: 100,
+      fields: ['soundVolume'],
+    },
   },
   music: {
     type: 'checkbox',
     label: 'Music',
     fields: ['music'],
-  },
-  musicVolume: {
-    type: 'range',
-    min: 0,
-    max: 100,
-    fields: ['musicVolume'],
+    slider: {
+      min: 0,
+      max: 100,
+      fields: ['musicVolume'],
+    },
   },
 };
 
@@ -94,6 +92,7 @@ const CssClasses = {
   LIST_LABEL: 'config__list-label',
   CHECKBOX: 'config__checkbox',
   CHECKBOX_LABEL: 'config__checkbox-label',
+  RANGE: 'config__range',
   BUTTONS: 'buttons',
   BUTTON: 'button',
 };
@@ -119,17 +118,21 @@ export default class Config {
 
   updateConfig(event) {
     const { target } = event;
-    const { name, value, checked } = target;
-    const config = CONFIG[name];
-    console.log(name, value);
+    const {
+      name, value, checked, type,
+    } = target;
 
-    if (!config) {
-      return;
-    }
-
-    const { fields, type } = config;
+    const fields = name.split`,`;
     fields.forEach((field) => {
-      const newValue = type === 'checkbox' ? checked : (+value || value);
+      if (!(field in DEFAULTS)) {
+        return;
+      }
+
+      let newValue = (+value || value);
+      if (type === 'checkbox') {
+        newValue = checked;
+      }
+
       this[field] = newValue;
 
       dispatch(EVENTS.config, { detail: { field, value: newValue } });
@@ -153,12 +156,13 @@ export default class Config {
   render() {
     this.container.innerHTML = '';
     const element = elt('div', { className: CssClasses.COMPONENT });
+    const currentValue = (fields) => fields.reduce((acc, f) => this[f] || acc, false);
 
-    const radios = ({ name, options, currentValue }) => {
+    const radios = ({ name, options, current }) => {
       const list = elt('ul', { className: CssClasses.LIST });
 
       options.forEach(([value, label], idx) => {
-        const checked = value === currentValue ? 'checked' : '';
+        const checked = value === current ? 'checked' : '';
         const id = [name, idx].join`_`;
 
         const item = elt('li', {
@@ -174,62 +178,80 @@ export default class Config {
       return list;
     };
 
-    const checkbox = ({ name, currentValue, label }) => {
+    const checkbox = ({ name, current, label }) => {
       const id = name;
-      const checked = currentValue ? 'checked' : '';
+      const checked = current ? 'checked' : '';
+      const labelHtml = (label ? `<label for="${id}" class="${CssClasses.CHECKBOX_LABEL}">${label}</label>` : '');
 
       return elt('div', {
         className: CssClasses.CHECKBOX,
         innerHTML:
-          `<input type="checkbox" name="${name}" id="${id}" ${checked}>`
-          + `<label for="${id}" class="${CssClasses.CHECKBOX_LABEL}">${label}</label>`,
+          `<input type="checkbox" name="${name}" id="${id}" ${checked}> ${labelHtml}`,
       });
     };
 
-    const range = ({
-      name, min, max, currentValue,
-    }) => elt('input', {
-      type: 'range', min, max, value: currentValue, name,
-    });
+    const range = (slider) => {
+      const { fields, min, max } = slider;
+      const name = fields.join`,`;
+      const current = currentValue(fields);
+
+      const el = elt('input', {
+        type: 'range', min, max, value: current, name,
+      });
+      const updateValue = () => {
+        el.dataset.value = el.value;
+      };
+      el.addEventListener('input', updateValue);
+      updateValue();
+
+      return elt('div', { className: CssClasses.RANGE }, el);
+    };
 
     entries(CONFIG).forEach(([id, pref]) => {
       const {
-        type, label, options, fields,
+        type, label, options, fields, slider,
       } = pref;
-      const currentValue = fields.reduce((acc, f) => this[f] || acc, false);
+      const name = fields.join`,`;
 
+      const current = currentValue(fields);
       const fieldset = elt('fieldset', { className: CssClasses.FIELD });
+      fieldset.classList.add(`${CssClasses.FIELD}-${id}`);
+
+      if (label) {
+        fieldset.append(
+          elt('legend', null, label),
+        );
+      }
 
       if (type === 'radio') {
         fieldset.append(
-          elt('legend', null, label),
-          radios({ name: id, options, currentValue }),
+          radios({ name, options, current }),
         );
       }
 
       if (type === 'checkbox') {
         fieldset.append(
-          checkbox({ name: id, currentValue, label }),
+          checkbox({ name, current }),
         );
       }
 
       if (type === 'range') {
-        const { min, max } = pref;
         fieldset.append(
-          range({
-            name: id, currentValue, label, min, max,
-          }),
+          range(pref),
+        );
+      }
+
+      if (slider) {
+        fieldset.append(
+          range(slider),
         );
       }
 
       element.append(fieldset);
     });
 
-    const buttons = Button.container();
-    const btnSave = Button.button({ id: 'save', pane: 'game' });
-    const btnCancel = Button.button({ id: 'cancel', pane: 'game' });
-
-    buttons.append(btnSave, btnCancel);
+    const btnOk = Button.button({ id: 'ok', pane: 'game' });
+    const buttons = Button.container(btnOk);
 
     this.container.append(
       element,
