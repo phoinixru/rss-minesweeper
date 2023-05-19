@@ -50,6 +50,16 @@ const BUTTON = {
   TOUCH: -1,
 };
 
+const KEYS = {
+  Up: '↑',
+  Down: '↓',
+  Left: '←',
+  Right: '→',
+  B: 'B',
+  A: 'A',
+};
+const KODE = '↑↑↓↓←→←→BA';
+
 const is = (e) => e;
 const isNot = (e) => !e;
 
@@ -110,6 +120,38 @@ export default class Minesweeper {
 
     const saveState = (event) => this.saveState(event);
     window.addEventListener('beforeunload', saveState);
+
+    document.addEventListener('keydown', (event) => this.enterKode(event));
+  }
+
+  #keys = [];
+
+  #godMode = false;
+
+  enterKode(event) {
+    const { code } = event;
+    const key = KEYS[code.replace(/Key|Arrow/, '')] || code;
+
+    if (code !== 'Enter') {
+      this.#keys = [...this.#keys, key].slice(-10);
+      return;
+    }
+
+    const kode = this.#keys.join``;
+    if (kode === KODE) {
+      this.setGodMode();
+      event.preventDefault();
+    }
+  }
+
+  setGodMode() {
+    this.#godMode = true;
+    action('kode');
+    this.cells
+      .filter(({ isFlagged, isMined }) => isFlagged && !isMined)
+      .forEach((cell) => cell.flag());
+
+    this.updateFlagsCounter();
   }
 
   handlePointer(event) {
@@ -255,9 +297,15 @@ export default class Minesweeper {
     const cell = this.cells[cellId];
     const {
       isOpen, isFlagged, isEmpty, id,
+      isMined,
     } = cell;
 
     if (isFlagged) {
+      return;
+    }
+
+    if (this.#godMode && isMined) {
+      this.flagCell(cellId);
       return;
     }
 
@@ -300,8 +348,8 @@ export default class Minesweeper {
 
     cellsToOpen = cellsToOpen.filter(isNotOpenCell);
 
-    const isMined = this.filter('isMined');
-    const bombCell = cellsToOpen.filter(isMined).slice(0, 1);
+    const isCellMined = this.filter('isMined');
+    const bombCell = cellsToOpen.filter(isCellMined).slice(0, 1);
     if (bombCell.length) {
       cellsToOpen = bombCell;
     }
@@ -382,6 +430,7 @@ export default class Minesweeper {
       isWon: false,
       isLost: false,
     });
+    this.#godMode = false;
 
     this.resetCounters();
     this.setGameState();

@@ -23,6 +23,7 @@
   --color-menu-item: #333;
   --bg-menu-item-hover: #dddddd;
   --color-menu-item-hover: #000;
+  --cell-size: 26px;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -389,8 +390,8 @@ body {
 .cell {
   position: relative;
   display: flex;
-  width: 2em;
-  height: 2em;
+  width: var(--cell-size);
+  height: var(--cell-size);
   background: var(--bg-cell);
   cursor: pointer;
 }

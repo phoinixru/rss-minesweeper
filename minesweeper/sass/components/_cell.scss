@@ -2,8 +2,8 @@
   position: relative;
   display: flex;
 
-  width: 2em;
-  height: 2em;
+  width: var(--cell-size);
+  height: var(--cell-size);
 
   background: var(--bg-cell);
   cursor: pointer;

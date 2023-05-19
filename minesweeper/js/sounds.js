@@ -7,6 +7,7 @@ const SOUNDS = {
   'flag-off': 'flag.wav',
   loose: 'loose.wav',
   win: 'win.wav',
+  kode: 'win.wav',
 };
 
 const MUSIC = 'music.wav';
