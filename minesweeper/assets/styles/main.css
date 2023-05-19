@@ -374,9 +374,30 @@ body {
 }
 
 .controls {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
   padding: 0.5em;
+}
+
+.controls__pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.controls__pane-left {
+  place-self: start;
+  place-items: start;
+}
+
+.controls__pane-center {
+  place-items: center;
+}
+
+.controls__pane-right {
+  place-self: start end;
+  place-items: end;
 }
 
 .field {
@@ -506,11 +527,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #333;
-  border-radius: 3px;
-  padding: 0 10px;
-  background: pink;
-  font-family: var(--ff-field);
+  font-family: "Courier New", Courier, monospace;
+}
+
+.counter:before {
+  content: attr(data-title) ":";
+  margin-right: 0.2em;
 }
 
 .panes {
@@ -541,7 +563,6 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  min-width: 50%;
   z-index: 10;
 }
 

@@ -20,6 +20,7 @@ const CssClasses = {
   MENU: 'menu',
   MENU_ITEM: 'menu__item',
   CONTROLS: 'controls',
+  CONTROLS_PANE: 'controls__pane',
   FIELD: 'field',
   FIELD_POINTED: 'field--pointed',
   BUTTON: 'button',
@@ -64,13 +65,13 @@ const is = (e) => e;
 const isNot = (e) => !e;
 
 export default class Minesweeper {
+  mines = null;
+
+  isOver = false;
+
   constructor({ parentContainer }) {
-    this.parentContainer = parentContainer;
     this.container = elt('div', { className: CssClasses.COMPONENT });
     parentContainer.append(this.container);
-
-    this.mines = null;
-    this.isOver = false;
 
     const panes = new Panes({ container: this.container });
     this.panes = panes;
@@ -88,13 +89,13 @@ export default class Minesweeper {
     this.looseModal = panes.add({ id: 'loose', title: TITLE.loose, modal });
 
     this.counters = {
-      moves: new Counter({ modifierClass: 'moves' }),
+      moves: new Counter({ id: 'moves' }),
       time: new Counter({
-        modifierClass: 'time',
+        id: 'time',
         auto: { source: Date.now, interval: 1000 },
         format: (value) => Math.floor(value / 1000),
       }),
-      flags: new Counter({ modifierClass: 'flags' }),
+      flags: new Counter({ id: 'flags' }),
     };
 
     this.storage = new Storage();
@@ -108,13 +109,11 @@ export default class Minesweeper {
   }
 
   addEventListeners() {
-    // const prevent = (event) => event.preventDefault();
     const clickHandler = (event) => this.handleClicks(event);
-    const pointerHandler = (event) => this.handlePointer(event);
-
     this.gameContainer.addEventListener('click', clickHandler);
     this.gameContainer.addEventListener('contextmenu', clickHandler);
 
+    const pointerHandler = (event) => this.handlePointer(event);
     document.addEventListener('pointerdown', pointerHandler);
     document.addEventListener('pointerup', pointerHandler);
 
@@ -223,7 +222,7 @@ export default class Minesweeper {
   }
 
   renderUI() {
-    this.fieldContainer = elt('div', { className: CssClasses.FIELD });
+    const fieldContainer = elt('div', { className: CssClasses.FIELD });
 
     const menuContainer = elt('nav', { className: CssClasses.MENU });
     const link = ([pane, label]) => {
@@ -235,24 +234,35 @@ export default class Minesweeper {
     menuContainer.append(...menuLinks);
 
     const controlsContainer = elt('div', { className: CssClasses.CONTROLS });
+    const controlPanes = ['left', 'center', 'right'].reduce((acc, id) => assign(
+      acc,
+      {
+        [id]: elt('div', {
+          className: `${CssClasses.CONTROLS_PANE} ${CssClasses.CONTROLS_PANE}-${id}`,
+        }),
+      },
+    ), {});
 
     const timeCounter = this.counters.time.render();
-    // const movesCounter = this.counters.moves.render();
+    const movesCounter = this.counters.moves.render();
     const flagsCounter = this.counters.flags.render();
     const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
     btnReset.addEventListener('click', () => this.reset());
 
+    controlPanes.left.append(timeCounter, movesCounter);
+    controlPanes.center.append(btnReset);
+    controlPanes.right.append(flagsCounter);
+
     controlsContainer.append(
-      // movesCounter,
-      timeCounter,
-      btnReset,
-      flagsCounter,
+      ...values(controlPanes),
     );
+
+    this.fieldContainer = fieldContainer;
 
     this.gameContainer.append(
       menuContainer,
       controlsContainer,
-      this.fieldContainer,
+      fieldContainer,
     );
   }
 

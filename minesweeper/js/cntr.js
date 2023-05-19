@@ -4,6 +4,12 @@ const CssClasses = {
   COMPONENT: 'counter',
 };
 
+const COUNTERS = {
+  moves: 'Moves',
+  time: 'Time',
+  flags: 'Flags',
+};
+
 const DIGITS = 3;
 
 export default class Counter {
@@ -22,17 +28,19 @@ export default class Counter {
   #interval;
 
   constructor({
-    defaultValue = 0, modifierClass = '',
+    id,
+    defaultValue = 0,
     format = null, auto = null,
   }) {
     this.#defaultValue = defaultValue;
     this.#format = format;
     this.#auto = auto;
 
-    this.element = elt('div', { className: CssClasses.COMPONENT });
-    if (modifierClass) {
-      this.element.classList.add(`${CssClasses.COMPONENT}--${modifierClass}`);
-    }
+    const element = elt('div', { className: CssClasses.COMPONENT });
+    element.classList.add(`${CssClasses.COMPONENT}--${id}`);
+    element.dataset.title = COUNTERS[id];
+
+    this.element = element;
   }
 
   start() {
@@ -101,8 +109,13 @@ export default class Counter {
   }
 
   render() {
-    const displayValue = this.formatted();
-    const displayString = String(displayValue).padStart(DIGITS, '0');
+    const value = this.formatted();
+    const sign = value < 0 ? '-' : '';
+    const absValue = Math.abs(value);
+
+    const displayString = (sign + String(absValue).padStart(DIGITS - sign.length, '0'))
+      .split``.map((char) => `<span data-char="${char}">${char}</span>`)
+      .join``;
 
     this.element.innerHTML = displayString;
 

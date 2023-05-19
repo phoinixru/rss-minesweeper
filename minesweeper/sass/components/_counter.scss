@@ -2,9 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #333;
-  border-radius: 3px;
-  padding: 0 10px;
-  background: pink;
-  font-family: var(--ff-field);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.counter:before {
+  content: attr(data-title) ':';
+  margin-right: 0.2em;
 }

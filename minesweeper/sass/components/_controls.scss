@@ -1,5 +1,24 @@
 .controls {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
   padding: .5em;
+}
+
+.controls__pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.controls__pane-left {
+  place-self: start;
+  place-items: start;
+}
+.controls__pane-center {
+  place-items: center;
+}
+.controls__pane-right {
+  place-self: start end;
+  place-items: end;
 }
