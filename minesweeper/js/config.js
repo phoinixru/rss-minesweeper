@@ -133,9 +133,10 @@ export default class Config {
         newValue = checked;
       }
 
+      const oldValue = this[field];
       this[field] = newValue;
 
-      dispatch(EVENTS.config, { detail: { field, value: newValue } });
+      dispatch(EVENTS.config, { detail: { field, value: newValue, oldValue } });
     });
   }
 
