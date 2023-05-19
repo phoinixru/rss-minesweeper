@@ -95,6 +95,7 @@ export default class Counter {
   reset() {
     this.stop();
 
+    this.#restored = 0;
     this.#start = this.#defaultValue;
     this.value = this.#start;
   }
