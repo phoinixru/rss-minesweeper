@@ -84,7 +84,7 @@
 }
 
 .field--pointed {
-  .cell:hover:after {
+  .cell:not(.cell--flagged):hover:after {
     background-image: url('../icons/palmos.svg#pressed');
   }
 }
