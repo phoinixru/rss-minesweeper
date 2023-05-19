@@ -3,20 +3,26 @@
   display: grid;
   gap: 1px;
   padding: 1px;
-  font-size: 13px;
   background: var(--color-cell-border);
-
   font-family: var(--ff-field);
+
+  --cell-size: 2.6rem;
 }
 
 .minesweeper--over {
   .field:after {
     content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    @extend %cover;
     background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.field[data-cols='25'] {
+  --cell-size: 1.8rem;
+}
+
+@media (min-width: 700px) {
+  .field[data-cols='25'] {
+    --cell-size: 2.6rem;
   }
 }

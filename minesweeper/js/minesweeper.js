@@ -261,6 +261,7 @@ export default class Minesweeper {
     const renderCell = (cell) => cell.render();
 
     fieldContainer.innerHTML = '';
+    fieldContainer.dataset.cols = cols;
     fieldContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     fieldContainer.append(
       ...cells.map(renderCell),
