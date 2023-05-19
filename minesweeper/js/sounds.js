@@ -59,6 +59,10 @@ export default class Sounds {
     if (field.match('Volume')) {
       this.setVolume();
     }
+
+    if (field === 'soundVolume') {
+      this.play('open');
+    }
   }
 
   loadAssets() {
