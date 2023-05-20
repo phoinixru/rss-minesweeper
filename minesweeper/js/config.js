@@ -27,6 +27,7 @@ const FIELD_SIZES = [
 const THEMES = entries({
   default: 'Light',
   doom: 'Dark',
+  palmos: 'PalmOS',
 });
 
 const DEFAULTS = {

@@ -17,26 +17,33 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    font-size: 1.5em;
   }
 
   &:after {
     content: '';
-    display: block;
-    background-image: url('../icons/palmos.svg#cover');
+    border-style: outset;
+    border-width: 4px;
+    border-color: var(--cell-border);
+    background: var(--cell-cover);
   }
 }
 
 .cell--open {
   &[data-mines] {
-    content: '';
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
   }
 
+  &[data-mines]:before {
+    content: attr(data-mines);
+    font-size: 2em;
+  }
+
   @for $i from 1 through 8 {
     &[data-mines="#{$i}"] {
-      background-image: url('../icons/palmos.svg#n#{$i}');
+      color: var(--color-n#{$i});
     }
   }
 
@@ -47,18 +54,13 @@
 
 .cell--flagged {
   &:after {
-    content: '';
-    border: 0;
-    background-image: url('../icons/palmos.svg#flag');
-    background-repeat: no-repeat;
-    background-size: cover;
+    content: '🚩';
   }
 }
 
 .cell--mined {
   &:before {
-    content: '';
-    background-image: url('../icons/palmos.svg#mine');
+    content: '💣';
   }
 
   &.cell--open {
@@ -73,18 +75,25 @@
   }
 
   .cell--flagged:after {
-    display: block;
+    display: flex;
   }
 }
 
 .minesweeper--lost {
-  .cell--flagged:not(.cell--mined):after {
-    background-image: url('../icons/palmos.svg#nomine');
+  .cell--flagged:not(.cell--mined) {
+    &:before {
+      content: '💣';
+    }
+    &:after {
+      content: '❌';
+      background: none;
+      border: 0;
+    }
   }
 }
 
 .field--pointed {
   .cell:not(.cell--flagged):hover:after {
-    background-image: url('../icons/palmos.svg#pressed');
+    border-style: inset;
   }
 }

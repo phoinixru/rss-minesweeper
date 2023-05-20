@@ -1,0 +1,26 @@
+.theme-doom {
+  --color-n1: #00009b; // #0d00ff;
+  --color-n2: #17330f; // #018001;
+  --color-n3: #d70000; // #ff0000;
+  --color-n4: #c39b2f;
+  --color-n5: #473323;
+  --color-n6: #4f0000;
+  --color-n7: #1b1b1b;
+  --color-n8: #838383;
+
+  --color-primary: #4f0000;
+
+  background-image: url('../images/doom/bg.jpg');
+
+  .cell--open {
+    &[data-mines]:before {
+      // content: '';
+    }
+
+    @for $i from 1 through 8 {
+      &[data-mines="#{$i}"] {
+        // background-image: url('../icons/doom.svg#n#{$i}');
+      }
+    }
+  }
+}

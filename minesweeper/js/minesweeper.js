@@ -16,7 +16,7 @@ const CssClasses = {
   GAME_OVER: 'minesweeper--over',
   GAME_LOST: 'minesweeper--lost',
   GAME_WON: 'minesweeper--won',
-  THEME: 'minesweeper--theme',
+  THEME: 'theme',
   MENU: 'menu',
   MENU_ITEM: 'menu__item',
   CONTROLS: 'controls',
@@ -121,6 +121,13 @@ export default class Minesweeper {
     window.addEventListener('beforeunload', saveState);
 
     document.addEventListener('keydown', (event) => this.enterKode(event));
+
+    document.addEventListener('ms-config', ({ detail }) => {
+      const { field } = detail;
+      if (field === 'theme') {
+        this.setTheme();
+      }
+    });
   }
 
   #keys = [];
@@ -587,7 +594,7 @@ export default class Minesweeper {
 
   setTheme() {
     const { theme } = this.config;
-    const { classList } = this.container;
+    const { classList } = document.body;
 
     classList.forEach((className) => {
       if (className.match(CssClasses.THEME)) {
@@ -595,6 +602,6 @@ export default class Minesweeper {
       }
     });
 
-    classList.add(`${CssClasses.THEME}--${theme}`);
+    classList.add(`${CssClasses.THEME}-${theme}`);
   }
 }

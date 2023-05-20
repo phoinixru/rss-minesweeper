@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style>
+    :root>svg {
+      display: none
+    }
+
+    :root>svg:target {
+      display: block
+    }
+  </style>
+  <svg fill="none" viewBox="0 0 16 16" id="n1" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M8 6h1v5H8z" />
+    <path fill="#430000" d="M7 10h3v1H7zM7 7h2v1H7z" />
+    <path fill="#D9D9D9" d="M7 5h1v5H7z" />
+    <path fill="#D9D9D9" d="M6 9h3v1H6zM6 6h2v1H6z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n2" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7zM7 10h3v1H7zM9 7h1v1H9zM7 9h1v1H7zM8 8h1v1H8z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6zM6 9h3v1H6zM8 6h1v1H8zM6 8h1v1H6zM7 7h1v1H7z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n3" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7z" />
+    <path fill="#430000" d="M9 6h1v5H9z" />
+    <path fill="#430000" d="M7 10h3v1H7zM8 8h1v1H8z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6z" />
+    <path fill="#D9D9D9" d="M8 5h1v5H8z" />
+    <path fill="#D9D9D9" d="M6 9h3v1H6zM7 7h1v1H7z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n4" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h1v3H7zM9 6h1v5H9z" />
+    <path fill="#430000" d="M7 8h3v1H7z" />
+    <path fill="#D9D9D9" d="M6 5h1v3H6zM8 5h1v5H8z" />
+    <path fill="#D9D9D9" d="M6 7h3v1H6z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n5" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7z" />
+    <path fill="#430000" d="M7 6h1v3H7z" />
+    <path fill="#430000" d="M7 8h3v1H7z" />
+    <path fill="#430000" d="M9 8h1v3H9z" />
+    <path fill="#430000" d="M7 10h3v1H7z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6z" />
+    <path fill="#D9D9D9" d="M6 5h1v3H6z" />
+    <path fill="#D9D9D9" d="M6 7h3v1H6z" />
+    <path fill="#D9D9D9" d="M8 7h1v3H8z" />
+    <path fill="#D9D9D9" d="M6 9h3v1H6z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n6" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7z" />
+    <path fill="#430000" d="M7 6h1v5H7z" />
+    <path fill="#430000" d="M7 8h3v1H7zM7 10h3v1H7z" />
+    <path fill="#430000" d="M9 9h1v2H9z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6z" />
+    <path fill="#D9D9D9" d="M6 5h1v5H6z" />
+    <path fill="#D9D9D9" d="M6 7h3v1H6zM6 9h3v1H6z" />
+    <path fill="#D9D9D9" d="M8 8h1v2H8z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n7" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7zM9 7h1v1H9zM8 8h1v1H8zM7 9h1v2H7z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6zM8 6h1v1H8zM7 7h1v1H7zM6 8h1v2H6z" />
+  </svg>
+  <svg fill="none" viewBox="0 0 16 16" id="n8" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#430000" d="M7 6h3v1H7zM7 7h1v1H7zM9 7h1v1H9zM8 8h1v1H8zM7 9h1v2H7zM9 9h1v2H9z" />
+    <path fill="#430000" d="M7 10h3v1H7z" />
+    <path fill="#D9D9D9" d="M6 5h3v1H6zM6 6h1v1H6zM8 6h1v1H8zM7 7h1v1H7zM6 8h1v2H6zM8 8h1v2H8z" />
+    <path fill="#D9D9D9" d="M6 9h3v1H6z" />
+  </svg>
+</svg>

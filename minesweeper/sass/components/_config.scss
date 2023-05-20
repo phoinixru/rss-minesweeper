@@ -50,8 +50,8 @@
   padding: 2px 10px;
 
   input:checked+& {
-    color: #ffffff;
-    background: navy;
+    color: var(--color-light);
+    background: var(--color-primary);
   }
 }
 

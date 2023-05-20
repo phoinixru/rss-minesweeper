@@ -7,7 +7,7 @@ const SOUNDS = {
   'flag-off': 'flag.wav',
   loose: 'loose.wav',
   win: 'win.wav',
-  kode: 'win.wav',
+  kode: 'god.wav',
 };
 
 const MUSIC = 'music.wav';
@@ -63,6 +63,10 @@ export default class Sounds {
     if (field === 'soundVolume') {
       this.play('open');
     }
+
+    if (field === 'theme') {
+      this.loadAssets();
+    }
   }
 
   loadAssets() {
@@ -89,6 +93,9 @@ export default class Sounds {
   }
 
   loadMusic() {
+    if (this.#music) {
+      this.#music.pause();
+    }
     this.#music = this.loadAudio({ filename: MUSIC, loop: true, autoplay: true });
     this.setVolume();
   }

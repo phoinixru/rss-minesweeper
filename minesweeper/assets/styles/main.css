@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 :root {
   --bg-page: #f0f2f0;
@@ -5,27 +6,23 @@
   --bg-minesweeper: #fdffff;
   --bg-cell: #ffffff;
   --bg-cell-cover: #eeeeee;
-  --color-cell-border: #000000;
-  --color-cell-cover-border: #dddddd;
-  --color-one: #0d00ff;
-  --color-two: #018001;
-  --color-three: #ff0000;
-  --color-four: #030081;
-  --color-five: #800000;
-  --color-six: #018081;
-  --color-seven: #000000;
-  --color-eight: #808080;
-  --bg-pane: #ffffff;
-  --bg-pane-header: #000080;
-  --color-pane-header: #ffffff;
-  --border-pane: #000080;
+  --field-bg: #000000;
+  --cell-cover: #cccccc;
+  --cell-cover-border: #dddddd;
+  --color-n1: #0d00ff;
+  --color-n2: #018001;
+  --color-n3: #ff0000;
+  --color-n4: #030081;
+  --color-n5: #800000;
+  --color-n6: #018081;
+  --color-n7: #000000;
+  --color-n8: #808080;
   --bg-menu: #eeeeee;
   --color-menu-item: #333;
   --bg-menu-item-hover: #dddddd;
   --color-menu-item-hover: #000;
-  --color-primary: #000080;
-  --color-secondary: orange;
-  --color-light: #eeeeee;
+  --color-primary: #4385ff;
+  --color-light: #ffffff;
 }
 
 .panes--modal:before, .cell:before, .cell:after, .minesweeper--over .field:after {
@@ -34,6 +31,7 @@
   top: 0;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -366,6 +364,7 @@ body {
   background: var(--bg-page);
   user-select: none;
   font-size: 1.3rem;
+  background-size: cover;
 }
 
 .minesweeper {
@@ -405,7 +404,7 @@ body {
   display: grid;
   gap: 1px;
   padding: 1px;
-  background: var(--color-cell-border);
+  background: var(--field-bg);
   font-family: var(--ff-field);
   --cell-size: 2.6rem;
 }
@@ -439,58 +438,59 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  font-size: 1.5em;
 }
 .cell:after {
   content: "";
-  display: block;
-  background-image: url("../icons/palmos.svg#cover");
+  border-style: outset;
+  border-width: 4px;
+  border-color: var(--cell-border);
+  background: var(--cell-cover);
 }
 
 .cell--open[data-mines] {
-  content: "";
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
+.cell--open[data-mines]:before {
+  content: attr(data-mines);
+  font-size: 2em;
+}
 .cell--open[data-mines="1"] {
-  background-image: url("../icons/palmos.svg#n1");
+  color: var(--color-n1);
 }
 .cell--open[data-mines="2"] {
-  background-image: url("../icons/palmos.svg#n2");
+  color: var(--color-n2);
 }
 .cell--open[data-mines="3"] {
-  background-image: url("../icons/palmos.svg#n3");
+  color: var(--color-n3);
 }
 .cell--open[data-mines="4"] {
-  background-image: url("../icons/palmos.svg#n4");
+  color: var(--color-n4);
 }
 .cell--open[data-mines="5"] {
-  background-image: url("../icons/palmos.svg#n5");
+  color: var(--color-n5);
 }
 .cell--open[data-mines="6"] {
-  background-image: url("../icons/palmos.svg#n6");
+  color: var(--color-n6);
 }
 .cell--open[data-mines="7"] {
-  background-image: url("../icons/palmos.svg#n7");
+  color: var(--color-n7);
 }
 .cell--open[data-mines="8"] {
-  background-image: url("../icons/palmos.svg#n8");
+  color: var(--color-n8);
 }
 .cell--open:after {
   display: none;
 }
 
 .cell--flagged:after {
-  content: "";
-  border: 0;
-  background-image: url("../icons/palmos.svg#flag");
-  background-repeat: no-repeat;
-  background-size: cover;
+  content: "🚩";
 }
 
 .cell--mined:before {
-  content: "";
-  background-image: url("../icons/palmos.svg#mine");
+  content: "💣";
 }
 .cell--mined.cell--open {
   background: red;
@@ -500,15 +500,20 @@ body {
   display: none;
 }
 .minesweeper--over .cell--flagged:after {
-  display: block;
+  display: flex;
 }
 
+.minesweeper--lost .cell--flagged:not(.cell--mined):before {
+  content: "💣";
+}
 .minesweeper--lost .cell--flagged:not(.cell--mined):after {
-  background-image: url("../icons/palmos.svg#nomine");
+  content: "❌";
+  background: none;
+  border: 0;
 }
 
 .field--pointed .cell:not(.cell--flagged):hover:after {
-  background-image: url("../icons/palmos.svg#pressed");
+  border-style: inset;
 }
 
 .buttons {
@@ -542,12 +547,13 @@ body {
 .panes--modal:before {
   content: "";
   z-index: 10;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .pane {
   box-sizing: border-box;
-  background-color: var(--bg-pane);
-  border: 2px solid var(--border-pane);
+  background-color: var(--color-light);
+  border: 2px solid var(--color-primary);
   border-radius: 5px;
 }
 .pane:last-child {
@@ -560,9 +566,9 @@ body {
 
 .pane--modal {
   position: absolute;
-  top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 
@@ -577,8 +583,8 @@ body {
   height: 1.8em;
   line-height: 1.8em;
   text-align: center;
-  background-color: var(--bg-pane-header);
-  color: var(--color-pane-header);
+  background-color: var(--color-primary);
+  color: var(--color-light);
   font-family: var(--ff-sans-serif);
 }
 
@@ -668,8 +674,8 @@ body {
   padding: 2px 10px;
 }
 input:checked + .config__list-label {
-  color: #ffffff;
-  background: navy;
+  color: var(--color-light);
+  background: var(--color-primary);
 }
 
 .config__checkbox {
@@ -738,5 +744,76 @@ input:checked + .config__list-label {
 
 .wrapper {
   display: flex;
+  min-height: 100vh;
   justify-content: center;
+  align-items: center;
+}
+
+.theme-doom {
+  --color-n1: #00009b;
+  --color-n2: #17330f;
+  --color-n3: #d70000;
+  --color-n4: #c39b2f;
+  --color-n5: #473323;
+  --color-n6: #4f0000;
+  --color-n7: #1b1b1b;
+  --color-n8: #838383;
+  --color-primary: #4f0000;
+  background-image: url("../images/doom/bg.jpg");
+}
+.theme-palmos {
+  --color-primary: #000080;
+  --color-light: #ffffff;
+  --color-n1: #000080;
+  --color-n2: #0000ff;
+  --color-n3: #008000;
+  --color-n4: #800000;
+  --color-n5: #ff0000;
+  --color-n6: #ff00ff;
+  --color-n7: #00ffff;
+  --color-n8: #808080;
+}
+.theme-palmos .cell:after {
+  border: 0;
+  background-image: url("../icons/palmos.svg#cover");
+}
+.theme-palmos .cell--open[data-mines]:before {
+  content: "";
+}
+.theme-palmos .cell--open[data-mines="1"] {
+  background-image: url("../icons/palmos.svg#n1");
+}
+.theme-palmos .cell--open[data-mines="2"] {
+  background-image: url("../icons/palmos.svg#n2");
+}
+.theme-palmos .cell--open[data-mines="3"] {
+  background-image: url("../icons/palmos.svg#n3");
+}
+.theme-palmos .cell--open[data-mines="4"] {
+  background-image: url("../icons/palmos.svg#n4");
+}
+.theme-palmos .cell--open[data-mines="5"] {
+  background-image: url("../icons/palmos.svg#n5");
+}
+.theme-palmos .cell--open[data-mines="6"] {
+  background-image: url("../icons/palmos.svg#n6");
+}
+.theme-palmos .cell--open[data-mines="7"] {
+  background-image: url("../icons/palmos.svg#n7");
+}
+.theme-palmos .cell--open[data-mines="8"] {
+  background-image: url("../icons/palmos.svg#n8");
+}
+.theme-palmos .cell--flagged:after {
+  content: "";
+  background-image: url("../icons/palmos.svg#flag");
+}
+.theme-palmos .cell--mined:before {
+  background-image: url("../icons/palmos.svg#mine");
+}
+.theme-palmos .minesweeper--lost .cell--flagged:not(.cell--mined):after {
+  background-image: url("../icons/palmos.svg#nomine");
+}
+.theme-palmos .field--pointed .cell:not(.cell--flagged):hover:after {
+  background-image: url("../icons/palmos.svg#pressed");
 }/*# sourceMappingURL=main.css.map */

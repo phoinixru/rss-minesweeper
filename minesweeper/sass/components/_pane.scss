@@ -7,13 +7,14 @@
     content: '';
     @extend %cover;
     z-index: 10;
+    background: rgba(0, 0, 0, 0.1);
   }
 }
 
 .pane {
   box-sizing: border-box;
-  background-color: var(--bg-pane);
-  border: 2px solid var(--border-pane);
+  background-color: var(--color-light);
+  border: 2px solid var(--color-primary);
   border-radius: 5px;
 
   &:last-child {
@@ -28,10 +29,9 @@
 
 .pane--modal {
   position: absolute;
-  // top: 1.8em;
-  top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 
@@ -46,8 +46,8 @@
   height: 1.8em;
   line-height: 1.8em;
   text-align: center;
-  background-color: var(--bg-pane-header);
-  color: var(--color-pane-header);
+  background-color: var(--color-primary);
+  color: var(--color-light);
   font-family: var(--ff-sans-serif);
 }
 
