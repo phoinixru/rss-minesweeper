@@ -9,8 +9,9 @@ function dispatch(type, options = {}) {
   document.dispatchEvent(event);
 }
 
-function action(id) {
-  dispatch(EVENTS.action, { detail: { action: id } });
+function action(id, detail = {}) {
+  Object.assign(detail, { action: id });
+  dispatch(EVENTS.action, { detail });
 }
 
 export { dispatch, action, EVENTS };

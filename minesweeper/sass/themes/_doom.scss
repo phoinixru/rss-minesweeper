@@ -56,28 +56,34 @@
       background-position: 50% 0;
     }
 
-    &[data-action="look-center"]:before {
+    &--look-center:before {
       background-position: 50% 0;
     }
 
-    &[data-action="look-left"]:before {
+    &--look-left:before {
       background-position: 50% -32px;
+      transform: none;
     }
 
-    &[data-action="look-right"]:before {
+    &--look-right:before {
       background-position: 50% -64px;
+      transform: none;
     }
 
-    &[data-action="win"]:before {
-      background-position: 50% -128px;
-    }
-
-    &[data-action="loose"]:before {
-      background-position: 50% -160px;
+    &--shock:before {
+      background-position: 50% -192px;
     }
 
     &--god:before {
       background-position: 50% -96px;
+    }
+
+    &--win:before {
+      background-position: 50% -128px;
+    }
+
+    &--loose:before {
+      background-position: 50% -160px;
     }
 
     &:active:before {

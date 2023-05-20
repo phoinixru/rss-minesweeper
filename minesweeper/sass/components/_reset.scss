@@ -15,7 +15,7 @@
   }
 
   &:before {
-    content: '🙂';
+    content: '😐';
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,16 +24,30 @@
     font-size: 2.5em;
   }
 
-  &[data-action="loose"]:before {
-    content: '😵'
+  &--look-left:before {
+    content: '🫤';
   }
 
-  &[data-action="win"]:before {
-    content: '😎'
+  &--look-right:before {
+    content: '🫤';
+    transform: scaleX(-1);
+  }
+
+  &--shock:before {
+    content: '🫣';
+    transform: none;
   }
 
   &--god:before {
     content: '😈';
+  }
+
+  &--loose:before {
+    content: '😵'
+  }
+
+  &--win:before {
+    content: '😎'
   }
 
   &:active:before {

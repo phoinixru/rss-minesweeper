@@ -74,6 +74,8 @@ export default class Minesweeper {
     this.container = elt('div', { className: CssClasses.COMPONENT });
     parentContainer.append(this.container);
 
+    this.fieldContainer = elt('div', { className: CssClasses.FIELD });
+
     const panes = new Panes({ container: this.container });
     this.panes = panes;
 
@@ -112,8 +114,11 @@ export default class Minesweeper {
 
   addEventListeners() {
     const clickHandler = (event) => this.handleClicks(event);
+    const mouseHandler = (event) => this.handleMouse(event);
     this.gameContainer.addEventListener('click', clickHandler);
     this.gameContainer.addEventListener('contextmenu', clickHandler);
+    this.fieldContainer.addEventListener('mouseover', mouseHandler);
+    this.fieldContainer.addEventListener('mouseleave', mouseHandler);
 
     const pointerHandler = (event) => this.handlePointer(event);
     document.addEventListener('pointerdown', pointerHandler);
@@ -168,11 +173,36 @@ export default class Minesweeper {
     this.updateFlagsCounter();
   }
 
+  handleMouse(event) {
+    const { type } = event;
+
+    if (type === 'mouseover') {
+      this.checkShock(event);
+    } else {
+      action('move', { type });
+    }
+  }
+
   handlePointer(event) {
     const { type, button } = event;
     const isPointerDown = type === 'pointerdown' && button === BUTTON.PRIMARY;
-
     this.container.classList.toggle(CssClasses.FIELD_POINTED, isPointerDown);
+
+    if (button === BUTTON.PRIMARY) {
+      this.checkShock(event);
+    }
+  }
+
+  checkShock(event) {
+    const { target, buttons } = event;
+
+    const cellElement = target.closest(`.${CellClasses.CELL}`);
+    if (cellElement) {
+      const cellId = cellElement.dataset.id;
+      const cell = this.cells[cellId];
+      const { cols } = this.config;
+      action('move', { cell, buttons, cols });
+    }
   }
 
   handleClicks(event) {
@@ -237,8 +267,6 @@ export default class Minesweeper {
   }
 
   renderUI() {
-    const fieldContainer = elt('div', { className: CssClasses.FIELD });
-
     const menuContainer = elt('nav', { className: CssClasses.MENU });
     const link = ([pane, label]) => {
       const item = elt('a', { href: '#', className: CssClasses.MENU_ITEM }, label);
@@ -271,12 +299,10 @@ export default class Minesweeper {
       ...values(controlPanes),
     );
 
-    this.fieldContainer = fieldContainer;
-
     this.gameContainer.append(
       menuContainer,
       controlsContainer,
-      fieldContainer,
+      this.fieldContainer,
     );
   }
 
