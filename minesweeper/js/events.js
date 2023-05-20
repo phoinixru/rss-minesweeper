@@ -1,6 +1,7 @@
 const EVENTS = {
   action: 'ms-action',
   config: 'ms-config',
+  reset: 'ms-reset',
 };
 
 function dispatch(type, options = {}) {

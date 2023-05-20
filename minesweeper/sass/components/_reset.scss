@@ -1,0 +1,42 @@
+.reset {
+  cursor: pointer;
+  border-style: outset;
+  border-width: 5px;
+  border-color: var(--cell-border);
+  background: var(--cell-cover);
+  padding: 0;
+
+  &:active {
+    border-style: inset;
+  }
+
+  span {
+    display: none;
+  }
+
+  &:before {
+    content: '🙂';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 2.5em;
+  }
+
+  &[data-action="loose"]:before {
+    content: '😵'
+  }
+
+  &[data-action="win"]:before {
+    content: '😎'
+  }
+
+  &--god:before {
+    content: '😈';
+  }
+
+  &:active:before {
+    content: '🤬';
+  }
+}

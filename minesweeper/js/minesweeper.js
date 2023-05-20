@@ -8,8 +8,9 @@ import Results from './results.js';
 import Panes from './panes.js';
 import Config from './config.js';
 import Sounds from './sounds.js';
-import { action } from './events.js';
+import { EVENTS, action } from './events.js';
 import Button from './button.js';
+import Reset from './reset.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -99,8 +100,9 @@ export default class Minesweeper {
     };
 
     this.storage = new Storage();
-
     this.sounds = new Sounds({ config: this.config });
+
+    this.btnReset = new Reset();
 
     this.prepareField();
     this.addEventListeners();
@@ -122,10 +124,16 @@ export default class Minesweeper {
 
     document.addEventListener('keydown', (event) => this.enterKode(event));
 
-    document.addEventListener('ms-config', ({ detail }) => {
+    document.addEventListener(EVENTS.config, ({ detail }) => {
       const { field } = detail;
       if (field === 'theme') {
         this.setTheme();
+      }
+    });
+
+    document.addEventListener(EVENTS.action, (event) => {
+      if (event.detail.action === 'reset') {
+        this.reset();
       }
     });
   }
@@ -253,12 +261,11 @@ export default class Minesweeper {
     const timeCounter = this.counters.time.render();
     const movesCounter = this.counters.moves.render();
     const flagsCounter = this.counters.flags.render();
-    const btnReset = elt('button', { className: CssClasses.BUTTON }, 'Reset');
-    btnReset.addEventListener('click', () => this.reset());
+    const btnReset = this.btnReset.render();
 
-    controlPanes.left.append(timeCounter, movesCounter);
+    controlPanes.left.append(movesCounter, flagsCounter);
     controlPanes.center.append(btnReset);
-    controlPanes.right.append(flagsCounter);
+    controlPanes.right.append(timeCounter);
 
     controlsContainer.append(
       ...values(controlPanes),

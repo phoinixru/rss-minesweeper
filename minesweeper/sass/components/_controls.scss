@@ -1,6 +1,6 @@
 .controls {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 32px 1fr;
   place-items: center;
   padding: .5em;
 }
@@ -12,13 +12,11 @@
 }
 
 .controls__pane-left {
-  place-self: start;
-  place-items: start;
+  justify-self: start;
 }
 .controls__pane-center {
   place-items: center;
 }
 .controls__pane-right {
-  place-self: start end;
-  place-items: end;
+  justify-self: end;
 }

@@ -374,7 +374,7 @@ body {
 
 .controls {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 32px 1fr;
   place-items: center;
   padding: 0.5em;
 }
@@ -386,8 +386,7 @@ body {
 }
 
 .controls__pane-left {
-  place-self: start;
-  place-items: start;
+  justify-self: start;
 }
 
 .controls__pane-center {
@@ -395,8 +394,7 @@ body {
 }
 
 .controls__pane-right {
-  place-self: start end;
-  place-items: end;
+  justify-self: end;
 }
 
 .field {
@@ -439,6 +437,7 @@ body {
   background-position: center center;
   background-size: cover;
   font-size: 1.5em;
+  transition: all 0.4s;
 }
 .cell:after {
   content: "";
@@ -482,7 +481,9 @@ body {
   color: var(--color-n8);
 }
 .cell--open:after {
-  display: none;
+  opacity: 0;
+  transform: scale(0.3);
+  transform-origin: center;
 }
 
 .cell--flagged:after {
@@ -600,7 +601,7 @@ body {
 .results__table {
   width: 100%;
   font-family: Tahoma;
-  font-size: 0.7em;
+  font-size: 1em;
   white-space: nowrap;
 }
 .results__table th {
@@ -733,13 +734,49 @@ input:checked + .config__list-label {
 }
 
 .menu__item {
-  padding: 0.2em 0.5em;
+  padding: 0.3em 0.5em;
   text-decoration: none;
   color: var(--color-menu-item);
 }
 .menu__item:hover {
   background-color: var(--bg-menu-item-hover);
   color: var(--color-menu-item-hover);
+}
+
+.reset {
+  cursor: pointer;
+  border-style: outset;
+  border-width: 5px;
+  border-color: var(--cell-border);
+  background: var(--cell-cover);
+  padding: 0;
+}
+.reset:active {
+  border-style: inset;
+}
+.reset span {
+  display: none;
+}
+.reset:before {
+  content: "🙂";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 2.5em;
+}
+.reset[data-action=loose]:before {
+  content: "😵";
+}
+.reset[data-action=win]:before {
+  content: "😎";
+}
+.reset--god:before {
+  content: "😈";
+}
+.reset:active:before {
+  content: "🤬";
 }
 
 .wrapper {
@@ -761,6 +798,104 @@ input:checked + .config__list-label {
   --color-primary: #4f0000;
   background-image: url("../images/doom/bg.jpg");
 }
+.theme-doom .pane--game .pane__content {
+  display: flex;
+  flex-direction: column;
+}
+.theme-doom .controls {
+  order: 2;
+  background: #ccc;
+  padding: 0;
+}
+.theme-doom .controls__pane {
+  width: 100%;
+  flex-direction: row;
+}
+.theme-doom .reset {
+  background: #1b1b1b;
+  border: solid #0b0b0b;
+  border-width: 1px 1px 0 1px;
+}
+.theme-doom .reset:before {
+  content: "";
+  width: 32px;
+  height: 32px;
+  background-image: url("../images/doom/guy.png");
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+}
+.theme-doom .reset[data-action=look-center]:before {
+  background-position: 50% 0;
+}
+.theme-doom .reset[data-action=look-left]:before {
+  background-position: 50% -32px;
+}
+.theme-doom .reset[data-action=look-right]:before {
+  background-position: 50% -64px;
+}
+.theme-doom .reset[data-action=win]:before {
+  background-position: 50% -128px;
+}
+.theme-doom .reset[data-action=loose]:before {
+  background-position: 50% -160px;
+}
+.theme-doom .reset--god:before {
+  background-position: 50% -96px;
+}
+.theme-doom .reset:active:before {
+  background-position: 50% -288px;
+}
+.theme-doom .counter {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+}
+.theme-doom .counter:before {
+  content: "";
+}
+.theme-doom .counter:after {
+  content: "";
+}
+.theme-doom .counter span {
+  font-size: 1px;
+  text-indent: -10px;
+  overflow: hidden;
+  width: 15px;
+  height: 16px;
+  background-image: url("../images/doom/counter.png");
+  background-repeat: no-repeat;
+}
+.theme-doom .counter span[data-char="1"] {
+  background-position: -15px 0;
+}
+.theme-doom .counter span[data-char="2"] {
+  background-position: -30px 0;
+}
+.theme-doom .counter span[data-char="3"] {
+  background-position: -45px 0;
+}
+.theme-doom .counter span[data-char="4"] {
+  background-position: -60px 0;
+}
+.theme-doom .counter span[data-char="5"] {
+  background-position: -75px 0;
+}
+.theme-doom .counter span[data-char="6"] {
+  background-position: -90px 0;
+}
+.theme-doom .counter span[data-char="7"] {
+  background-position: -105px 0;
+}
+.theme-doom .counter span[data-char="8"] {
+  background-position: -120px 0;
+}
+.theme-doom .counter span[data-char="9"] {
+  background-position: -135px 0;
+}
+.theme-doom .counter span[data-char="-"] {
+  background-position: -150px 0;
+}
+
 .theme-palmos {
   --color-primary: #000080;
   --color-light: #ffffff;
