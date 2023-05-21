@@ -8,7 +8,7 @@ import { dispatch, EVENTS } from './events.js';
 const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
 const DEFAULT_MINES = 10;
-const DEFAULT_THEME = 'light';
+const DEFAULT_THEME = 'default';
 
 const DEFAULT_SOUND = true;
 const DEFAULT_SOUND_VOLUME = 100;
