@@ -159,4 +159,10 @@ export default class Sounds {
       this.#music.volume = musicVolume / 100;
     }
   }
+
+  playMusic() {
+    if (this.#config.music && this.#music) {
+      this.#music.play();
+    }
+  }
 }

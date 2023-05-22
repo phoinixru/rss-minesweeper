@@ -70,6 +70,10 @@ export default class Minesweeper {
 
   isOver = false;
 
+  rows;
+
+  cols;
+
   constructor({ parentContainer }) {
     this.container = elt('div', { className: CssClasses.COMPONENT });
     parentContainer.append(this.container);
@@ -129,18 +133,29 @@ export default class Minesweeper {
 
     document.addEventListener('keydown', (event) => this.enterKode(event));
 
-    document.addEventListener(EVENTS.config, ({ detail }) => {
-      const { field } = detail;
-      if (field === 'theme') {
-        this.setTheme();
-      }
-    });
+    const configHandler = (event) => this.handleConfig(event);
+    document.addEventListener(EVENTS.config, configHandler);
 
     document.addEventListener(EVENTS.action, (event) => {
       if (event.detail.action === 'reset') {
         this.reset();
       }
     });
+  }
+
+  handleConfig(event) {
+    const { detail } = event;
+    const { field } = detail;
+
+    if (field === 'theme') {
+      this.setTheme();
+    }
+
+    if (['rows', 'cols', 'mines'].includes(field)) {
+      if (!this.started) {
+        this.reset();
+      }
+    }
   }
 
   #keys = [];
@@ -165,6 +180,8 @@ export default class Minesweeper {
 
   setGodMode() {
     this.#godMode = true;
+    this.#keys = [];
+
     action('kode');
     this.cells
       .filter(({ isFlagged, isMined }) => isFlagged && !isMined)
@@ -199,8 +216,8 @@ export default class Minesweeper {
     const cellElement = target.closest(`.${CellClasses.CELL}`);
     if (cellElement) {
       const cellId = cellElement.dataset.id;
-      const cell = this.cells[cellId];
-      const { cols } = this.config;
+      const { cells, cols } = this;
+      const cell = cells[cellId];
       action('move', { cell, buttons, cols });
     }
   }
@@ -248,6 +265,8 @@ export default class Minesweeper {
 
   prepareField() {
     const { rows, cols } = this.config;
+    this.rows = rows;
+    this.cols = cols;
     const totalCells = rows * cols;
 
     this.cells = Array(totalCells)
@@ -307,7 +326,7 @@ export default class Minesweeper {
   }
 
   renderField() {
-    const { cells, config: { cols }, fieldContainer } = this;
+    const { cells, fieldContainer, cols } = this;
     const renderCell = (cell) => cell.render();
 
     fieldContainer.innerHTML = '';

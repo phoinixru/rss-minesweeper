@@ -13,7 +13,7 @@ const CssClasses = {
 
 const FIELDS = {
   date: 'Date',
-  status: '',
+  // status: '',
   field: 'Field',
   mines: 'Mines',
   time: 'Time',
@@ -22,7 +22,7 @@ const FIELDS = {
 
 const RECORDS_TO_KEEP = 10;
 
-const NO_RESULTS = 'Nothing to display. Play some games and return later...';
+const NO_RESULTS = 'Nothing to display. Win some games and return later...';
 const timeFormat = new Intl.DateTimeFormat('ru-RU', {
   day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
 });
@@ -40,14 +40,20 @@ export default class Results {
   save(game) {
     const { results } = this;
 
-    const { config, counters, isWon } = game;
+    const {
+      counters, isWon, rows, cols, mines,
+    } = game;
+
+    if (!isWon) {
+      return;
+    }
+
     const ts = Date.now();
     const time = +counters.time;
     const moves = +counters.moves;
-    const { rows, cols, mines } = config;
 
     const result = {
-      ts, isWon, time, moves, rows, cols, mines,
+      ts, isWon, time, moves, rows, cols, mines: mines.length,
     };
 
     results.unshift(result);
@@ -66,7 +72,7 @@ export default class Results {
 
     if (!results.length) {
       this.container.append(
-        elt('div', { className: CssClasses.EMPTY }, NO_RESULTS),
+        elt('div', { className: CssClasses.EMPTY, innerHTML: NO_RESULTS }),
         buttons,
       );
 

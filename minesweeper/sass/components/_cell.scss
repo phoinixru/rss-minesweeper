@@ -18,7 +18,7 @@
     background-position: center center;
     background-size: cover;
     font-size: 1.5em;
-    transition: all 0.4s;
+    transition: opacity 0.4s, transform 0.4s;
   }
 
   &:after {

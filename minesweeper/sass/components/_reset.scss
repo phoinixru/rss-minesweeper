@@ -24,6 +24,10 @@
     font-size: 2.5em;
   }
 
+  &:hover:before {
+    content: '🤪';
+  }
+
   &--look-left:before {
     content: '🫤';
   }
