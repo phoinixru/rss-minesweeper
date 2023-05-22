@@ -50,8 +50,15 @@
   }
 
   .minesweeper--lost {
-    .cell--flagged:not(.cell--mined):after {
-      background-image: url('../icons/palmos.svg#nomine');
+    .cell--flagged:not(.cell--mined) {
+      &:before {
+        content: '';
+      }
+
+      &:after {
+        content: '';
+        background-image: url('../icons/palmos.svg#nomine');
+      }
     }
   }
 

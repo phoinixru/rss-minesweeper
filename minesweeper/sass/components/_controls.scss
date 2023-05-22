@@ -1,6 +1,6 @@
 .controls {
   display: grid;
-  grid-template-columns: 1fr 32px 1fr;
+  grid-template-columns: 1fr auto 1fr;
   place-items: center;
   padding: .5em;
 }

@@ -1,1 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+@font-face {
+  font-family: 'Palm OS';
+  src: url('../fonts/palmos/PalmOS.woff2') format('woff2'),
+    url('../fonts/palmos/PalmOS.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
