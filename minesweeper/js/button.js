@@ -11,6 +11,7 @@ const BUTTONS = {
   ok: 'Ok',
   nice: 'Nice!',
   again: 'I\'ll try',
+  erase: 'Erase',
 };
 
 export default class Button {

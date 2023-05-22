@@ -62,13 +62,19 @@ export default class Results {
     this.render();
   }
 
+  reset() {
+    this.results = [];
+    this.storage.set('results', this.results);
+    this.render();
+  }
+
   render() {
     const { results } = this;
     this.container.innerHTML = '';
 
-    const buttons = Button.container();
     const btnOk = Button.button({ id: 'ok', pane: 'game' });
-    buttons.append(btnOk);
+
+    const buttons = Button.container(btnOk);
 
     if (!results.length) {
       this.container.append(
@@ -78,6 +84,10 @@ export default class Results {
 
       return;
     }
+
+    const btnErase = Button.button({ id: 'erase' });
+    btnErase.addEventListener('click', () => this.reset());
+    buttons.append(btnErase);
 
     const container = elt('div', { className: CssClasses.COMPONENT });
 
