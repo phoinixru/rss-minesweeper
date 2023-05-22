@@ -367,7 +367,6 @@ body {
 
 .page {
   min-height: 100vh;
-  min-width: 500px;
   background-color: var(--bg-page);
   background-image: var(--bg-page-gradient);
   user-select: none;
@@ -426,7 +425,13 @@ body {
 
 @media (min-width: 700px) {
   .field[data-cols="25"] {
-    --cell-size: 2.6rem;
+    --cell-size: min(3.3vw, 3.3vh);
+  }
+  .field[data-cols="15"] {
+    --cell-size: max(2.6rem, min(4vw, 4vh));
+  }
+  .field[data-cols="10"] {
+    --cell-size: max(2.6rem, min(4vw, 4vh));
   }
 }
 .cell {
@@ -583,7 +588,7 @@ body {
 
 .pane--win,
 .pane--loose {
-  min-width: 75%;
+  max-width: 30rem;
   top: 50%;
   transform: translate(-50%, -50%);
 }
@@ -640,6 +645,7 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.5em 0;
+  max-width: 20rem;
 }
 
 .config__field {
