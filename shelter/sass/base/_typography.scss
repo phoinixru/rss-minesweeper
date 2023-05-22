@@ -1,0 +1,94 @@
+body {
+  font-family: var(--ff-serif);
+  font-smooth: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Styles from Figma */
+%heading {
+  font-weight: 400;
+  @include letter-spacing();
+}
+
+%h2 {
+  @extend %heading;
+  @include font(2.5rem, 3.2rem);
+
+  @include mq($from: tablet) {
+    @include font(4.4rem, 5.7rem);
+    letter-spacing: normal;
+  }
+}
+
+%h3 {
+  @extend %heading;
+  @include font(2.5rem, 3.2rem);
+
+  @include mq($from: tablet) {
+    @include font(3.5rem, 4.5rem);
+  }
+}
+
+%h4 {
+  @extend %heading;
+  @include font(2rem, 2.3rem);
+}
+
+%h5 {
+  @extend %heading;
+  @include font(1.5rem, 1.7rem);
+}
+
+%h5-modal-window {
+  @extend %h5;
+  font-weight: 700;
+}
+
+%paragraph-l {
+  @include font(1.5rem, 2.4rem);
+}
+
+%paragraph-s {
+  @include font(1.2rem, 1.8rem);
+  font-style: italic;
+}
+
+%logo_title {
+  @extend %heading;
+  @include font(3.2rem, 3.5rem);
+}
+
+%logo_subtitle {
+  font-family: var(--ff-sans-serif);
+  @include font(1.3rem, 1.5rem);
+  @include letter-spacing(0.1em);
+}
+
+
+h2 {
+  @extend %h2;
+}
+
+h3 {
+  @extend %h3;
+}
+
+h4 {
+  @extend %h4;
+}
+
+h5 {
+  @extend %h5;
+}
+
+p {
+  font-family: var(--ff-sans-serif);
+
+  &.l {
+    @extend %paragraph-l;
+  }
+
+  &.s {
+    @extend %paragraph-s;
+  }
+}

@@ -1,0 +1,44 @@
+.button {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 13px 43px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 26px;
+  cursor: pointer;
+  
+  font: 1.7rem/2.2rem var(--ff-serif);
+  letter-spacing: 0.06em;
+}
+
+.button {
+  transition: all 0.5s;
+}
+
+.button__pagination {
+  padding: 0;
+  height: 52px;
+  width: 52px;
+  text-align: center;
+  line-height: 52px;
+}
+
+/* Buttons */
+.button-primary {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    background: var(--color-primary-light);
+  }
+}
+
+.button-secondary {
+  background: transparent;
+  border-color: var(--color-primary-light);
+
+  &:hover {
+    background: var(--color-primary-light);
+  }
+}

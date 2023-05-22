@@ -1,0 +1,12 @@
+@function responsive-size($from, $to, $media) {
+  $next: tablet;
+
+  @if $media==tablet {
+    $next: desktop;
+  }
+
+  $min: calc(map-get($breakpoints, $media) / 1px);
+  $max: calc(map-get($breakpoints, $next) / 1px);
+
+  @return calc($from * 1px + (100vw - $min * 1px) * (($to - $from) / ($max - $min)));
+}

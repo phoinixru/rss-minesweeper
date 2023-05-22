@@ -1,0 +1,100 @@
+/* Slider modification of pets */
+.slider {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider__slides {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.slider__slide {
+  min-width: 100%;
+  position: relative;
+  left: -100%;
+
+  .show_next &,
+  .show_prev & {
+    transition: transform 1s;
+  }
+
+  .show_next &:nth-child(n+2) {
+    transform: translateX(-100%);
+  }
+
+  .show_prev &:nth-child(-n+2) {
+    transform: translateX(100%);
+  }
+}
+
+.slider__cards {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-around;
+  overflow: hidden;
+  gap: 0;
+  width: 100%;
+  padding: 2rem 0;
+
+
+  &>.slider__card:nth-child(n+2) {
+    display: none;
+  }
+
+  @include mq($from: tablet) {
+    padding: 6rem 4.5rem;
+
+    &>.slider__card:nth-child(2) {
+      display: block;
+    }
+  }
+
+  @include mq($from: desktop) {
+    padding: 6rem;
+
+    &>.slider__card:nth-child(3) {
+      display: block;
+    }
+  }
+
+}
+
+.slider__pagination {
+  display: flex;
+  justify-content: space-between;
+  width: 30rem;
+  padding: 0 5.8rem;
+  margin: 0 auto 4.2rem;
+
+  @include mq($from: tablet) {
+    margin: 0;
+  }
+}
+
+.slider__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@include mq($from: 430px) {
+  .slider__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .slider__prev {
+    left: 0;
+  }
+
+  .slider__next {
+    right: 0;
+  }
+}

@@ -1,0 +1,44 @@
+.header-logo {
+  .page-main & {
+    pointer-events: none;
+  }
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  height: 6rem;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &>* {
+    margin: 0;
+  }
+}
+
+.logo__title {
+  @extend %logo_title;
+  padding-top: 0.1rem;
+  @include transition();
+
+  color: var(--color-dark-l);
+
+  .page-main & {
+    color: var(--color-primary);
+  }
+
+  .header-logo:hover & {
+    color: var(--color-dark-3xl);
+  }
+}
+
+.logo__subtitle {
+  @extend %logo_subtitle;
+  margin-left: 0.4rem;
+
+  color: var(--color-dark-3xl);
+
+  .page-main & {
+    color: var(--color-light-xl);
+  }
+}

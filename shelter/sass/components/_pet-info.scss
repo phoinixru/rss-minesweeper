@@ -1,0 +1,112 @@
+.pet-info {
+  display: grid;
+
+  @include mq($from: tablet) {
+    max-width: 63rem;
+    grid-template-columns: 35rem 1fr;
+  }
+
+  @include mq($from: desktop) {
+    max-width: 90rem;
+    grid-template-columns: 50rem 1fr;
+  }
+
+}
+
+.pet-info__photo {
+  display: none;
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  @include mq($from: tablet) {
+    display: block;
+  }
+}
+
+.pet-info__text {
+  padding: 1rem;
+
+  &>* {
+    margin: 0;
+    color: var(--color-dark-4xl);
+  }
+
+  @include mq($from: desktop) {
+    padding: 5rem 2rem 0 3rem;
+  }
+}
+
+.pet-info__name {
+  margin-bottom: 1rem;
+  text-align: center;
+  @include font(3.5rem, 4.5rem);
+
+  @include mq ($from: tablet) {
+    text-align: left;
+  }
+}
+
+.pet-info__breed {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @include mq ($from: tablet) {
+    text-align: left;
+  }
+
+  @include mq ($from: desktop) {
+    margin-bottom: 4rem;
+  }
+}
+
+.pet-info__description {
+  margin-bottom: 2.5rem;
+  margin-right: -0.1rem;;
+  font-family: var(--font-serif);
+  text-align: justify;
+
+  @include font(1.3rem, 1.4rem);
+  @include letter-spacing();
+
+  @include mq($from: tablet) {
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  @include mq($from: desktop) {
+    @include font(1.5rem, 1.7rem);
+    margin-bottom: 4rem;
+  }
+}
+
+.pet-info__list {
+  @extend %h5;
+  @include letter-spacing();
+
+  strong {
+    @extend %h5-modal-window;
+  }
+
+  li {
+    padding-left: 1.4rem;
+    margin-top: 0.6rem;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 4px;
+      width: 1.4rem;
+      margin-left: -1.4rem;
+      vertical-align: 0.3rem;
+      background: url('../icons/dot.svg') 0 50% no-repeat;
+      background-size: 4px 4px;
+    }
+
+    @include mq($from: desktop) {
+      margin-top: 1.1rem;
+    }
+  }
+}
