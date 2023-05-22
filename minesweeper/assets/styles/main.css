@@ -1,8 +1,8 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 :root {
-  --bg-page: #f0f2f0;
-  --bg-page-gradient: linear-gradient(to right, #f0f2f0, #000c40);
+  --bg-page: #8e9eab;
+  --bg-page-gradient: linear-gradient(to bottom, #8e9eab, #eef2f3);
   --bg-minesweeper: #fdffff;
   --bg-cell: #ffffff;
   --bg-cell-cover: #eeeeee;
@@ -368,7 +368,8 @@ body {
 .page {
   min-height: 100vh;
   min-width: 500px;
-  background: var(--bg-page);
+  background-color: var(--bg-page);
+  background-image: var(--bg-page-gradient);
   user-select: none;
   font-size: 1.3rem;
   background-size: cover;
@@ -777,14 +778,14 @@ input:checked + .config__list-label {
   content: "🤪";
 }
 .reset--look-left:before {
-  content: "🫤";
+  content: "🤔";
 }
 .reset--look-right:before {
-  content: "🫤";
+  content: "🤔";
   transform: scaleX(-1);
 }
 .reset--shock:before {
-  content: "🫣";
+  content: "😲";
   transform: none;
 }
 .reset--god:before {
@@ -894,6 +895,9 @@ input:checked + .config__list-label {
   justify-content: center;
   gap: 0;
 }
+.theme-doom .controls__pane-left .counter {
+  width: 50%;
+}
 .theme-doom .counter {
   display: flex;
   flex-wrap: wrap;
@@ -976,6 +980,8 @@ input:checked + .config__list-label {
 .theme-palmos {
   --color-primary: #000080;
   --color-light: #ffffff;
+  --bg-menu-item-hover: #000080;
+  --color-menu-item-hover: #ffffff;
   --color-n1: #000080;
   --color-n2: #0000ff;
   --color-n3: #008000;
@@ -984,6 +990,8 @@ input:checked + .config__list-label {
   --color-n6: #ff00ff;
   --color-n7: #00ffff;
   --color-n8: #808080;
+  --bg-page: #FFEFBA;
+  --bg-page-gradient: linear-gradient(to bottom, #FFFFFF, #FFEFBA);
 }
 .theme-palmos .cell:before {
   content: "";

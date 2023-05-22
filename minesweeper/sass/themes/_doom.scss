@@ -16,12 +16,6 @@
     &[data-mines]:before {
       filter: invert(1);
     }
-
-    @for $i from 1 through 8 {
-      &[data-mines="#{$i}"] {
-        // background-image: url('../icons/doom.svg#n#{$i}');
-      }
-    }
   }
 
   .pane--game {
@@ -92,6 +86,12 @@
     width: 100%;
     justify-content: center;
     gap: 0;
+  }
+
+  .controls__pane-left {
+    .counter {
+      width: 50%;
+    }
   }
 
   /* Counters */

@@ -29,16 +29,16 @@
   }
 
   &--look-left:before {
-    content: '🫤';
+    content: '🤔';
   }
 
   &--look-right:before {
-    content: '🫤';
+    content: '🤔';
     transform: scaleX(-1);
   }
 
   &--shock:before {
-    content: '🫣';
+    content: '😲';
     transform: none;
   }
 

@@ -2,6 +2,9 @@
   --color-primary: #000080;
   --color-light: #ffffff;
 
+  --bg-menu-item-hover: #000080;
+  --color-menu-item-hover: #ffffff;
+
   --color-n1: #000080;
   --color-n2: #0000ff;
   --color-n3: #008000;
@@ -11,6 +14,8 @@
   --color-n7: #00ffff;
   --color-n8: #808080;
 
+  --bg-page: #FFEFBA;
+  --bg-page-gradient: linear-gradient(to bottom, #FFFFFF, #FFEFBA); 
 
   .cell {
     &:before {
