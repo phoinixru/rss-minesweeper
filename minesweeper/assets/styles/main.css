@@ -927,7 +927,11 @@ input:checked + .config__list-label {
   --color-n7: #00ffff;
   --color-n8: #808080;
 }
+.theme-palmos .cell:before {
+  content: "";
+}
 .theme-palmos .cell:after {
+  content: "";
   border: 0;
   background-image: url("../icons/palmos.svg#cover");
 }

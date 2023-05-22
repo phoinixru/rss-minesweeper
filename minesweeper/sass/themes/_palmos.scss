@@ -13,43 +13,48 @@
 
 
   .cell {
+    &:before {
+      content: '';
+    }
+
     &:after {
+      content: '';
       border: 0;
       background-image: url('../icons/palmos.svg#cover');
     }
   }
-  
+
   .cell--open {
     &[data-mines]:before {
       content: '';
     }
-  
+
     @for $i from 1 through 8 {
       &[data-mines="#{$i}"] {
         background-image: url('../icons/palmos.svg#n#{$i}');
       }
     }
   }
-  
+
   .cell--flagged {
     &:after {
       content: '';
       background-image: url('../icons/palmos.svg#flag');
     }
   }
-  
+
   .cell--mined {
     &:before {
       background-image: url('../icons/palmos.svg#mine');
     }
   }
-  
+
   .minesweeper--lost {
     .cell--flagged:not(.cell--mined):after {
       background-image: url('../icons/palmos.svg#nomine');
     }
   }
-  
+
   .field--pointed {
     .cell:not(.cell--flagged):hover:after {
       background-image: url('../icons/palmos.svg#pressed');
