@@ -11,6 +11,7 @@ import Sounds from './sounds.js';
 import { EVENTS, action } from './events.js';
 import Button from './button.js';
 import Reset from './reset.js';
+import Help from './help.js';
 
 const CssClasses = {
   COMPONENT: 'minesweeper',
@@ -34,11 +35,13 @@ const TITLE = {
   config: 'Preferences',
   win: 'Congratulations!',
   loose: 'Try again',
+  help: 'Help',
 };
 
 const MENU = {
   config: 'Settings',
   results: 'Results',
+  help: 'Help',
 };
 
 const MESSAGE_WIN = 'Hooray! You found all mines in %time% and %moves%!';
@@ -91,6 +94,9 @@ export default class Minesweeper {
 
     const resultsContainer = panes.add({ id: 'results', title: TITLE.results, modal });
     this.results = new Results({ container: resultsContainer });
+
+    const helpContainer = panes.add({ id: 'help', title: TITLE.help, modal });
+    this.help = new Help({ container: helpContainer });
 
     this.winModal = panes.add({ id: 'win', title: TITLE.win, modal });
     this.looseModal = panes.add({ id: 'loose', title: TITLE.loose, modal });

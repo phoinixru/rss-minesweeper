@@ -800,6 +800,23 @@ input:checked + .config__list-label {
   content: "🤬";
 }
 
+.help {
+  --cell-size: 20px;
+  width: 300px;
+  max-height: 250px;
+  overflow: auto;
+  padding: 0.5em;
+  overflow: auto;
+}
+.help .cell {
+  display: inline-block;
+  border: 1px solid var(--field-bg);
+  font-size: 1em;
+  line-height: 1;
+  font-family: var(--ff-field);
+  vertical-align: middle;
+}
+
 .wrapper {
   display: flex;
   min-height: 100vh;
