@@ -49,7 +49,14 @@ const MESSAGE_WIN = 'Hooray! You found all mines in %time% and %moves%!';
 const MESSAGE_LOOSE = 'Game over. Try again...';
 const MESSAGE_RESTORED = 'Game restored from the previous state';
 
-const shuffle = () => Math.random() - 0.5;
+const seededRandom = (seed = Date.now()) => {
+  return () => {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+  }
+};
+const random = seededRandom();
+const shuffle = () => random() - 0.5;
 
 const BUTTON = {
   PRIMARY: 0,
@@ -252,6 +259,7 @@ export default class Minesweeper {
       .filter((id) => id !== excluded)
       .sort(shuffle)
       .slice(0, mines);
+    console.log(cellsToPlant);
 
     this.mines = cellsToPlant;
 
