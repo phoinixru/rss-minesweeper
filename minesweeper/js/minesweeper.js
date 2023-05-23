@@ -158,9 +158,7 @@ export default class Minesweeper {
     }
 
     if (['rows', 'cols', 'mines'].includes(field)) {
-      if (!this.started) {
-        this.reset();
-      }
+      this.reset();
     }
   }
 
