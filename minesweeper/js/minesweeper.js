@@ -36,6 +36,7 @@ const TITLE = {
   win: 'Congratulations!',
   loose: 'Try again',
   help: 'Help',
+  restored: 'Game restored',
 };
 
 const MENU = {
@@ -46,6 +47,7 @@ const MENU = {
 
 const MESSAGE_WIN = 'Hooray! You found all mines in %time% and %moves%!';
 const MESSAGE_LOOSE = 'Game over. Try again...';
+const MESSAGE_RESTORED = 'Game restored from the previous state';
 
 const shuffle = () => Math.random() - 0.5;
 
@@ -100,6 +102,7 @@ export default class Minesweeper {
 
     this.winModal = panes.add({ id: 'win', title: TITLE.win, modal });
     this.looseModal = panes.add({ id: 'loose', title: TITLE.loose, modal });
+    this.restoredModal = panes.add({ id: 'restored', title: TITLE.restored, modal });
 
     this.counters = {
       moves: new Counter({ id: 'moves' }),
@@ -495,6 +498,7 @@ export default class Minesweeper {
     this.started = true;
     this.counters.time.start();
     this.updateFlagsCounter();
+    this.sounds.playMusic();
   }
 
   reset() {
@@ -635,7 +639,14 @@ export default class Minesweeper {
       this.cells[id].state = state;
     });
 
-    this.start();
+    const message = elt('div', { className: CssClasses.MESSAGE }, MESSAGE_RESTORED);
+    const btnOk = Button.button({ id: 'ok', pane: 'game' });
+    const buttons = Button.container(btnOk);
+    this.restoredModal.append(message, buttons);
+
+    this.panes.show('restored');
+
+    btnOk.addEventListener('click', () => this.start());
   }
 
   restoreCounter(name, value) {
