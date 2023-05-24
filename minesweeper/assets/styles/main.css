@@ -6,7 +6,7 @@
   --bg-minesweeper: #fdffff;
   --bg-cell: #ffffff;
   --bg-cell-cover: #eeeeee;
-  --field-bg: #000000;
+  --field-bg: #999999;
   --cell-cover: #cccccc;
   --cell-cover-border: #dddddd;
   --color-n1: #0d00ff;
@@ -988,6 +988,7 @@ input:checked + .config__list-label {
 .theme-palmos {
   --color-primary: #000080;
   --color-light: #ffffff;
+  --field-bg: #000000;
   --bg-menu-item-hover: #000080;
   --color-menu-item-hover: #ffffff;
   --color-n1: #000080;

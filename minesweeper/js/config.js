@@ -11,9 +11,9 @@ const DEFAULT_MINES = 10;
 const DEFAULT_THEME = 'default';
 
 const DEFAULT_SOUND = true;
-const DEFAULT_SOUND_VOLUME = 100;
+const DEFAULT_SOUND_VOLUME = 80;
 
-const DEFAULT_MUSIC = false;
+const DEFAULT_MUSIC = true;
 const DEFAULT_MUSIC_VOLUME = 10;
 
 const HANDLE_EMPTY_CELLS = true;
