@@ -259,7 +259,6 @@ export default class Minesweeper {
       .filter((id) => id !== excluded)
       .sort(shuffle)
       .slice(0, mines);
-    console.log(cellsToPlant);
 
     this.mines = cellsToPlant;
 
@@ -399,48 +398,50 @@ export default class Minesweeper {
       handleOpenCells,
     } = this.config;
 
-    let cellsToOpen = [id];
-    let emptyCells = new Set();
+    let cellsToOpen = [];
+    let layersToOpen = [];
     const isNotOpenCell = this.filter('isOpen', isNot);
 
-    if (handleOpenCells && isOpen && !isEmpty) {
-      const isNotFlaggedCell = this.filter('isFlagged', isNot);
-      const isEmptyCell = this.filter('isEmpty');
+    if (isOpen) {
+      if (handleOpenCells && !isEmpty) {
+        const isNotFlaggedCell = this.filter('isFlagged', isNot);
+        const isFlaggedCell = this.filter('isFlagged');
 
-      const { minesAround, adjacent } = cell;
-      const adjacentFlagged = adjacent.filter(this.filter('isFlagged')).length;
+        const { minesAround, adjacent } = cell;
+        const adjacentFlagged = adjacent.filter(isFlaggedCell).length;
 
-      if (minesAround !== adjacentFlagged) {
+        if (minesAround !== adjacentFlagged) {
+          return;
+        }
+
+        const notFlagged = adjacent.filter(isNotFlaggedCell);
+        const notOpen = notFlagged.filter(isNotOpenCell);
+
+        cellsToOpen.push(...notOpen);
+        console.log(cellsToOpen);
+      } else {
         return;
       }
-
-      const notFlagged = adjacent.filter(isNotFlaggedCell);
-      const notOpen = notFlagged.filter(isNotOpenCell);
-      const adjacentEmpty = notOpen.filter(isEmptyCell);
-
-      cellsToOpen.push(...notOpen);
-      emptyCells = new Set(adjacentEmpty);
+    } else {
+      cellsToOpen.push(id);
     }
 
     if (handleEmptyCells) {
-      if (cell.isEmpty) {
-        emptyCells.add(id);
-      }
-
-      const selectedCells = this.selectCellsToOpen([...emptyCells]);
-      cellsToOpen.push(...selectedCells);
+      layersToOpen = this.selectCellsToOpen(cellsToOpen);
+    } else {
+      layersToOpen = [cellsToOpen];
     }
-
-    cellsToOpen = cellsToOpen.filter(isNotOpenCell);
 
     const isCellMined = this.filter('isMined');
+    
+    cellsToOpen = layersToOpen.flat();
     const bombCell = cellsToOpen.filter(isCellMined).slice(0, 1);
     if (bombCell.length) {
-      cellsToOpen = bombCell;
+      layersToOpen = [bombCell];
     }
 
-    cellsToOpen.forEach((openId) => {
-      this.cells[openId].open();
+    layersToOpen.forEach((layer, order) => {
+      layer.forEach((openId) => this.cells[openId].open(order));
     });
 
     if (cellsToOpen.length) {
@@ -450,29 +451,31 @@ export default class Minesweeper {
   }
 
   selectCellsToOpen(ids) {
-    const toCheck = [...ids];
-    let toOpen = [...ids];
-    let i = 0;
-    let checkId = toCheck[i];
+    const layers = [];
+    const checked = [];
+    let layer = ids;
 
-    const isNotYetChecked = (cellId) => !toCheck.includes(cellId);
+    const isNotYetChecked = (cellId) => !checked.includes(cellId);
     const isEmpty = this.filter('isEmpty');
     const isNotOpen = this.filter('isOpen', isNot);
 
-    while (checkId !== undefined) {
-      const { adjacent } = this.cells[checkId];
-      const notOpen = adjacent.filter(isNotOpen);
-      const notChecked = notOpen.filter(isEmpty).filter(isNotYetChecked);
+    do {
+      layers.push([...layer]);
+      checked.push(...layer);
+      const emptyCells = layer.filter(isEmpty);
+      if (emptyCells.length) {
+        layer = [
+          ...new Set(emptyCells
+            .flatMap((id) => this.cells[id].adjacent)
+            .filter(isNotOpen)
+            .filter(isNotYetChecked))
+        ];
+      } else {
+        layer = [];
+      }
+    } while (layer.length);
 
-      toOpen.push(...notOpen);
-      toCheck.push(...notChecked);
-
-      checkId = toCheck[i += 1];
-    }
-
-    toOpen = [...new Set(toOpen)];
-
-    return toOpen;
+    return layers;
   }
 
   filter(flag, func = is) {

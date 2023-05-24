@@ -23,7 +23,7 @@
 
 @media (min-width: 700px) {
   .field[data-cols='25'] {
-    --cell-size: min(3.3vw, 3.3vh);
+    --cell-size: max(2.5rem, min(3.3vw, 3.3vh));
   }
 
   .field[data-cols='15'] {

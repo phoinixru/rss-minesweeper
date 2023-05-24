@@ -20,6 +20,8 @@ const STATE = {
   FLAGGED: 4,
 };
 
+const DELAY = 50;
+
 class Cell {
   constructor({
     x, y, id, rows, cols, game,
@@ -68,7 +70,8 @@ class Cell {
     this.isEmpty = !this.minesAround;
   }
 
-  open() {
+  open(order) {
+    this.order = order;
     this.isOpen = true;
     this.isFlagged = false;
     this.render();
@@ -93,10 +96,12 @@ class Cell {
       minesAround,
       game,
       element,
+      order = 0,
     } = this;
     const { classList } = element;
     const { isOver } = game;
 
+    element.style.transitionDelay = `${order * DELAY}ms`;
     if (isOpen) {
       classList.add(CssClasses.CELL_OPEN);
 

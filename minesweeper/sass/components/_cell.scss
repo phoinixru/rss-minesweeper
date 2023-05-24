@@ -7,6 +7,7 @@
 
   background: var(--bg-cell);
   cursor: pointer;
+  transition: none;
 
   &:before,
   &:after {
@@ -19,6 +20,7 @@
     background-size: cover;
     font-size: 1.5em;
     transition: opacity 0.4s, transform 0.4s;
+    transition-delay: inherit;
   }
 
   &:after {
