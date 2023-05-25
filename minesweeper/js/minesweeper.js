@@ -6,7 +6,7 @@ import Counter from './cntr.js';
 import Storage from './storage.js';
 import Results from './results.js';
 import Panes from './panes.js';
-import Config from './config.js';
+import { Config, FIELD_SETTINGS } from './config.js';
 import Sounds from './sounds.js';
 import { EVENTS, action } from './events.js';
 import Button from './button.js';
@@ -167,7 +167,7 @@ export default class Minesweeper {
       this.setTheme();
     }
 
-    if (['rows', 'cols', 'mines'].includes(field)) {
+    if (FIELD_SETTINGS.includes(field)) {
       this.reset();
     }
   }
@@ -433,7 +433,7 @@ export default class Minesweeper {
     }
 
     const isCellMined = this.filter('isMined');
-    
+
     cellsToOpen = layersToOpen.flat();
     const bombCell = cellsToOpen.filter(isCellMined).slice(0, 1);
     if (bombCell.length) {

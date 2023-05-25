@@ -33,4 +33,12 @@
   .field[data-cols='10'] {
     --cell-size: max(2.6rem, min(4vw, 4vh));
   }
+
+  .field[data-cols='9'] {
+    --cell-size: max(2.6rem, min(4vw, 4vh));
+  }
+
+  .field[data-cols='8'] {
+    --cell-size: max(3.5rem, min(5vw, 5vh));
+  }
 }

@@ -9,6 +9,7 @@ const DEFAULT_ROWS = 10;
 const DEFAULT_COLS = 10;
 const DEFAULT_MINES = 10;
 const DEFAULT_THEME = 'doom';
+const DEFAULT_PRESET = 'none';
 
 const DEFAULT_SOUND = true;
 const DEFAULT_SOUND_VOLUME = 80;
@@ -29,6 +30,21 @@ const THEMES = entries({
   doom: 'Dark',
   palmos: 'PalmOS',
 });
+const PRESETS = entries({
+  none: 'Choose...',
+  beginner: 'Beginner',
+  beginner_new: 'Beginner (Win 2000)',
+  intermediate: 'Intermediate',
+  expert: 'Expert',
+  expert_new: 'Expert (WEP)',
+});
+const PRESET_SETTINGS = {
+  beginner: { cols: 8, rows: 8, mines: 10 },
+  beginner_new: { cols: 9, rows: 9, mines: 10 },
+  intermediate: { cols: 16, rows: 16, mines: 40 },
+  expert: { cols: 24, rows: 24, mines: 99 },
+  expert_new: { cols: 30, rows: 16, mines: 99 },
+}
 
 const DEFAULTS = {
   handleEmptyCells: HANDLE_EMPTY_CELLS,
@@ -41,9 +57,20 @@ const DEFAULTS = {
   soundVolume: DEFAULT_SOUND_VOLUME,
   music: DEFAULT_MUSIC,
   musicVolume: DEFAULT_MUSIC_VOLUME,
+  preset: DEFAULT_PRESET,
 };
 
+const FIELD_SETTINGS = [
+  'rows', 'cols', 'mines', 'preset',
+];
+
 const CONFIG = {
+  preset: {
+    type: 'select',
+    label: 'Preset',
+    options: PRESETS,
+    fields: ['preset'],
+  },
   board: {
     type: 'radio',
     label: 'Board size',
@@ -94,11 +121,12 @@ const CssClasses = {
   CHECKBOX: 'config__checkbox',
   CHECKBOX_LABEL: 'config__checkbox-label',
   RANGE: 'config__range',
+  SELECT: 'config__select',
   BUTTONS: 'buttons',
   BUTTON: 'button',
 };
 
-export default class Config {
+class Config {
   constructor({ container }) {
     this.container = container;
     this.storage = new Storage();
@@ -136,6 +164,16 @@ export default class Config {
 
       const oldValue = this[field];
       this[field] = newValue;
+
+      if (FIELD_SETTINGS.includes(field)) {
+        if (field === 'preset') {
+          const preset = PRESET_SETTINGS[value] || {};
+          assign(this, preset);
+        } else {
+          this.preset = '';
+        }
+        this.render();
+      }
 
       dispatch(EVENTS.config, { detail: { field, value: newValue, oldValue } });
     });
@@ -209,6 +247,20 @@ export default class Config {
       return elt('div', { className: CssClasses.RANGE }, el);
     };
 
+    const select = ({ name, options, current }, idx) => {
+      const select = elt('select', { className: CssClasses.SELECT, name });
+
+      options.forEach(([value, label]) => {
+        const selected = value === current;
+        const defaultSelected = !idx;
+        const option = new Option(label, value, defaultSelected, selected);
+
+        select.append(option);
+      });
+
+      return select;
+    };
+
     entries(CONFIG).forEach(([id, pref]) => {
       const {
         type, label, options, fields, slider,
@@ -243,6 +295,12 @@ export default class Config {
         );
       }
 
+      if (type === 'select') {
+        fieldset.append(
+          select({ name, options, current }),
+        );
+      }
+
       if (slider) {
         fieldset.append(
           range(slider),
@@ -261,3 +319,5 @@ export default class Config {
     );
   }
 }
+
+export { FIELD_SETTINGS, Config };
