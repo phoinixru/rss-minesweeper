@@ -250,14 +250,15 @@ export default class Minesweeper {
 
   generateMines(clickedCellId) {
     const { cells, config } = this;
-    const { mines } = config;
+    const { mines, rows, cols } = config;
+    const minesCount = Math.min(rows * cols - 1, mines);
     const excluded = +clickedCellId;
 
     const allCells = keys(cells)
       .map((idx) => +idx)
       .filter((id) => id !== excluded);
 
-    const cellsToPlant = Array(mines)
+    const cellsToPlant = Array(minesCount)
       .fill(0)
       .map(() => allCells.splice(
         random() * allCells.length, 1
@@ -499,9 +500,9 @@ export default class Minesweeper {
   }
 
   updateFlagsCounter() {
-    const { mines } = this.config;
+    const { mines } = this;
     const flaggedCells = this.cells.filter(({ isFlagged }) => isFlagged).length;
-    const flagsLeft = mines - flaggedCells;
+    const flagsLeft = mines.length - flaggedCells;
 
     this.updateCounter('flags', flagsLeft);
   }
