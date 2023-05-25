@@ -1,4 +1,4 @@
-import { elt } from './utils.js';
+import { elt, qs } from './utils.js';
 
 const CssClasses = {
   COMPONENT: 'panes',
@@ -71,6 +71,7 @@ export default class Panes {
     this.#container.classList.toggle(CssClasses.HAS_MODAL, isTargetModal);
 
     if (isTargetModal) {
+      qs('button', targetPane).focus();
       return;
     }
 
