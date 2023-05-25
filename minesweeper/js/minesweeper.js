@@ -56,7 +56,6 @@ const seededRandom = (seed = Date.now()) => {
   }
 };
 const random = seededRandom();
-const shuffle = () => random() - 0.5;
 
 const BUTTON = {
   PRIMARY: 0,
@@ -254,11 +253,15 @@ export default class Minesweeper {
     const { mines } = config;
     const excluded = +clickedCellId;
 
-    const cellsToPlant = keys(cells)
+    const allCells = keys(cells)
       .map((idx) => +idx)
-      .filter((id) => id !== excluded)
-      .sort(shuffle)
-      .slice(0, mines);
+      .filter((id) => id !== excluded);
+
+    const cellsToPlant = Array(mines)
+      .fill(0)
+      .map(() => allCells.splice(
+        random() * allCells.length, 1
+      ).pop())
 
     this.mines = cellsToPlant;
 
