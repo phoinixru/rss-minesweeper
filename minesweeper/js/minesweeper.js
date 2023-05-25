@@ -403,25 +403,29 @@ export default class Minesweeper {
     const isNotOpenCell = this.filter('isOpen', isNot);
 
     if (isOpen) {
-      if (handleOpenCells && !isEmpty) {
-        const isNotFlaggedCell = this.filter('isFlagged', isNot);
-        const isFlaggedCell = this.filter('isFlagged');
-
-        const { minesAround, adjacent } = cell;
-        const adjacentFlagged = adjacent.filter(isFlaggedCell).length;
-
-        if (minesAround !== adjacentFlagged) {
-          return;
-        }
-
-        const notFlagged = adjacent.filter(isNotFlaggedCell);
-        const notOpen = notFlagged.filter(isNotOpenCell);
-
-        cellsToOpen.push(...notOpen);
-        console.log(cellsToOpen);
-      } else {
+      if (!handleOpenCells || isEmpty) {
         return;
       }
+
+      const isNotFlaggedCell = this.filter('isFlagged', isNot);
+      const isFlaggedCell = this.filter('isFlagged');
+
+      const { minesAround, adjacent } = cell;
+      const adjacentFlagged = adjacent.filter(isFlaggedCell).length;
+      const notOpen = adjacent.filter(isNotOpenCell);
+
+      if (minesAround === notOpen.length) {
+        notOpen.filter(isNotFlaggedCell)
+          .forEach((cellId) => this.flagCell(cellId));
+        return;
+      }
+
+      if (minesAround !== adjacentFlagged) {
+        return;
+      } else {
+        cellsToOpen.push(...notOpen.filter(isNotFlaggedCell));
+      }
+
     } else {
       cellsToOpen.push(id);
     }
