@@ -132,33 +132,43 @@ export default class Minesweeper {
   }
 
   addEventListeners() {
-    const clickHandler = (event) => this.handleClicks(event);
-    const mouseHandler = (event) => this.handleMouse(event);
-    this.gameContainer.addEventListener('click', clickHandler);
-    this.gameContainer.addEventListener('contextmenu', clickHandler);
-    this.fieldContainer.addEventListener('mouseover', mouseHandler);
-    this.fieldContainer.addEventListener('mouseleave', mouseHandler);
+    const {
+      handleClicks,
+      handleMouse,
+      handlePointer,
+      handleConfig,
+      handleAction,
+      saveState,
+      enterKode,
 
-    const pointerHandler = (event) => this.handlePointer(event);
-    document.addEventListener('pointerdown', pointerHandler);
-    document.addEventListener('pointerup', pointerHandler);
+      gameContainer,
+      fieldContainer,
+    } = this;
 
-    const saveState = (event) => this.saveState(event);
+    gameContainer.addEventListener('click', handleClicks);
+    gameContainer.addEventListener('contextmenu', handleClicks);
+    fieldContainer.addEventListener('mouseover', handleMouse);
+    fieldContainer.addEventListener('mouseleave', handleMouse);
+
+    document.addEventListener('pointerdown', handlePointer);
+    document.addEventListener('pointerup', handlePointer);
+
     window.addEventListener('beforeunload', saveState);
 
-    document.addEventListener('keydown', (event) => this.enterKode(event));
+    document.addEventListener('keydown', enterKode);
 
-    const configHandler = (event) => this.handleConfig(event);
-    document.addEventListener(EVENTS.config, configHandler);
-
-    document.addEventListener(EVENTS.action, (event) => {
-      if (event.detail.action === 'reset') {
-        this.reset();
-      }
-    });
+    document.addEventListener(EVENTS.config, handleConfig);
+    document.addEventListener(EVENTS.action, handleAction);
   }
 
-  handleConfig(event) {
+  handleAction = (event) => {
+    const { detail: { action } } = event;
+    if (action === 'reset') {
+      this.reset();
+    }
+  }
+
+  handleConfig = (event) => {
     const { detail } = event;
     const { field } = detail;
 
@@ -175,7 +185,7 @@ export default class Minesweeper {
 
   #godMode = false;
 
-  enterKode(event) {
+  enterKode = (event) => {
     const { code } = event;
     const key = KEYS[code.replace(/Key|Arrow/, '')] || code;
 
@@ -203,7 +213,7 @@ export default class Minesweeper {
     this.updateFlagsCounter();
   }
 
-  handleMouse(event) {
+  handleMouse = (event) => {
     const { type } = event;
 
     if (type === 'mouseover') {
@@ -213,7 +223,7 @@ export default class Minesweeper {
     }
   }
 
-  handlePointer(event) {
+  handlePointer = (event) => {
     const { type, button } = event;
     const isPointerDown = type === 'pointerdown' && button === BUTTON.PRIMARY;
     this.container.classList.toggle(CssClasses.FIELD_POINTED, isPointerDown);
@@ -235,7 +245,7 @@ export default class Minesweeper {
     }
   }
 
-  handleClicks(event) {
+  handleClicks = (event) => {
     event.preventDefault();
 
     const { target, button } = event;
@@ -623,7 +633,7 @@ export default class Minesweeper {
     classList.toggle(CssClasses.GAME_WON, isWon);
   }
 
-  saveState() {
+  saveState = () => {
     let state = null;
     if (this.started && !this.isOver) {
       const { mines, cells, counters: { time, moves } } = this;
