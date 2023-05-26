@@ -15,7 +15,7 @@ const cell = ({
 
   classList.toggle(CellClasses.CELL_FLAGGED, flagged);
   classList.toggle(CellClasses.CELL_OPEN, open);
-  classList.toggle(CellClasses.CELL_MINED, mined);
+  classList.toggle(CellClasses.CELL_MINED, mined || flagged);
 
   if (mines) {
     el.dataset.mines = mines;
