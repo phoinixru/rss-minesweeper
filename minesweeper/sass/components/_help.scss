@@ -18,6 +18,10 @@
 
   .field {
     width: fit-content;
+
+    .cell {
+      border: 0;
+    }
   }
 
   .example {
