@@ -836,6 +836,15 @@ input:checked + .config__list-label {
   font-family: var(--ff-field);
   vertical-align: middle;
 }
+.help .field {
+  width: fit-content;
+}
+.help .example {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
 
 .wrapper {
   display: flex;

@@ -15,4 +15,15 @@
     font-family: var(--ff-field);
     vertical-align: middle;
   }
+
+  .field {
+    width: fit-content;
+  }
+
+  .example {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+  }
 }
