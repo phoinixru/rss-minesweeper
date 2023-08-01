@@ -1,0 +1,11 @@
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.counter:before {
+  content: attr(data-title) ':';
+  margin-right: 0.2em;
+}

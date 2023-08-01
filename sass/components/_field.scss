@@ -1,0 +1,44 @@
+.field {
+  position: relative;
+  display: grid;
+  gap: 1px;
+  padding: 1px;
+  background: var(--field-bg);
+  font-family: var(--ff-field);
+
+  --cell-size: 2.6rem;
+}
+
+.minesweeper--over {
+  .field:after {
+    content: '';
+    @extend %cover;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.field[data-cols='25'] {
+  --cell-size: 1.8rem;
+}
+
+@media (min-width: 700px) {
+  .field[data-cols='25'] {
+    --cell-size: max(2.5rem, min(3.3vw, 3.3vh));
+  }
+
+  .field[data-cols='15'] {
+    --cell-size: max(2.6rem, min(4vw, 4vh));
+  }
+
+  .field[data-cols='10'] {
+    --cell-size: max(2.6rem, min(4vw, 4vh));
+  }
+
+  .field[data-cols='9'] {
+    --cell-size: max(3rem, min(4vw, 4vh));
+  }
+
+  .field[data-cols='8'] {
+    --cell-size: max(3.5rem, min(5vw, 5vh));
+  }
+}

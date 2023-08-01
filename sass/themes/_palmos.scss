@@ -1,0 +1,75 @@
+.theme-palmos {
+  --color-primary: #000080;
+  --color-light: #ffffff;
+  --field-bg: #000000;
+  --bg-menu-item-hover: #000080;
+  --color-menu-item-hover: #ffffff;
+
+  --color-n1: #000080;
+  --color-n2: #0000ff;
+  --color-n3: #008000;
+  --color-n4: #800000;
+  --color-n5: #ff0000;
+  --color-n6: #ff00ff;
+  --color-n7: #00ffff;
+  --color-n8: #808080;
+
+  --bg-page: #FFEFBA;
+  --bg-page-gradient: linear-gradient(to bottom, #FFFFFF, #FFEFBA); 
+
+  .cell {
+    &:before {
+      content: '';
+    }
+
+    &:after {
+      content: '';
+      border: 0;
+      background-image: url('../icons/palmos.svg#cover');
+    }
+  }
+
+  .cell--open {
+    &[data-mines]:before {
+      content: '';
+    }
+
+    @for $i from 1 through 8 {
+      &[data-mines="#{$i}"] {
+        background-image: url('../icons/palmos.svg#n#{$i}');
+      }
+    }
+  }
+
+  .cell--flagged {
+    &:after {
+      content: '';
+      background-image: url('../icons/palmos.svg#flag');
+    }
+  }
+
+  .cell--mined {
+    &:before {
+      background-image: url('../icons/palmos.svg#mine');
+    }
+  }
+
+  .minesweeper--lost {
+    .cell--flagged:not(.cell--mined) {
+      &:before {
+        content: '';
+      }
+
+      &:after {
+        content: '';
+        background-image: url('../icons/palmos.svg#nomine');
+      }
+    }
+  }
+
+  .field--pointed {
+    .cell:not(.cell--flagged):hover:after {
+      background-image: url('../icons/palmos.svg#pressed');
+    }
+  }
+}

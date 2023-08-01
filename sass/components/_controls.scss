@@ -1,0 +1,22 @@
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  place-items: center;
+  padding: .5em;
+}
+
+.controls__pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.controls__pane-left {
+  justify-self: start;
+}
+.controls__pane-center {
+  place-items: center;
+}
+.controls__pane-right {
+  justify-self: end;
+}

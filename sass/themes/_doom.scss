@@ -1,0 +1,171 @@
+.theme-doom {
+  --color-primary: #4f0000;
+  --field-bg: #4f0000;
+
+  --bg-menu: #dddddd;
+  --color-menu-item: #333;
+  --bg-menu-item-hover: #4f0000;
+  --color-menu-item-hover: #ffffff;
+
+  --bg-cell: #666666;
+
+
+  background-image: url('../images/doom/bg.jpg');
+
+  .cell--open {
+    &[data-mines]:before {
+      filter: invert(1);
+    }
+  }
+
+  .pane--game {
+    .pane__content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  /* Reset button */
+  .reset {
+    background: #1b1b1b;
+    border: 1px solid #0b0b0b;
+
+    &:before {
+      content: '';
+      width: 32px;
+      height: 32px;
+      background-image: url('../images/doom/guy.png');
+      background-repeat: no-repeat;
+      background-position: 50% 0;
+    }
+
+    &--look-center:before {
+      background-position: 50% 0;
+    }
+
+    &--look-left:before {
+      background-position: 50% -32px;
+      transform: none;
+    }
+
+    &--look-right:before {
+      background-position: 50% -64px;
+      transform: none;
+    }
+
+    &--shock:before {
+      background-position: 50% -192px;
+    }
+
+    &--god:before {
+      background-position: 50% -96px;
+    }
+
+    &--win:before {
+      background-position: 50% -128px;
+    }
+
+    &--loose:before {
+      background-position: 50% -160px;
+    }
+
+    &:active:before {
+      background-position: 50% -288px;
+    }
+  }
+
+  /* Controls */
+  .controls {
+    order: 2;
+    background: #aaa url('../images/doom/controls.png');
+    padding: 0;
+  }
+
+  .controls__pane {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .controls__pane-left {
+    .counter {
+      width: 50%;
+    }
+  }
+
+  /* Counters */
+  .counter {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 0.3em 0.3em 1.3em;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    &:before {
+      content: '';
+    }
+
+    &:after {
+      content: attr(data-title);
+      text-transform: uppercase;
+      font-weight: bold;
+      position: absolute;
+      bottom: 0.1em;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .counter span {
+    font-size: 1px;
+    text-indent: -10px;
+    overflow: hidden;
+    width: 15px;
+    height: 16px;
+    background-image: url('../images/doom/counter.png');
+    background-repeat: no-repeat;
+
+    @for $i from 1 through 9 {
+      &[data-char="#{$i}"] {
+        background-position: #{$i * -15px} 0;
+      }
+    }
+
+    &[data-char="-"] {
+      background-position: -150px 0;
+    }
+  }
+
+  /* Cells */
+  .cell--mined {
+    &:before {
+      content: '';
+      background-image: url('../images/doom/bomb.png');
+    }
+  }
+
+  .minesweeper--lost {
+    .cell--flagged:not(.cell--mined) {
+      &:before {
+        content: '';
+        background-image: url('../images/doom/bomb.png');
+      }
+
+      &:after {
+        content: '';
+        background-color: transparent;
+        background-image: url('../images/doom/nomine.svg');
+      }
+    }
+  }
+}

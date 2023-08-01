@@ -1,0 +1,60 @@
+.reset {
+  cursor: pointer;
+  border-style: outset;
+  border-width: 5px;
+  border-color: var(--cell-border);
+  background: var(--cell-cover);
+  padding: 0;
+
+  &:active {
+    border-style: inset;
+  }
+
+  span {
+    display: none;
+  }
+
+  &:before {
+    content: '😐';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 2.5em;
+  }
+
+  &:hover:before {
+    content: '🤪';
+  }
+
+  &--look-left:before {
+    content: '🤔';
+  }
+
+  &--look-right:before {
+    content: '🤔';
+    transform: scaleX(-1);
+  }
+
+  &--shock:before {
+    content: '😲';
+    transform: none;
+  }
+
+  &--god:before {
+    content: '😈';
+  }
+
+  &--loose:before {
+    content: '😵'
+  }
+
+  &--win:before {
+    content: '😎'
+  }
+
+  &:active:before {
+    content: '🤬';
+  }
+}

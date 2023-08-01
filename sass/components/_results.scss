@@ -1,0 +1,35 @@
+.results {
+  padding: 0.5em 0.5em 0;
+}
+
+.results__table {
+  width: 100%;
+  font-family: Tahoma;
+  font-size: 1em;
+  white-space: nowrap;
+
+  th {
+    font-family: var(--ff-field);
+    font-size: 0.9em;
+    padding: 0 0.3em;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+
+  td {
+    text-align: center;
+    padding: 0.2em 0.3em 0;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+}
+
+.results__empty {
+  max-width: 250px;
+  padding: 1em;
+  text-align: center;
+}

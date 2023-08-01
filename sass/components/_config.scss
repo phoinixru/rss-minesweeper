@@ -1,0 +1,116 @@
+.config {
+  padding: 0.5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5em 0;
+  max-width: 20rem;
+}
+
+.config__field {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+
+  legend:after {
+    content: ':';
+  }
+}
+
+.config__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.config__list-item {
+  position: relative;
+  border-style: solid;
+  border-color: #000;
+  border-width: 1px 1px 1px 0;
+
+  &:first-child {
+    border-left-width: 1px;
+  }
+
+  input {
+    position: absolute;
+    visibility: hidden;
+  }
+}
+
+.config__list-label {
+  display: block;
+  cursor: pointer;
+  padding: 2px 10px;
+
+  input:checked+& {
+    color: var(--color-light);
+    background: var(--color-primary);
+  }
+}
+
+.config__checkbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.2em;
+}
+.config__select {
+  border-radius: 0;
+  border: 1px solid #000;
+}
+
+.config__range {
+  --color: var(--color-primary);
+  --background: var(--color-light);
+  --thumb-height: 15px;
+  --thumb-width: 5px;
+
+  padding-right: 2em;
+  width: 100%;
+
+  input[type="range"] {
+    display: block;
+    position: relative;
+    appearance: none;
+    background: var(--background);
+    border-radius: 0;
+    border: 1px solid #000;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  input[type="range"i]::-webkit-slider-runnable-track {
+    overflow: hidden;
+  }
+
+  input[type="range"i]::-webkit-slider-thumb {
+
+    height: var(--thumb-height);
+    width: var(--thumb-width);
+    background: var(--color);
+    aspect-ratio: 1;
+    border-radius: 0;
+    border-image-source: linear-gradient(90deg, var(--color) 50%, var(--background) 0);
+    border-image-slice: 1;
+    border-image-width: 0 1000px;
+    border-image-outset: 0 1000px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="range"]:after {
+    content: attr(data-value);
+    position: absolute;
+    left: 100%;
+    width: 2em;
+    padding-left: 0.5em;
+  }
+}

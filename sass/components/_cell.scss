@@ -1,0 +1,104 @@
+.cell {
+  position: relative;
+  display: flex;
+
+  width: var(--cell-size);
+  height: var(--cell-size);
+
+  background: var(--bg-cell);
+  cursor: pointer;
+  transition: none;
+
+  &:before,
+  &:after {
+    @extend %cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    font-size: 1.5em;
+    transition: opacity 0.4s, transform 0.4s;
+    transition-delay: inherit;
+  }
+
+  &:after {
+    content: '';
+    border-style: outset;
+    border-width: 4px;
+    border-color: var(--cell-border);
+    background-color: var(--cell-cover);
+  }
+}
+
+.cell--open {
+  &[data-mines] {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &[data-mines]:before {
+    content: attr(data-mines);
+  }
+
+  @for $i from 1 through 8 {
+    &[data-mines="#{$i}"] {
+      color: var(--color-n#{$i});
+    }
+  }
+
+  &:after {
+    opacity: 0;
+    transform: scale(0.3);
+    transform-origin: center;
+  }
+}
+
+.cell--flagged {
+  &:after {
+    content: '🚩';
+  }
+}
+
+.cell--mined {
+  &:before {
+    content: '💣';
+  }
+
+  &.cell--open {
+    background: red;
+  }
+}
+
+
+.minesweeper--over {
+  .cell--mined:after {
+    display: none;
+  }
+
+  .cell--flagged:after {
+    display: flex;
+  }
+}
+
+.minesweeper--lost {
+  .cell--flagged:not(.cell--mined) {
+    &:before {
+      content: '💣';
+    }
+    &:after {
+      content: '❌';
+      background-image: none;
+      background-color: transparent;
+      border: 0;
+    }
+  }
+}
+
+.field--pointed {
+  .cell:not(.cell--flagged):hover:after {
+    border-style: inset;
+  }
+}
